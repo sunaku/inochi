@@ -177,6 +177,10 @@ class << self
   #       Name of the RubyForge project's File Release System
   #       section where release packages will be published.
   #
+  #   * [String] :history_node_id
+  #       ID of the node in the user manual which
+  #       contains the history of release notes.
+  #
   # @param gem_config
   #   Block that is passed to Gem::specification.new()
   #   for additonal gem configuration.
@@ -191,6 +195,7 @@ class << self
     # set default options
       options[:rubyforge_project] ||= program_name
       options[:rubyforge_section] ||= program_name
+      options[:history_node_id] ||= 'history'
 
     require 'rake/clean'
 
@@ -253,13 +258,17 @@ class << self
       task :doc => %w[ doc:api doc:man doc:hey doc:ann ]
 
       # user manual
-        doc_man_src = 'doc/manual.erb'
+        doc_man_dep = FileList['doc/*.erb']
+        doc_man_src = 'doc/index.erb'
         doc_man_dst = 'doc/index.xhtml'
 
-        load_manual = lambda do
-          require 'erbook' unless defined? ERBook
-          doc_man_txt = File.read(doc_man_src)
-          ERBook::Document.new(:xhtml, doc_man_txt, doc_man_src, :unindent => true)
+        doc_man_doc = nil
+        doc_man_doc_loader = lambda do
+          unless doc_man_doc
+            require 'erbook' unless defined? ERBook
+            doc_man_txt = File.read(doc_man_src)
+            doc_man_doc = ERBook::Document.new(:xhtml, doc_man_txt, doc_man_src, :unindent => true)
+          end
         end
 
         desc 'Build the user manual.'
@@ -273,8 +282,8 @@ class << self
         #   end
         # end
 
-        file doc_man_dst => doc_man_src do
-          doc_man_doc = load_manual.call
+        file doc_man_dst => doc_man_dep do
+          doc_man_doc_loader.call
           File.write doc_man_dst, doc_man_doc
         end
 
@@ -327,27 +336,61 @@ class << self
         # end
 
       # release announcement
-        doc_ann_dst = 'ANN.html'
+        doc_ann_html_dst = 'ANN.html'
+        doc_ann_feed_dst = 'doc/ann.xml'
 
-        desc 'Build release announcement.'
-        task 'doc:ann' => doc_ann_dst
+        desc 'Generate release announcements.'
+        task 'doc:ann' => [doc_ann_html_dst, doc_ann_feed_dst]
 
-        file doc_ann_dst do
-          doc_man_doc = load_manual.call
-          history_id = 'status.history'
+        # fetch release notes from user manual
+        doc_ann_doc = nil
+        doc_ann_doc_loader = lambda do
+          unless doc_ann_doc
+            doc_man_doc_loader.call
 
-          if history = doc_man_doc.nodes.find {|n| n.id == history_id }
-            if release = history.children.first
-              File.write doc_ann_dst, release
+            history_id = options[:history_node_id]
+            if history = doc_man_doc.nodes.find {|n| n.id == history_id }
+              if release = history.children.first
+                doc_ann_doc = release
+              else
+                raise "The #{history_id.inspect} node in the user manual is empty."
+              end
             else
-              raise "The #{history_id.inspect} node in the user manual is empty."
+              raise "Could not find #{history_id.inspect} node in the user manual."
             end
-          else
-            raise "Could not find #{history_id.inspect} node in the user manual."
           end
         end
 
-        CLOBBER.include doc_ann_dst
+        # build HTML for announcement
+        file doc_ann_html_dst do
+          doc_ann_doc_loader.call
+          File.write doc_ann_html_dst, doc_ann_doc.output
+        end
+
+        CLOBBER.include doc_ann_html_dst
+
+        # build RSS feed for announcement
+        file doc_ann_feed_dst do
+          doc_ann_doc_loader.call
+
+          require 'time'
+          require 'rss/maker'
+          feed = RSS::Maker.make('2.0') do |feed|
+            feed.channel.title       = "[ANN] #{project_module::PROJECT}"
+            feed.channel.link        = project_module::WEBSITE
+            feed.channel.description = project_module::SUMMARY
+
+            item             = feed.items.new_item
+            item.title       = doc_ann_doc.title
+            item.link        = project_module::WEBSITE
+            item.date        = Time.parse(item.title)
+            item.description = doc_ann_doc.output
+          end
+
+          File.write doc_ann_feed_dst, feed
+        end
+
+        CLOBBER.include doc_ann_feed_dst
 
     # releasing
       desc 'Publish a new release.'
