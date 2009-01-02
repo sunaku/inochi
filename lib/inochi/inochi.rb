@@ -204,11 +204,8 @@ class << self
         require 'rake/gempackagetask'
 
         gem = Gem::Specification.new do |gem|
-          license = File.read('LICENSE')
-
-          if license =~ /Copyright.*\d+\s+(.*)(?:\s+<(.*?)>)/
-            gem.author = $1
-            gem.email = $2
+          if author_info = fetch_copyright_holders.first
+            gem.author, gem.email = author_info
           end
 
           gem.rubyforge_project = options[:rubyforge_project]
@@ -396,6 +393,11 @@ class << self
   # Provides a common configuration for the project's user manual:
   #
   def book project_symbol
+    project_module = fetch_project_module(project_symbol)
+
+    $title    = "#{project_module::DISPLAY} user manual"
+    $subtitle = project_module::SUMMARY
+    $authors  = Hash[*fetch_copyright_holders]
   end
 
   private
@@ -429,6 +431,14 @@ class << self
     end
 
     project_module
+  end
+
+  ##
+  # Returns an array of [holder_name, holder_email]
+  # copyright information from the given license file.
+  #
+  def fetch_copyright_holders license_file = 'LICENSE'
+    File.read(license_file).scan %r{Copyright.*\d+\s+(.*)(?:\s+<(.*?)>)}
   end
 end
 end
