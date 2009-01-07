@@ -168,10 +168,14 @@ class << self
       require 'trollop'
 
       Trollop.options(*trollop_args) do
+        # show project description
+        text "#{project_module::PROJECT} -- #{project_module::TAGLINE}"
+        text ''
+
         # show program description
         text File.read(program_file)[/\A.*?^$\n/m]. # grab the header
              gsub(/^# ?/, ''). # strip the comment markers
-             sub(/\A!.*?\n/, '') # omit the shebang line
+             sub(/\A!.*?\n/, '').lstrip # omit the shebang line
         text ''
 
         instance_eval(&trollop_config) if trollop_config
