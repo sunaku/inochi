@@ -603,7 +603,27 @@ class << self
 
       # documentation
         desc 'Publish documentation to project website.'
-        task 'pub:doc' => :doc
+        task 'pub:doc' => [:doc, :pub_rubyforge] do
+          target = options[:upload_target]
+
+          unless target
+            require 'uri'
+            docsite = URI.parse(project_module::DOCSITE)
+
+            # provide uploading capability to websites hosted on RubyForge
+            if docsite.host.include? '.rubyforge.org'
+              target = "#{pub_rubyforge.userconfig['username']}@rubyforge.org:#{              File.join '/var/www/gforge-projects', options[:rubyforge_project], docsite.path}"
+            end
+          end
+
+          if target
+            cmd = ['rsync', '-auvz', 'doc/', "#{target}/"]
+            cmd.push '--delete' if options[:upload_delete]
+            cmd.concat options[:upload_options]
+
+            sh(*cmd)
+          end
+        end
 
       # release announcement
         desc 'Publish release announcement to the world.'
