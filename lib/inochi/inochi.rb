@@ -30,6 +30,10 @@ class << self
   #
   #     The default value is the value of the project_symbol parameter.
   #
+  #   [String] :tagline =>
+  #     An enticing, single line description of the project.
+  #
+  #     The default value is an empty string.
   #
   #   [String] :website =>
   #     URL of the published project website.
@@ -90,6 +94,7 @@ class << self
 
     # set configuration defaults
       project_config[:project] ||= project_symbol.to_s
+      project_config[:tagline] ||= ''
       project_config[:version] ||= '0.0.0'
       project_config[:release] ||= Time.now.strftime('%F')
       project_config[:website] ||= ''

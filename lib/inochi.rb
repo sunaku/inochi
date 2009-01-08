@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'inochi', 'inochi')
 Inochi.init :Inochi,
   :version => '0.0.1',
   :release => '2008-12-31',
-  :summary => 'Gives life to RubyGems-based projects',
+  :tagline => 'Gives life to RubyGems-based software',
   :website => 'http://snk.tuxfamily.org/lib/inochi',
   :require => {
     'rubyforge' => '~> 1',
