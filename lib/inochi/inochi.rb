@@ -625,11 +625,14 @@ class << self
           end
         end
 
-      # release announcement
-        desc 'Publish release announcement to the world.'
-        task 'pub:ann' => :ann do
-          # TODO: send mail to ruby-talk
-          # post news to RubyForge
+      # announcement
+        desc 'Publish all release announcements.'
+        task 'pub:ann' => %w[ pub:ann:forge ]
+
+        desc 'Announce to RubyForge news.'
+        task 'pub:ann:forge' => [:pub_rubyforge, :ann_text] do
+          # TODO: post only if news item is not already there
+          pub_rubyforge.post_news options[:rubyforge_project], ann_subject, ann_text
         end
 
       # release packages
