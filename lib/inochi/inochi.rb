@@ -219,6 +219,11 @@ class << self
   #
   #     The default value is the value of the :rubyforge_project parameter.
   #
+  #   [String] :raa_project =>
+  #     Name of the RAA (Ruby Application Archive) entry for this project.
+  #
+  #     The default value is the value of the PROGRAM constant.
+  #
   #   [String] :upload_target =>
   #     Where to upload the project documentation.
   #     See "destination" in the rsync manual.
@@ -627,12 +632,49 @@ class << self
 
       # announcement
         desc 'Publish all release announcements.'
-        task 'pub:ann' => %w[ pub:ann:forge ]
+        task 'pub:ann' => %w[ pub:ann:forge pub:ann:raa ]
 
         desc 'Announce to RubyForge news.'
         task 'pub:ann:forge' => [:pub_rubyforge, :ann_text] do
           # TODO: post only if news item is not already there
           pub_rubyforge.post_news options[:rubyforge_project], ann_subject, ann_text
+        end
+
+        desc 'Announce to RAA (Ruby Application Archive).'
+        task 'pub:ann:raa' => :ann_nfo_text do
+          show_page_error = lambda do |page, message|
+            raise "#{message}: #{(page/'h2').text} -- #{(page/'p').first.text.strip}"
+          end
+
+          resource = "#{options[:raa_project].inspect} project entry on RAA"
+
+          require 'mechanize'
+          agent = WWW::Mechanize.new
+          page = agent.get "http://raa.ruby-lang.org/update.rhtml?name=#{options[:raa_project]}"
+
+          if form = page.forms[1]
+            resource << " (owned by #{form.owner.inspect})"
+
+            form.description_style = 'Pre-formatted'
+            form.description       = ann_nfo_text
+            form.short_description = project_module::TAGLINE
+            form.version           = project_module::VERSION
+            form.url               = project_module::WEBSITE
+
+            form.pass = options[:raa_password] or begin
+              # ask for password
+              require 'highline/import'
+              ask("Password for #{resource}: ") {|q| q.echo = '' }
+            end
+
+            page = agent.submit form
+
+            if page.title =~ /error/i
+              show_page_error[page, "Could not update #{resource}"]
+            end
+          else
+            show_page_error[page, "Could not access #{resource}"]
+          end
         end
 
       # release packages
