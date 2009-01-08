@@ -589,6 +589,17 @@ class << self
       desc 'Publish a new release.'
       task 'pub' => %w[ pub:pak pub:doc pub:ann ]
 
+      # connect to RubyForge services
+        pub_rubyforge = nil
+
+        task :pub_rubyforge do
+          require 'rubyforge'
+
+          pub_rubyforge = RubyForge.new
+          pub_rubyforge.configure 'release_date' => project_module::RELEASE
+
+          pub_rubyforge.login
+        end
 
       # documentation
         desc 'Publish documentation to project website.'
@@ -603,22 +614,25 @@ class << self
 
       # release packages
         desc 'Publish release packages to RubyForge.'
-        task 'pub:pak' => :pak do
-          # TODO: use RUbyforge gem's ruby interface rather than sh()
-          sh 'rubyforge', 'login'
-
-          pusher = lambda do |cmd, pkg|
-            sh 'rubyforge', cmd, '--release_date', project_module::RELEASE,
-               gem.rubyforge_project, options[:rubyforge_section], gem.version, pkg
+        task 'pub:pak' => [:pak, :pub_rubyforge] do
+          uploader = lambda do |command, *files|
+            pub_rubyforge.__send__ command, options[:rubyforge_project], options[:rubyforge_section], project_module::VERSION, *files
           end
 
-          # push ONLY the first package using 'add_release' because that command
-          # creates a new sub-section on the RubyForge download page; we do not
-          # want one package per sub-section on the RubyForge download page!
-          first, *rest = Dir['pkg/*.[a-z]*']
+          packages = Dir['pkg/*.[a-z]*']
 
-          pusher['add_release', first]
-          rest.each {|file| pusher['add_file', file] }
+          unless packages.empty?
+            # NOTE: use the 'add_release' command ONLY for the first
+            #       file because it creates a new sub-section on the
+            #       RubyForge download page; we do not want one package
+            #       per sub-section on the RubyForge download page!
+            #
+            uploader[:add_release, packages.shift]
+
+            unless packages.empty?
+              uploader[:add_file, *packages]
+            end
+          end
         end
   end
 
