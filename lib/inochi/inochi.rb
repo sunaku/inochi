@@ -25,39 +25,56 @@ class << self
   # @param [Hash] project_config
   #   Project configuration parameters:
   #
-  #   * [String] :project
-  #       Name of the project.
+  #   [String] :project =>
+  #     Name of the project.
   #
-  #   * [String] :version
-  #       Version of the project.
+  #     The default value is the value of the project_symbol parameter.
   #
-  #   * [String] :release
-  #       Date when this version was released.
   #
-  #   * [String] :website
-  #       URL of the project website.
+  #   [String] :website =>
+  #     URL of the published project website.
   #
-  #   * [String] :display
-  #       The project name and version together.
+  #     The default value is an empty string.
   #
-  #   * [String] :program
-  #       Name of the main project executable.
   #
-  #   * [String] :install
-  #       Path to the directory which contains the project.
+  #   [String] :program =>
+  #     Name of the main project executable.
   #
-  #   * [Hash] :require
-  #       The names and version constraints of ruby gems required by
-  #       this project.  This information must be expressed as follows:
+  #     The default value is the value of the :project parameter in lowercase.
   #
-  #       * Each hash key must be the name of a ruby gem.
+  #   [String] :version =>
+  #     Version of the project.
   #
-  #       * Each hash value must be either +nil+, or a
-  #         single version number requirement string
-  #         (see Gem::Requirement), or an array of
-  #         version number requirement strings.
+  #     The default value is "0.0.0".
   #
-  # @return [Module] The project module.
+  #   [String] :release =>
+  #     Date when this version was released.
+  #
+  #     The default value is the current time.
+  #
+  #   [String] :display =>
+  #     How the project name should be displayed.
+  #
+  #     The default value is the project name and version together.
+  #
+  #   [String] :install =>
+  #     Path to the directory which contains the project.
+  #
+  #     The default value is one directory above the parent
+  #     directory of the file from which this method was called.
+  #
+  #   [Hash] :require =>
+  #     The names and version constraints of ruby gems required by
+  #     this project.  This information must be expressed as follows:
+  #
+  #     * Each hash key must be the name of a ruby gem.
+  #
+  #     * Each hash value must be either +nil+, a single version number
+  #       requirement string (see Gem::Requirement) or an Array thereof.
+  #
+  #     The default value is an empty Hash.
+  #
+  # @return [Module] The newly configured project module.
   #
   def init project_symbol, project_config = {}
     project_module = fetch_project_module(project_symbol)
@@ -169,17 +186,23 @@ class << self
   # @param [Hash] options
   #   Additional method parameters, which are all optional:
   #
-  #   * [String] :rubyforge_project
-  #       Name of the RubyForge project where
-  #       release packages will be published.
+  #   [String] :rubyforge_project =>
+  #     Name of the RubyForge project where
+  #     release packages will be published.
   #
-  #   * [String] :rubyforge_section
-  #       Name of the RubyForge project's File Release System
-  #       section where release packages will be published.
+  #     The default value is the value of the ::PROGRAM constant.
   #
-  #   * [String] :history_node_id
-  #       ID of the node in the user manual which
-  #       contains the history of release notes.
+  #   [String] :rubyforge_section =>
+  #     Name of the RubyForge project's File Release System
+  #     section where release packages will be published.
+  #
+  #     The default value is the value of the :rubyforge_project parameter.
+  #
+  #   [String] :history_node_id =>
+  #     ID of a node in the user manual which contains child nodes that
+  #     respectively contain release notes for a particular release.
+  #
+  #     The default value is "history".
   #
   # @param gem_config
   #   Block that is passed to Gem::specification.new()
