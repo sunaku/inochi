@@ -3,20 +3,20 @@ require 'rubygems'
 module Inochi
 class << self
   ##
-  # Provides a common configuration for the project module,
-  # which serves as a namespace for the entier project.
+  # Establishes your project in Ruby's runtime environment by defining
+  # the project module (which serves as a namespace for all code in the
+  # project) and providing a common configuration for the project module:
   #
-  # * The program description (the sequence of non-blank lines at the
-  #   top of the file in which this method is invoked) is properly
-  #   formatted and displayed in the help information of the program.
+  # * Adds the project lib/ directory to the Ruby load path.
   #
-  # * The program version information is fetched from the project module
-  #   and formatted in YAML fashion for easy consumption by other tools.
+  # * Defines the INOCHI constant in the project module.  This constant
+  #   contains the effective configuration parameters (@see project_config).
   #
-  # * The project lib/ directory is added to the Ruby load path.
+  # * Defines all configuration parameters as constants in the project module.
   #
   # This method must be invoked from immediately within (that is, not from
   # within any of its descendant directories) the project lib/ directory.
+  # Ideally, this method would be invoked from the main project library.
   #
   # @param [Symbol] project_symbol
   #   Name of the Ruby constant which serves
@@ -137,11 +137,13 @@ class << self
   #
   # * The program description (the sequence of non-blank lines at the
   #   top of the file in which this method is invoked) is properly
-  #   formatted and displayed in the help information of the program.
+  #   formatted and displayed at the top of program's help information.
   #
-  # * The program version information is automatically
-  #   fetched from the given project constant and formatted
-  #   in YAML fashion for easy consumption by other tools.
+  # * The program version information is fetched from the project module
+  #   and formatted in YAML fashion for easy consumption by other tools.
+  #
+  # * A list of command-line options is displayed at
+  #   the bottom of the program's help information.
   #
   # @param [Symbol] project_symbol
   #   Name of the Ruby constant which serves
@@ -169,7 +171,7 @@ class << self
 
       Trollop.options(*trollop_args) do
         # show project description
-        text "#{project_module::PROJECT} -- #{project_module::TAGLINE}"
+        text "#{project_module::PROJECT} - #{project_module::TAGLINE}"
         text ''
 
         # show program description
@@ -188,7 +190,7 @@ class << self
   end
 
   ##
-  # Provides a common configuration for the main project Rakefile:
+  # Provides Rake tasks for packaging, publishing, and announcing your project.
   #
   # * An AUTHORS constant (which has the form "[[name, info]]"
   #   where "name" is the name of a copyright holder and "info" is
@@ -215,7 +217,7 @@ class << self
   #     Name of the RubyForge project where
   #     release packages will be published.
   #
-  #     The default value is the value of the ::PROGRAM constant.
+  #     The default value is the value of the PROGRAM constant.
   #
   #   [String] :rubyforge_section =>
   #     Name of the RubyForge project's File Release System
@@ -506,7 +508,7 @@ class << self
           mail.date    = Time.now
 
           Rake::Task[:ann_text].invoke
-          mail.body    = ann_text
+          mail.body = ann_text
 
           File.write ann_mail_dst, mail
         end
@@ -539,7 +541,7 @@ class << self
           # XXX: In theory, `gem.name` should be assigned to
           #      ::PROJECT instead of ::PROGRAM
           #
-          #      In practice, ::PROJECT may contain non-word
+          #      In practice, PROJECT may contain non-word
           #      characters and may also contain a mixture
           #      of lowercase and uppercase letters.
           #
