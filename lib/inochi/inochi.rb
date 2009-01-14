@@ -200,6 +200,14 @@ class << self
   #   the project license file.  NOTE that the first copyright
   #   notice must correspond to the primary project maintainer.
   #
+  #   Copyright notices must be in the following form:
+  #
+  #       Copyright YEAR HOLDER <EMAIL>
+  #
+  #   Where HOLDER is the name of the copyright holder, YEAR is the year
+  #   when the copyright holder first began working on the project, and
+  #   EMAIL is (optional) the email address of the copyright holder.
+  #
   # @param [Symbol] project_symbol
   #   Name of the Ruby constant which serves
   #   as a namespace for the entire project.
@@ -269,7 +277,10 @@ class << self
 
     # add AUTHORS constant to the project module
       license = File.read(options[:license_file])
-      copyright_holders = license.scan %r{Copyright.*\d+\s+(.*)(?:\s+<(.*?)>)}
+
+      copyright_holders =
+        license.scan(/Copyright.*?\d+\s+(.*)/).flatten.
+        map {|s| (s =~ /\s*<(.*?)>/) ? [$`, $1] : [s, ''] }
 
       project_module.const_set :AUTHORS, copyright_holders
 
