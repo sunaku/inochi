@@ -663,8 +663,8 @@ class << self
 
             form.pass = options[:raa_password] or begin
               # ask for password
-              require 'highline/import'
-              ask("Password for #{resource}: ") {|q| q.echo = '' }
+              print "Password for #{resource}: "
+              gets.chomp
             end
 
             page = agent.submit form
