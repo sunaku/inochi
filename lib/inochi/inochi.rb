@@ -511,17 +511,17 @@ class << self
         task 'ann:mail' => ann_mail_dst
 
         file ann_mail_dst => doc_man_deps do
-          require 'tmail'
-          mail         = TMail::Mail.new
-          mail.to      = 'ruby-talk@ruby-lang.org'
-          mail.from    = '%s <%s>' % project_module::AUTHORS.first
-          mail.subject = ann_subject
-          mail.date    = Time.now
+          File.open ann_mail_dst, 'w' do |f|
+            require 'time'
+            f.puts "Date: #{Time.now.rfc822}"
 
-          Rake::Task[:ann_text].invoke
-          mail.body = ann_text
+            f.puts 'To: ruby-talk@ruby-lang.org'
+            f.puts 'From: "%s" <%s>' % project_module::AUTHORS.first
+            f.puts "Subject: #{ann_subject}"
 
-          File.write ann_mail_dst, mail
+            Rake::Task[:ann_text].invoke
+            f.puts '', ann_text
+          end
         end
 
         CLEAN.include ann_mail_dst

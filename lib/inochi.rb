@@ -11,6 +11,5 @@ Inochi.init :Inochi,
     'trollop'   => '~> 1.10',   # for parsing command-line options
     'erbook'    => '5.0.0',     # for processing the user manual
     'yard'      => nil,         # for generating API documentation
-    'tmail'     => nil,         # for handling e-mail messages
     'highline'  => nil,         # for asking for passwords
   }
