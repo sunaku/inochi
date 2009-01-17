@@ -1,0 +1,51 @@
+<% chapter "Setup" do %>
+  <% section "Requirements" do %>
+    Your system needs the following software to run **<%= $project %>**.
+
+    | Software                        | Description               | Notes                                                               |
+    | --------                        | -----------               | -----                                                               |
+    | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version 1.8.6 or 1.8.7 is required.                                 |
+    | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version 1.0.0 or newer is required.                                 |
+    | [Lynx](http://lynx.isc.org)     | Text-mode web browser     | Version 2.8.6 or newer is required to convert HTML into plain text. |
+  <% end %>
+
+  <% section "Installation" do %>
+    You can install **<%= $project %>** by running this command:
+
+        gem install <%= $program %>
+
+    To check whether the installation was sucessful, run this command:
+
+        <%= $program %> --version
+
+    If the installation was successful, you will see output like this:
+
+    <pre><%= `ruby bin/#{$program} --version` %></pre>
+
+    If you do not see such output, you may
+    <%= xref "License", "ask the author(s)" %> for help.
+  <% end %>
+
+  <% section "Manifest" do %>
+    You will see the following items inside **<%= $project %>**'s installation
+    directory, whose path you can determine by running this command:
+
+        <%= $program %> --version
+
+    * <tt>bin/</tt>
+
+      * <tt><%= $program %></tt> --- the main **<%= $project %>** executable.
+
+    * <tt>lib/</tt>
+
+      * <tt><%= $program %>.rb</tt> --- the main **<%= $project %>** library.
+
+    * <tt>doc/</tt>
+
+      * <tt>api/</tt> --- API reference documentation.
+
+      * <tt>index.erb</tt> --- source of this user manual.
+
+    * <tt>LICENSE</tt> --- copyright notice and legal conditions.
+  <% end %>
+<% end %>

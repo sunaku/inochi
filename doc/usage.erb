@@ -1,0 +1,367 @@
+<% part "Usage" do %>
+  <% section "Command-line interface" do %>
+    When you run this command:
+
+        <%= $program %> --help
+
+    You will see this output:
+
+    <pre><%= verbatim `ruby bin/#{$program} --help` %></pre>
+
+    <% tip "Merging files with **kdiff3**" do %>
+      Instead of merging files by hand, you can transfer wanted changes between files semi-automatically using [kdiff3](http://kdiff3.sourceforge.net).  Simply follow these instructions:
+
+      1.  Create a file named <tt>merge2</tt> with the following content:
+
+              #!/bin/sh
+
+              old_file=$1
+              shift
+
+              new_file=$1
+              shift
+
+              output_file=$1
+              shift
+
+              kdiff3 --auto "$old_file" "$new_file" --output "$output_file"
+
+      2.  Make the file executable:
+
+              chmod +x merge2
+
+      3.  Place the file in a directory that is listed in your `PATH` environment variable.
+
+      4.  Run **<%= $project %>** like this:
+
+              <%= $program %> -m merge2
+
+          Now **kdiff3** will be invoked to help you transfer your changes.  When you are finished transferring changes, save the file and quit **kdiff3**.  If you do not want to transfer any changes, simply quit **kdiff3** _without_ saving the file.
+    <% end %>
+  <% end %>
+
+  <% section "Ruby library interface" do %>
+    The [`Inochi` module](api/Inochi.html) has several class methods which provide a common configuration for various aspects of your project.  These aspects, and their interactions with the `Inochi` module, are as follows:
+    * Your project's main library invokes the [`Inochi.init()` method](api/Inochi.html#init-class_method).
+    * Your project's main executable invokes the [`Inochi.main()` method](api/Inochi.html#main-class_method).
+    * Your project's <tt>Rakefile</tt> invokes the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
+    * Your project's user manual invokes the [`Inochi.book()` method](api/Inochi.html#book-class_method).
+  <% end %>
+
+  <% section "Tutorial" do %>
+    This tutorial shows how **<%= $project %>** is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
+
+    <% section "Have a brilliant idea" do %>
+      It is 4am on Sunday morning.  Unwilling to sleep, you have spent the past few hours programming obsessively..  Though your eyes grow heavy and your stomach churns from hunger, your mind charges forth with haste.
+
+      > Push on! Keep on!
+
+      Until at last, pushed far beyond its limit, your body overpowers your will and drags you into black unconsciousness.
+
+      *BEEP*  *BEEP*  *B*---
+
+      Half-asleep and violent from the sudden disturbance, you silence the bleeting alarm clock with vengeance.  It is 2pm on Sunday afternoon.
+
+      Red beams of sunlight slip through the gaps in your curtains.  It is a beautiful day, outside.  *Outside*--- you think,
+
+      > What am I doing to myself?
+      >
+      > I've got to get *outside*.
+      >
+      > I've got to get *away*...
+      >
+      > Away from this computer... this... mental prison in which I toil night after night, like a souless machine.
+
+      Venturing into the courtyard outside your quarters, you find peace.  A warm breeze graces you, sweeping your hair gently as a mother would.  The bright sunlight penetrates your mind's eye as your thoughts fade...
+
+      Thoughts of tests to write, units to refactor, bugs to fix, options to document.  They melt and mix and flow into nothingness.
+
+      All is clear.  No thoughts.  No more.
+
+      > No!
+
+      You collapse heavily onto the grassy earth beneath you.  Breathing deeply, you sink into yourself and whisper
+
+      > It's okay.
+      >
+      > Just, let go.
+
+      and fall asleep.
+
+      You awaken that evening relaxed and refreshed.  A brilliant idea for a new project enters your mind:  the project will be a tool that counts the number of words in text file.  And, the project can be accessed from Ruby via the `WordCount` module.
+
+      *However*, you must go to work the next morning, so there isn't much time.  What can you do?  Let's see how **<%= $project %>** can help us meet this challenge.
+    <% end %>
+
+    <%
+      require 'tempfile'
+      tmp = Tempfile.new($project).path
+      File.delete tmp
+      mkdir_p tmp
+
+      begin
+        old = Dir.pwd
+        cd tmp
+
+        main_executable = 'bin/word_count'
+    %>
+      <% section "Generate your project" do %>
+        Give life to your new project:
+
+        <pre>
+        # inochi WordCount
+        <%= verbatim `ruby #{$install}/bin/inochi WordCount` %>
+        </pre>
+
+        Enter the <tt>word_count</tt> directory:
+
+        <pre>
+        # cd word_count
+        <% cd "word_count" %>
+        </pre>
+
+        View the available Rake tasks:
+
+        <pre>
+        # rake -T
+        <%= verbatim `rake -T` %>
+        </pre>
+
+        Try the main project executable:
+
+        <pre>
+        <% command = main_executable %>
+        # ruby <%= command %>
+        <%= verbatim `ruby #{command}` %>
+        </pre>
+
+        See usage information:
+
+        <pre>
+        <% command = "#{main_executable} --help" %>
+        # ruby <%= command %>
+        <%= verbatim `ruby #{command}` %>
+        </pre>
+
+        See project & version information:
+
+        <pre>
+        <% command = "#{main_executable} --version" %>
+        # ruby <%= command %>
+        <%= verbatim `ruby #{command}` %>
+        </pre>
+
+        See the user manual:
+
+        <pre>
+        # rake doc:man 2>/dev/null
+
+        <% command = "#{main_executable} --manual" %>
+        # ruby <%= command %>
+        </pre>
+
+        The manual will now appear in your default web browser.
+      <% end %>
+
+      <% section "Configure your project" do %>
+        <%= xref "Ruby library interface" %> lists and documents the interactions between your project and **<%= $project %>**.  These points of interaction are illustrated in the following sections.
+
+        <% section "Project information" do %>
+          <% license_file = 'LICENSE' %>
+
+          Open the <tt><%= license_file %></tt> file, which contains the open source [ISC license](http://www.opensource.org/licenses/isc-license.txt) by default, and add a copyright notice with your name and (optional) email address:
+
+          <pre>
+          <%= verbatim File.read(license_file) %>
+          </pre>
+
+          <% main_library = 'lib/word_count.rb' %>
+
+          Open the main project library file <tt><%= main_library %></tt> and fill in the blanks:
+
+          <code>
+          <%= verbatim File.read(main_library) %>
+          </code>
+        <% end %>
+
+        <% section "Project executable" do %>
+          Open the <tt><%= main_executable %></tt> file and fill in the blanks:
+
+          <code>
+          <%= verbatim File.read(main_executable) %>
+          </code>
+        <% end %>
+
+        <% section "Rake tasks" do %>
+          <% rake_file = 'Rakefile' %>
+
+          Open the <tt><%= rake_file %></tt> and fill in the blanks:
+
+          <code>
+          <%= verbatim File.read(rake_file) %>
+          </code>
+        <% end %>
+
+        <% section "User manual" do %>
+          <%
+            whole = 'doc/index.erb'
+            parts = File.read(whole).
+              scan(/<%#\s*include\s+(\S+)/).flatten.map {|s| "doc/#{s}" }
+
+            files = [whole, *parts]
+          %>
+
+          The user manual's source file <tt><%= whole %></tt> subdivides its content into several smaller files, according to topic, for easier editing and maintenance.  These files are processed by the [<%= ERBook::PROJECT %>](<%= ERBook::WEBSITE %>) program's [XHTML format](<%= ERBook::DOCSITE %>#xhtml) to produce the <tt>doc/index.xhtml</tt> file.
+
+          Open these source files and fill in the blanks:
+
+          <% files.each do |f| %>
+            <% paragraph "<tt>#{f}</tt>" do %>
+              <code lang="rhtml"><%= verbatim File.read(f) %></code>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% section "Implement your project" do %>
+        Add the following code to the bottom of the main project library:
+
+        <code>
+        module WordCount
+          # Returns the number of words in the given input.
+          def WordCount.count input
+            input.to_s.split(/\W+/).length
+          end
+        end
+        </code>
+
+        Add the following code to the bottom of the main project executable:
+
+        <code>
+        input = ARGF.read
+        total = WordCount.count(input)
+        puts "There are #{total} words in the input."
+        </code>
+
+        <% paragraph "Goodbye `$LOAD_PATH`, hello `require()`" do %>
+          Notice that, in the Ruby files that you modified so far, there were no `$LOAD_PATH` manipulations and no explicit `require()` statements to pull in the various parts of your project.  That is because **<%= $project %>** does this for you automatically.
+
+          Furthermore, you can always `require()` a sub-library anywhere in your project using its canonical path because **<%= $project %>** puts your main project libraries on the Ruby load path.
+
+          <% sub_library = 'word_count/odf/text' %>
+
+          For example, if your project has a sub-library, say, <tt>lib/<%= sub_library %>.rb</tt> that counts the number of words in an [OpenDocument Text](http://en.wikipedia.org/wiki/OpenDocument) document, then it would be loaded into the main project executable like this:
+
+          <code>
+          require '<%= sub_library %>'
+          </code>
+
+          Regardless of whether a sub-library is used within your project itself or from within an external application, we always `require()` the sub-library using the same canonical path.
+        <% end %>
+      <% end %>
+
+      <% section "Test your project" do %>
+        > TODO: show how to write a unit test for the code
+
+        > TODO: integrate minitest tasks into Inochi.rake()
+      <% end %>
+
+      <% section "Publish your project" do %>
+        This command performs all of the automated steps described in the following sections:
+
+        <pre>
+        # rake pub
+        </pre>
+
+        <% section "Build a RubyGem" do %>
+          Build a RubyGem by running:
+
+          <pre>
+          # rake pak
+          <%= `rake pak` %>
+          </pre>
+
+          See the RubyGem contents:
+
+          <pre>
+          # gem spec pkg/*.gem
+          <code lang="yaml"><%= `gem spec pkg/*.gem`.rstrip %></code>
+          </pre>
+        <% end %>
+
+        <% section "Publish a RubyGem" do %>
+          You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)).
+
+          Publish a RubyGem by running:
+
+          <pre>
+          # rake pub:pak
+          </pre>
+        <% end %>
+
+        <% section "Announce a release" do %>
+          You must first provide your <%= xref "Login information" %> to **<%= $project %>**.  If you do not want to do this, then see <%= xref "Manual release announcement" %>.
+
+          Announce a release by running:
+
+          <pre>
+          # rake pub:ann
+          </pre>
+
+          <% paragraph "Login information" do %>
+            In order to automate the announcement of releases, **<%= $project %>** needs to know your login information for the [RAA (Ruby Application Archive)](http://raa.ruby-lang.org) and [RubyForum](http://www.ruby-forum.com/forum/4), which serves as a gateway to the [ruby-talk mailing list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/).
+
+            <% logins_file = "~/.config/inochi/logins.yaml" %>
+
+            This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML](http://www.yaml.org) document containing the following parameters:
+
+            <code lang="yaml">
+            www.ruby-forum.com:
+              user: YOUR_USERNAME_HERE
+              pass: YOUR_PASSWORD_HERE
+
+            raa.ruby-lang.org:
+              pass: YOUR_PASSWORD_HERE
+            </code>
+
+            For better security, you should ensure that this file is only readable and writable by you and is not accessible by anyone else.  In a UNIX environment, this can be accomplished by running the following command:
+
+                # chmod 0600 <%= logins_file %>
+
+          <% end %>
+
+          <% section "Manual release announcement" do %>
+            Build release announcements by running:
+
+            <pre>
+            # rake ann
+            <%= `rake ann` %>
+            </pre>
+
+            This produces the following files in your project directory:
+            <% Dir['ANN*'].each do |f| %>
+            * <tt><%= f %></tt>
+            <% end %>
+
+            Now you can manually announce your release using these files.
+          <% end %>
+        <% end %>
+
+        <% section "Publish the documentation" do %>
+          Publish the user manual and API documentation by running:
+
+          <pre>
+          # rake pub:doc
+          </pre>
+
+          If your documentation website (see the `:docsite` option for the [`Inochi.init()` method](api/Inochi.html#init-class_method)) is hosted on RubyForge, then the above command will automatically upload your project's documentation to the correct place.
+        <% end %>
+      <% end %>
+    <%
+      ensure
+        cd old
+        rm_rf tmp
+      end
+    %>
+  <% end %>
+<% end %>
