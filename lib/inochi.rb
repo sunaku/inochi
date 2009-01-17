@@ -10,5 +10,6 @@ Inochi.init :Inochi,
     'mechanize' => '0.9.0',     # for automating RAA.ruby-lang.org
     'trollop'   => '~> 1.10',   # for parsing command-line options
     'erbook'    => '5.0.0',     # for processing the user manual
+    'launchy'   => '~> 0.3',    # for launching a web browser
     'yard'      => nil,         # for generating API documentation
   }

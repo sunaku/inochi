@@ -169,7 +169,8 @@ class << self
     # parse command-line options
       require 'trollop'
 
-      Trollop.options(*trollop_args) do
+      options = Trollop.options(*trollop_args) do
+
         # show project description
         text "#{project_module::PROJECT} - #{project_module::TAGLINE}"
         text ''
@@ -186,7 +187,17 @@ class << self
         version %w[PROJECT VERSION RELEASE WEBSITE INSTALL].map {|c|
           "#{c.downcase}: #{project_module.const_get c}"
         }.join("\n")
+
+        opt :manual, 'Show the user manual'
       end
+
+      if options[:manual]
+        require 'launchy'
+        Launchy::Browser.run "#{project_module::INSTALL}/doc/index.xhtml"
+        exit
+      end
+
+      options
   end
 
   ##
