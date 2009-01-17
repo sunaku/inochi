@@ -303,7 +303,7 @@ class << self
 
     # documentation
       desc 'Build all documentation.'
-      task :doc => %w[ doc:api doc:man ann:feed ]
+      task :doc => %w[ doc:api doc:man ]
 
       # user manual
         doc_man_src = 'doc/index.erb'
@@ -619,7 +619,7 @@ class << self
 
       # documentation
         desc 'Publish documentation to project website.'
-        task 'pub:doc' => [:doc, :pub_rubyforge] do
+        task 'pub:doc' => [:doc, 'ann:feed', :pub_rubyforge] do
           target = options[:upload_target]
 
           unless target
