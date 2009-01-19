@@ -357,7 +357,7 @@ class << self
         CLEAN.include '.yardoc'
         CLOBBER.include doc_api_dst
 
-    # announcments
+    # announcements
       desc 'Build all release announcements.'
       task :ann => %w[ ann:feed ann:html ann:text ann:mail ]
 
@@ -610,24 +610,29 @@ class << self
         %w[gem package repackage clobber_package].each {|t| hide_rake_task[t] }
 
     # releasing
-      desc 'Publish a new release.'
+      desc 'Publish a release.'
       task 'pub' => %w[ pub:pak pub:doc pub:ann ]
 
       # connect to RubyForge services
-        pub_rubyforge = nil
+        pub_forge = nil
+        pub_forge_project = options[:rubyforge_project]
+        pub_forge_section = options[:rubyforge_section]
 
-        task :pub_rubyforge do
+        task :pub_forge do
           require 'rubyforge'
+          pub_forge = RubyForge.new
+          pub_forge.configure('release_date' => project_module::RELEASE)
 
-          pub_rubyforge = RubyForge.new
-          pub_rubyforge.configure 'release_date' => project_module::RELEASE
+          unless pub_forge.autoconfig['group_ids'].key? pub_forge_project
+            raise "The #{pub_forge_project.inspect} project was not recognized by the RubyForge client.  Either specify a different RubyForge project by passing the :rubyforge_project option to Inochi.rake(), or ensure that the client is configured correctly (see `rubyforge --help` for help) and try again."
+          end
 
-          pub_rubyforge.login
+          pub_forge.login
         end
 
       # documentation
         desc 'Publish documentation to project website.'
-        task 'pub:doc' => [:doc, 'ann:feed', :pub_rubyforge] do
+        task 'pub:doc' => [:doc, 'ann:feed'] do
           target = options[:upload_target]
 
           unless target
@@ -636,7 +641,7 @@ class << self
 
             # provide uploading capability to websites hosted on RubyForge
             if docsite.host.include? '.rubyforge.org'
-              target = "#{pub_rubyforge.userconfig['username']}@rubyforge.org:#{              File.join '/var/www/gforge-projects', options[:rubyforge_project], docsite.path}"
+              target = "#{pub_forge.userconfig['username']}@rubyforge.org:#{File.join '/var/www/gforge-projects', options[:rubyforge_project], docsite.path}"
             end
           end
 
@@ -645,13 +650,14 @@ class << self
             cmd.push '--delete' if options[:upload_delete]
             cmd.concat options[:upload_options]
 
+            p cmd
             sh(*cmd)
           end
         end
 
       # announcement
-        desc 'Publish all release announcements.'
-        task 'pub:ann' => %w[ pub:ann:forge pub:ann:raa ]
+        desc 'Publish all announcements.'
+        task 'pub:ann' => %w[ pub:ann:forge pub:ann:raa pub:ann:talk ]
 
         # login information
           ann_logins_file = options[:logins_file]
@@ -701,6 +707,7 @@ class << self
         desc 'Announce to ruby-talk mailing list.'
         task 'pub:ann:talk' => :ann_logins do
           host = 'http://ruby-forum.com'
+          ruby_talk = 4 # ruby-talk forum ID
 
           require 'mechanize'
           www = WWW::Mechanize.new
@@ -708,7 +715,7 @@ class << self
           # check if this release was already announced
           already_announced =
             begin
-              page = www.get "#{host}/forum/1", :filter => %{"#{ann_subject}"}
+              page = www.get "#{host}/forum/#{ruby_talk}", :filter => %{"#{ann_subject}"}
 
               posts = (page/'//div[@class="forum"]//a[starts-with(./@href, "/topic/")]/text()').map {|e| e.to_s.strip }
               posts.include? ann_subject
@@ -734,7 +741,7 @@ class << self
               warn "Could not log in to RubyForum using the login information in #{ann_logins_file.inspect}, so I can NOT announce this release to the ruby-talk mailing list."
             else
               # make the announcement
-              page = www.get "#{host}/topic/new?forum_id=1" # TODO: change 4
+              page = www.get "#{host}/topic/new?forum_id=#{ruby_talk}"
               form = page.forms.first
 
               Rake::Task[:ann_text].invoke
@@ -754,26 +761,27 @@ class << self
               end
             end
           end
->>>>>>> bee9355... TEMP SQUASH:lib/inochi/inochi.rb
         end
 
         desc 'Announce to RAA (Ruby Application Archive).'
-        task 'pub:ann:raa' => [:ann_nfo_text, :ann_logins] do
+        task 'pub:ann:raa' => :ann_logins do
           show_page_error = lambda do |page, message|
-            raise "#{message}: #{(page/'h2').text} -- #{(page/'p').first.text.strip}"
+            warn "#{message}, so I can NOT announce this release to RAA:"
+            warn "#{(page/'h2').text} -- #{(page/'p').first.text.strip}"
           end
 
           resource = "#{options[:raa_project].inspect} project entry on RAA"
 
           require 'mechanize'
-          agent = WWW::Mechanize.new
-          page = agent.get "http://raa.ruby-lang.org/update.rhtml?name=#{options[:raa_project]}"
+          www = WWW::Mechanize.new
+          page = www.get "http://raa.ruby-lang.org/update.rhtml?name=#{options[:raa_project]}"
 
           if form = page.forms[1]
             resource << " (owned by #{form.owner.inspect})"
 
-            form['description_style'] = 'Pre-formatted'
+            Rake::Task[:ann_nfo_text].invoke
             form['description']       = ann_nfo_text
+            form['description_style'] = 'Pre-formatted'
             form['short_description'] = project_module::TAGLINE
             form['version']           = project_module::VERSION
             form['url']               = project_module::WEBSITE
@@ -783,6 +791,8 @@ class << self
 
             if page.title =~ /error/i
               show_page_error[page, "Could not update #{resource}"]
+            else
+              puts "Successfully announced to RAA (Ruby Application Archive)."
             end
           else
             show_page_error[page, "Could not access #{resource}"]
@@ -791,23 +801,40 @@ class << self
 
       # release packages
         desc 'Publish release packages to RubyForge.'
-        task 'pub:pak' => [:pak, :pub_rubyforge] do
-          uploader = lambda do |command, *files|
-            pub_rubyforge.__send__ command, options[:rubyforge_project], options[:rubyforge_section], project_module::VERSION, *files
-          end
+        task 'pub:pak' => :pub_forge do
+          # check if this release was already published
+          version = project_module::VERSION
+          packages = pub_forge.autoconfig['release_ids'][pub_forge_section]
 
-          packages = Dir['pkg/*.[a-z]*']
+          if packages and packages.key? version
+            warn "The release packages were already published, so I will NOT publish them again."
+          else
+            # create the FRS package section
+            unless pub_forge.autoconfig['package_ids'].key? pub_forge_section
+              pub_forge.create_package pub_forge_project, pub_forge_section
+            end
 
-          unless packages.empty?
-            # NOTE: use the 'add_release' command ONLY for the first
-            #       file because it creates a new sub-section on the
-            #       RubyForge download page; we do not want one package
-            #       per sub-section on the RubyForge download page!
-            #
-            uploader[:add_release, packages.shift]
+            # publish the package to the section
+            uploader = lambda do |command, *files|
+              pub_forge.__send__ command, pub_forge_project, pub_forge_section, version, *files
+            end
+
+            Rake::Task[:pak].invoke
+            packages = Dir['pkg/*.[a-z]*']
 
             unless packages.empty?
-              uploader[:add_file, *packages]
+              # NOTE: use the 'add_release' command ONLY for the first
+              #       file because it creates a new sub-section on the
+              #       RubyForge download page; we do not want one package
+              #       per sub-section on the RubyForge download page!
+              #
+              uploader[:add_release, packages.shift]
+
+              unless packages.empty?
+                uploader[:add_file, *packages]
+              end
+
+              puts "Successfully published release packages to RubyForge."
             end
           end
         end
