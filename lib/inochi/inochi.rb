@@ -418,6 +418,31 @@ class << self
           text
         end
 
+        # binds relative addresses in the given HTML to the project docsite
+        resolve_html_links = lambda do |html|
+          # resolve relative URLs into absolute URLs
+          # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+          require 'addressable/uri'
+          uri = Addressable::URI.parse(project_module::DOCSITE)
+          doc_url = uri.to_s
+          dir_url = uri.path =~ %r{/$|^$} ? doc_url : File.dirname(doc_url)
+
+          html.to_s.gsub %r{(href=|src=)(.)(.*?)(\2)} do |match|
+            a, b = $1 + $2, $3.to_s << $4
+
+            case $3
+            when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://} # already absolute
+              match
+
+            when /^#/
+              a << File.join(doc_url, b)
+
+            else
+              a << File.join(dir_url, b)
+            end
+          end
+        end
+
         ann_html = nil
         task :ann_html => [:doc_man_doc, :ann_nfo_doc, :ann_rel_doc] do
           unless ann_html
@@ -434,27 +459,7 @@ class << self
             # remove heading navigation menus
             ann_html.gsub! %r{<div class="nav"[^>]*>(.*?)</div>}, ''
 
-            # resolve relative URLs into absolute URLs
-            # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-            require 'addressable/uri'
-            uri = Addressable::URI.parse(project_module::DOCSITE)
-            doc_url = uri.to_s
-            dir_url = uri.path =~ %r{/$|^$} ? doc_url : File.dirname(doc_url)
-
-            ann_html.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
-              a, b = $1 + $2, $3.to_s << $4
-
-              case $3
-              when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://} # already absolute
-                match
-
-              when /^#/
-                a << File.join(doc_url, b)
-
-              else
-                a << File.join(dir_url, b)
-              end
-            end
+            ann_html = resolve_html_links[ann_html]
           end
         end
 
@@ -468,7 +473,8 @@ class << self
         ann_nfo_text = nil
         task :ann_nfo_text => :ann_nfo_doc do
           unless ann_nfo_text
-            ann_nfo_text = convert_html_to_text[ann_nfo_doc]
+            ann_nfo_html = resolve_html_links[ann_nfo_doc]
+            ann_nfo_text = convert_html_to_text[ann_nfo_html]
           end
         end
 
