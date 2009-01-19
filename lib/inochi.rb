@@ -1,7 +1,7 @@
 require File.join(File.dirname(File.expand_path(__FILE__)), 'inochi', 'inochi')
 
 Inochi.init :Inochi,
-  :version => '0.0.0',
+  :version => '0.0.1',
   :release => '2009-01-19',
   :tagline => 'Gives life to RubyGems-based software',
   :website => 'http://snk.tuxfamily.org/lib/inochi',

@@ -1,6 +1,28 @@
 <% chapter "History", "history" do %>
   <% project_history do %>
     <% section "Version 0.0.1 (2009-01-13)" do %>
+      This release fixes some show-stopper bugs.
+
+      <% paragraph "Contributor kudos" do %>
+        * Florian Gilcher tried the first release of **<%= $project %>** and reported bugs.
+      <% end %>
+
+      <% paragraph "Bug fixes" do %>
+        * Florian Gilcher reported that the name of the project library was [being determined incorrectly](http://www.ruby-forum.com/topic/176173#771351).
+
+        * Florian Gilcher reported that there was a [circular dependency problem](http://www.ruby-forum.com/topic/176173#771281) problem when installing the **<%= $project %>** gem.
+
+          The solution is to specify the <tt>--force</tt> option when installing the gem.  <%= xref "Installation" %> has been updated accordingly.
+
+        * Generated project scaffolds now check against the major version of the **<%= $project %>** gem, to avoid runtime version conflicts.
+      <% end %>
+
+      <% paragraph "Housekeeping" do %>
+        * Only add project libraries to `$LOAD_PATH` if not already there.
+      <% end %>
+    <% end %>
+
+    <% section "Version 0.0.0 (2009-01-13)" do %>
       This is the first release of **<%= $project %>**.
 
       Happy birthday!
