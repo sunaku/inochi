@@ -96,7 +96,7 @@ class << self
     # put project on Ruby load path
       project_file = File.expand_path(first_caller_file)
       project_libs = File.dirname(project_file)
-      $LOAD_PATH.unshift project_libs
+      $LOAD_PATH << project_libs unless $LOAD_PATH.include? project_libs
 
     # supply configuration defaults
       project_config[:project] ||= project_symbol.to_s
