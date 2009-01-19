@@ -431,8 +431,8 @@ class << self
 
             # resolve relative URLs into absolute URLs
             # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-            require 'uri'
-            uri = URI.parse(project_module::DOCSITE)
+            require 'addressable/uri'
+            uri = Addressable::URI.parse(project_module::DOCSITE)
             doc_url = uri.to_s
             dir_url = uri.path =~ %r{/$|^$} ? doc_url : File.dirname(doc_url)
 
@@ -636,8 +636,8 @@ class << self
           target = options[:upload_target]
 
           unless target
-            require 'uri'
-            docsite = URI.parse(project_module::DOCSITE)
+            require 'addressable/uri'
+            docsite = Addressable::URI.parse(project_module::DOCSITE)
 
             # provide uploading capability to websites hosted on RubyForge
             if docsite.host.include? '.rubyforge.org'
