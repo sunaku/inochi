@@ -232,6 +232,13 @@ class << self
   #
   #     The default value is "LICENSE".
   #
+  #   [String] :logins_file =>
+  #     Path to the YAML file which contains login
+  #     information for publishing release announcements.
+  #
+  #     The default value is "~/.config/inochi/logins.yaml"
+  #     where "~" is the path to your home directory.
+  #
   #   [String] :rubyforge_project =>
   #     Name of the RubyForge project where
   #     release packages will be published.
@@ -283,6 +290,7 @@ class << self
       options[:rubyforge_section] ||= program_name
       options[:raa_project] ||= program_name
       options[:license_file] ||= 'LICENSE'
+      options[:logins_file] ||= File.join(ENV['HOME'], '.config', 'inochi', 'logins.yaml')
       options[:upload_delete] ||= false
       options[:upload_options] ||= []
 
@@ -645,14 +653,112 @@ class << self
         desc 'Publish all release announcements.'
         task 'pub:ann' => %w[ pub:ann:forge pub:ann:raa ]
 
+        # login information
+          ann_logins_file = options[:logins_file]
+          ann_logins = nil
+
+          task :ann_logins do
+            ann_logins = begin
+              require 'yaml'
+              YAML.load_file ann_logins_file
+            rescue => e
+              warn "Could not read login information from #{ann_logins_file.inspect}:"
+              warn e
+              warn "** You will NOT be able to publish release announcements! **"
+              {}
+            end
+          end
+
         desc 'Announce to RubyForge news.'
-        task 'pub:ann:forge' => [:pub_rubyforge, :ann_text] do
-          # TODO: post only if news item is not already there
-          pub_rubyforge.post_news options[:rubyforge_project], ann_subject, ann_text
+        task 'pub:ann:forge' => :pub_forge do
+          project = options[:rubyforge_project]
+
+          if group_id = pub_forge.autoconfig['group_ids'][project]
+            # check if this release was already announced
+              require 'mechanize'
+              www = WWW::Mechanize.new
+              page = www.get "http://rubyforge.org/news/?group_id=#{group_id}"
+
+              posts = (page/'//a[starts-with(./@href, "/forum/forum.php?forum_id=")]/text()').map {|e| e.to_s.gsub("\302\240", '').strip }
+
+              already_announced = posts.include? ann_subject
+
+            if already_announced
+              warn "This release was already announced to RubyForge news, so I will NOT announce it there again."
+            else
+              # make the announcement
+              Rake::Task[:ann_text].invoke
+              pub_forge.post_news project, ann_subject, ann_text
+
+              puts "Successfully announced to RubyForge news:"
+              puts page.uri
+            end
+          else
+            raise "Could not determine the group_id of the #{project.inspect} RubyForge project.  Run `rubyforge config` and try again."
+          end
+        end
+
+        desc 'Announce to ruby-talk mailing list.'
+        task 'pub:ann:talk' => :ann_logins do
+          host = 'http://ruby-forum.com'
+
+          require 'mechanize'
+          www = WWW::Mechanize.new
+
+          # check if this release was already announced
+          already_announced =
+            begin
+              page = www.get "#{host}/forum/1", :filter => %{"#{ann_subject}"}
+
+              posts = (page/'//div[@class="forum"]//a[starts-with(./@href, "/topic/")]/text()').map {|e| e.to_s.strip }
+              posts.include? ann_subject
+            rescue
+              false
+            end
+
+          if already_announced
+            warn "This release was already announced to the ruby-talk mailing list, so I will NOT announce it there again."
+          else
+            # log in to RubyForum
+            page = www.get "#{host}/user/login"
+            form = page.forms.first
+
+            if login = ann_logins['www.ruby-forum.com']
+              form['name'] = login['user']
+              form['password'] = login['pass']
+            end
+
+            page = form.click_button # use the first submit button
+
+            if (page/'//a[@href="/user/logout"]').empty?
+              warn "Could not log in to RubyForum using the login information in #{ann_logins_file.inspect}, so I can NOT announce this release to the ruby-talk mailing list."
+            else
+              # make the announcement
+              page = www.get "#{host}/topic/new?forum_id=1" # TODO: change 4
+              form = page.forms.first
+
+              Rake::Task[:ann_text].invoke
+              form['post[subject]'] = ann_subject
+              form['post[text]'] = ann_text
+
+              form.checkboxes.first.check # enable email notification
+              page = form.submit
+
+              errors = [page/'//div[@class="error"]/text()'].flatten
+              if errors.empty?
+                puts "Successfully announced to ruby-talk mailing list:"
+                puts page.uri
+              else
+                warn "Could not announce to ruby-talk mailing list:"
+                warn errors.join("\n")
+              end
+            end
+          end
+>>>>>>> bee9355... TEMP SQUASH:lib/inochi/inochi.rb
         end
 
         desc 'Announce to RAA (Ruby Application Archive).'
-        task 'pub:ann:raa' => :ann_nfo_text do
+        task 'pub:ann:raa' => [:ann_nfo_text, :ann_logins] do
           show_page_error = lambda do |page, message|
             raise "#{message}: #{(page/'h2').text} -- #{(page/'p').first.text.strip}"
           end
@@ -666,19 +772,14 @@ class << self
           if form = page.forms[1]
             resource << " (owned by #{form.owner.inspect})"
 
-            form.description_style = 'Pre-formatted'
-            form.description       = ann_nfo_text
-            form.short_description = project_module::TAGLINE
-            form.version           = project_module::VERSION
-            form.url               = project_module::WEBSITE
+            form['description_style'] = 'Pre-formatted'
+            form['description']       = ann_nfo_text
+            form['short_description'] = project_module::TAGLINE
+            form['version']           = project_module::VERSION
+            form['url']               = project_module::WEBSITE
+            form['pass']              = ann_logins['raa.ruby-lang.org']['pass']
 
-            form.pass = options[:raa_password] or begin
-              # ask for password
-              print "Password for #{resource}: "
-              gets.chomp
-            end
-
-            page = agent.submit form
+            page = form.submit
 
             if page.title =~ /error/i
               show_page_error[page, "Could not update #{resource}"]
