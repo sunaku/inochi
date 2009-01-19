@@ -345,7 +345,11 @@ class << self
         doc_man_doc = nil
         task :doc_man_doc => doc_man_src do
           unless doc_man_doc
-            require 'erbook' unless defined? ERBook
+            unless project_symbol == :ERBook
+              gem 'erbook', '~> 6'
+              require 'erbook'
+            end
+
             doc_man_txt = File.read(doc_man_src)
             doc_man_doc = ERBook::Document.new(:xhtml, doc_man_txt, doc_man_src, :unindent => true)
           end
