@@ -48,7 +48,8 @@ class << self
   #   [String] :program =>
   #     Name of the main project executable.
   #
-  #     The default value is the value of the :project parameter in lowercase.
+  #     The default value is the value of the :project parameter
+  #     in lowercase and CamelCase converted into snake_case.
   #
   #   [String] :version =>
   #     Version of the project.
@@ -159,11 +160,12 @@ class << self
   #
   def main project_symbol, *trollop_args, &trollop_config
     program_file = first_caller_file
+    program_home = File.dirname(File.dirname(program_file))
 
     # load the project module
-      program_name = calc_program_name(project_symbol)
+      program_name = File.basename(program_home)
 
-      require File.join(File.dirname(program_file), '..', 'lib', program_name)
+      require File.join(program_home, 'lib', program_name)
       project_module = fetch_project_module(project_symbol)
 
     # parse command-line options
@@ -279,8 +281,11 @@ class << self
   # @yieldparam [Gem::Specification] gem_spec the gem specification
   #
   def rake project_symbol, options = {}, &gem_config
+    program_file = first_caller_file
+    program_home = File.dirname(program_file)
+
     # load the project module
-      program_name = calc_program_name(project_symbol)
+      program_name = File.basename(program_home)
 
       require File.join('lib', program_name)
       project_module = fetch_project_module(project_symbol)
@@ -953,7 +958,7 @@ class << self
   # to this method from within *THIS* file are excluded from the search.
   #
   def first_caller_file
-    caller.each {|s| !s.include? __FILE__ and s =~ /^(.*?):\d+/ and break $1 }
+    File.expand_path caller.each {|s| !s.include? __FILE__ and s =~ /^(.*?):\d+/ and break $1 }
   end
 
   ##
