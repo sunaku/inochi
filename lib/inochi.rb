@@ -6,6 +6,7 @@ Inochi.init :Inochi,
   :tagline => 'Gives life to RubyGems-based software',
   :website => 'http://snk.tuxfamily.org/lib/inochi',
   :require => {
+    'rake'        => '~> 0',
     'rubyforge'   => '~> 1',  # for publishing gems to RubyForge
     'mechanize'   => '~> 0',  # for automating web browsing
     'trollop'     => '~> 1',  # for parsing command-line options
