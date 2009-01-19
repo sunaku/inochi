@@ -606,7 +606,7 @@ class << self
           gem.has_rdoc    = true
 
           unless project_module == Inochi
-            gem.add_dependency 'inochi', Inochi::VERSION
+            gem.add_dependency 'inochi', "~> #{Inochi::VERSION[/^\d+/]}"
           end
 
           project_module::REQUIRE.each_pair do |gem_name, version_reqs|
