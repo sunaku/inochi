@@ -1,0 +1,413 @@
+#!/usr/bin/ruby -w
+#
+# Progress indicators:
+#
+#   create:   A file is being created because it does not exist.
+#
+#   skip:     A file is being skipped because it is already up to date.
+#
+#   update:   A file will be updated because it is out of date.  A text
+#             merging tool (see the "--merger" option) will be launched to
+#             transfer content from the old file (*.old) and the new file
+#             (*.new) to the out of date file.  If a text merging tool is
+#             not specified, then you will have to do the merging by hand.
+#
+# Usage:
+#
+#   inochi [Option...] ModuleName
+#
+
+# command line
+  require File.join(File.dirname(__FILE__), '..', 'lib', 'inochi')
+
+  @options = Inochi.main :Inochi do
+    opt :merger, 'A command that invokes a text merging tool with three arguments: (1) old file, (2) new file, (3) output file.  The command should write the result of merging the old file and the new file to the output file.  The command may only modify the output file; it must NOT modify the old file or the new file.', :type => :string
+  end
+
+# utility logic
+  require 'fileutils'
+  require 'digest/sha1'
+
+  # Notify the user about some action being performed.
+  def notify *args # :nodoc:
+    printf "%8s  %s\n", *args
+  end
+
+  # Writes the given contents to the file at the given path. If the given path
+  # already exists, then a backup is created before invoking the merging tool.
+  def create path, body, merger = @options[:merger]
+    # remove leading space
+    body = body.to_s
+    data = body.strip.gsub(/^#{body[/^[ \t]*(?=\S)/]}/, '') << "\n"
+
+    if File.exist? path
+      old_digest = Digest::SHA1.digest(File.read(path))
+      new_digest = Digest::SHA1.digest(data)
+
+      if old_digest == new_digest
+        notify :skip, path
+      else
+        notify :update, path
+        cur, old, new = path, "#{path}.old", "#{path}.new"
+
+        FileUtils.cp cur, old, :preserve => true
+        File.write new, data
+
+        system merger, old, new, cur if merger
+      end
+    else
+      notify :create, path
+      FileUtils.mkdir_p File.dirname(path)
+      File.write path, data
+    end
+  end
+
+# program body
+  target = ARGV.shift or
+    raise ArgumentError, "Project was not specified.  Run `#{$0} -h` for help."
+
+  project = Inochi.calc_project_symbol(target)
+  program = Inochi.calc_program_name(project)
+  version = '0.0.0'
+  release = Time.now.strftime('%F')
+
+  preamble = %{
+    require 'rubygems'
+    gem '#{Inochi::PROGRAM}', '~> #{Inochi::VERSION[/^\d+/]}'
+    require '#{Inochi::PROGRAM}'
+  }.strip
+
+  create "#{program}/LICENSE", %{
+    Copyright #{Time.now.year} Your Name <your@email.here>
+
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  }
+
+  create "#{program}/Rakefile", %{
+    #{preamble}
+
+    Inochi.rake #{project.inspect} do |gem|
+      # TODO: additional gem configuration.
+      # NOTE: this is completely optional!
+      #
+      # gem.extensions = ['foo.so']
+      # gem.files += ['other', 'files']
+    end
+  }
+
+  bin_file = "#{program}/bin/#{program}"
+  create bin_file, %{
+    #!/usr/bin/ruby -w
+    #
+    # TODO: Explain the command-line usage of this program here.
+    #
+    # Usage:
+    #
+    #   #{program} [Option...] Arg1 Arg2 Arg3...
+    #
+
+    #{preamble}
+
+    options = Inochi.main #{project.inspect} do
+      # TODO: define command-line options here.
+      #       see http://trollop.rubyforge.org/
+      #
+      # NOTE: this is completely optional!
+    end
+
+    # TODO: add the body of your program here
+
+    puts "Command-line options:   \#{options.inspect}"
+    puts "Command-line arguments: \#{ARGV.inspect}"
+  }
+  FileUtils.chmod 0755, bin_file
+
+  create "#{program}/lib/#{program}.rb", %{
+    #{preamble}
+
+    Inochi.init #{project.inspect},
+      :project => '#{target}',
+      :version => '#{version}',
+      :release => '#{release}',
+      :website => 'http://#{program}.rubyforge.org',
+      :tagline => 'TODO: put a single line description of your project here.',
+      :require => {
+        # TODO: list gems required by your project here.
+        # NOTE: this is completely optional!
+        #
+        # example: if your project needs version 9.9.9 of the 'foo' gem:
+        # 'foo' => '9.9.9',
+        #
+        # example: if any version of a gem is acceptable then:
+        # 'foo' => nil,
+      }
+  }
+
+  create "#{program}/doc/index.erb", %{
+    <% Inochi.book #{project.inspect}, self %>
+
+    <%# include intro.erb #%>
+    <%# include setup.erb #%>
+    <%# include theory.erb #%>
+    <%# include usage.erb #%>
+    <%# include history.erb #%>
+  }
+
+  create "#{program}/doc/intro.erb", %{
+    <% chapter "Introduction" do %>
+      <% project_summary do %>
+        > TODO: explain the purpose of your project
+
+        ****<%= $project %>**** is a __________ that __________.
+      <% end %>
+
+      > TODO: explain why your project is important
+
+      **<%= $project %>** is exciting because:
+      * It lets you __________.
+      * Its core contains less than __________ lines of code.
+      * It __________.
+
+      > TODO: explain why your project is better than its competitors
+
+      These features distinguish **<%= $project %>** from the competition:
+      * [competitor 1](http://)
+      * [competitor 2](http://)
+      * [competitor 3](http://)
+
+      <% paragraph "Etymology" do %>
+        > TODO: explain the meaning of the name of your project
+      <% end %>
+
+      <% section "Logistics" do %>
+        * <%= xref "History", "Release notes" %> --- history of project releases.
+        * [Source code](http://github.com/#{ENV['USER']}/<%= $program %>) --- obtain via [Git](http://git.or.cz) or browse online.
+        * [API reference](api/index.html) --- documentation for source code.
+
+        To get help or provide feedback, simply
+        <%= xref "License", "contact the author(s)" %>.
+
+        <% paragraph "Version numbers" do %>
+          **<%= $project %>** releases are numbered in *major.minor.patch*
+          form according to the [RubyGems rational versioning
+          policy](http://www.rubygems.org/read/chapter/7), which
+          can be summarized thus:
+
+          <table markdown="1">
+            <thead>
+              <tr>
+                <td rowspan="2">What increased in the version number?</td>
+                <td colspan="3">The increase indicates that the release:</td>
+              </tr>
+              <tr>
+                <th>Is backward compatible?</th>
+                <th>Has new features?</th>
+                <th>Has bug fixes?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>major</th>
+                <td style="background-color: #FFE4E1;">No</td>
+                <td>Yes</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th>minor</th>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <th>patch</th>
+                <td>Yes</td>
+                <td style="background-color: #FFE4E1;">No</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        <% end %>
+      <% end %>
+
+      <% section "License" do %>
+        <%# include ../LICENSE #%>
+      <% end %>
+
+      <% section "Credits" do %>
+        > TODO: give attribution to your predecessors and contributors
+      <% end %>
+    <% end %>
+  }
+
+  create "#{program}/doc/setup.erb", %{
+    <% chapter "Setup" do %>
+      <% section "Requirements" do %>
+        Your system needs the following software to run **<%= $project %>**.
+
+        | Software                        | Description               | Notes                               |
+        | --------                        | -----------               | -----                               |
+        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required. |
+        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{`gem --version`.chomp} is required. |
+      <% end %>
+
+      <% section "Installation" do %>
+        You can install **<%= $project %>** by running this command:
+
+            gem install <%= $program %>
+
+        To check whether the installation was sucessful, run this command:
+
+            <%= $program %> --version
+
+        If the installation was successful, you will see output like this:
+
+        <pre><%= verbatim `ruby bin/\#{$program} --version` %></pre>
+
+        If you do not see such output, you may
+        <%= xref "License", "ask the author(s)" %> for help.
+      <% end %>
+
+      <% section "Manifest" do %>
+        You will see the following items inside **<%= $project %>**'s installation
+        directory, whose path you can determine by running this command:
+
+            <%= $program %> --version
+
+        > TODO: list important files your project provides here
+
+        * <tt>bin/</tt>
+
+          * <tt><%= $program %></tt> --- the main **<%= $project %>** executable.
+
+        * <tt>lib/</tt>
+
+          * <tt><%= $program %>.rb</tt> --- the main **<%= $project %>** library.
+
+          * <tt><%= $program %>/</tt>
+
+            > TODO: list sub-libraries your project provides here
+
+        * <tt>doc/</tt>
+
+          * <tt>api/</tt> --- API reference documentation.
+
+          * <tt>index.erb</tt> --- source of this user manual.
+
+        * <tt>LICENSE</tt> --- copyright notice and legal conditions.
+      <% end %>
+    <% end %>
+  }
+
+  create "#{program}/doc/theory.erb", %{
+    <% chapter "Theory of operation" do %>
+      > TODO: explain how your project does what it does
+    <% end %>
+  }
+
+  create "#{program}/doc/usage.erb", %{
+    <% chapter "Usage" do %>
+      <% section "Command-line interface" do %>
+        When you run this command:
+
+            <%= $program %> --help
+
+        You will see this output:
+
+        <pre><%= verbatim `ruby bin/\#{$program} --help` %></pre>
+
+        > TODO: explain the command-line arguments
+      <% end %>
+
+      <% section "Ruby library interface" do %>
+        > TODO: explain how to use your project's Ruby library
+        >       from inside another Ruby program or library
+      <% end %>
+
+      <% section "Tutorial" do %>
+        This tutorial shows how **<%= $project %>** is used to __________.
+
+        > TODO: give examples for doing common tasks
+      <% end %>
+
+      > TODO: explain how to do more (advanced) things
+    <% end %>
+  }
+
+  create "#{program}/doc/history.erb", %{
+    <% chapter "History" do %>
+      > TODO: put a brief history about your project here
+
+      <% project_history do %>
+        > TODO: put release notes for your project
+        >       here -- newest first, oldest last.
+
+        <% section "Version #{version} (#{release})" do %>
+          > TODO: write a short summary of the changes in this release
+
+          This release changes __________, adds __________, and fixes __________.
+
+          <% paragraph "Contributor kudos" do %>
+            > TODO: list everyone who contributed to this
+            >       release and what their contribution was
+
+            * __________ contributed __________ which __________.
+
+            * __________ fixed __________ which __________.
+
+            * __________ added __________ which __________.
+          <% end %>
+
+          <% paragraph "Incompatible changes" do %>
+            > TODO: list all backward-incompatible changes in this release
+
+            * __________ has been __________ to __________.
+
+            * __________.
+
+            * __________.
+          <% end %>
+
+          <% paragraph "New features" do %>
+            > TODO: list new features added in this release
+
+            * __________.
+
+            * __________.
+
+            * __________.
+          <% end %>
+
+          <% paragraph "Bug fixes" do %>
+            > TODO: describe all bugs that are fixed in this release
+
+            * __________ was __________.
+
+            * __________ were __________.
+
+            * __________ did __________.
+          <% end %>
+
+          <% paragraph "Housekeeping" do %>
+            > TODO: list the refactorings, clean ups, and other
+            >       improvements that were done for this release
+
+            * __________.
+
+            * __________.
+
+            * __________.
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  }
