@@ -244,18 +244,6 @@ class << self
   #
   #     The default value is an empty array.
   #
-  #   [String] :summary_node_id =>
-  #     ID of a node in the user manual which
-  #     contains a brief introduction to the project.
-  #
-  #     The default value is "summary".
-  #
-  #   [String] :history_node_id =>
-  #     ID of a node in the user manual which contains child nodes that
-  #     respectively contain release notes for a particular release.
-  #
-  #     The default value is "history".
-  #
   # @param gem_config
   #   Block that is passed to Gem::specification.new()
   #   for additonal gem configuration.
@@ -273,8 +261,6 @@ class << self
       options[:rubyforge_project] ||= program_name
       options[:rubyforge_section] ||= program_name
       options[:raa_project] ||= program_name
-      options[:summary_node_id] ||= 'summary'
-      options[:history_node_id] ||= 'history'
       options[:license_file] ||= 'LICENSE'
       options[:upload_delete] ||= false
       options[:upload_options] ||= []
@@ -352,24 +338,21 @@ class << self
       # fetch the project summary from user manual
         ann_nfo_doc = nil
         task :ann_nfo_doc => :doc_man_doc do
-          ann_nfo_doc = doc_man_doc.nodes.
-            find {|n| n.id == options[:summary_node_id] }
+          ann_nfo_doc = $project_summary_node
         end
 
       # fetch release notes from user manual
         ann_rel_doc = nil
         task :ann_rel_doc => :doc_man_doc do
           unless ann_rel_doc
-            history_node_id = options[:history_node_id]
-
-            if history_node = doc_man_doc.nodes.find {|n| n.id == history_node_id }
-              if release_node = history_node.children.first
-                ann_rel_doc = release_node
+            if parent = $project_history_node
+              if child = parent.children.first
+                ann_rel_doc = child
               else
-                raise "The #{history_node.inspect} node in the user manual has no child nodes."
+                raise 'The "project_history" node in the user manual lacks child nodes.'
               end
             else
-              raise "There is no #{history_node_id.inspect} node in the user manual."
+              raise 'The user manual lacks a "project_history" node.'
             end
           end
         end
@@ -708,10 +691,37 @@ class << self
   ##
   # Provides a common configuration for the project's user manual:
   #
-  # It is assumed that this method is called
-  # from within the Inochi.rake environment.
+  # * Assigns the title, subtitle, date, and authors for the document.
   #
-  def book project_symbol
+  #   You may override these assignments by reassigning these
+  #   document parameters AFTER this method is invoked.
+  #
+  #   Refer to the "document parameters" for the XHTML
+  #   format in the "erbook" user manual for details.
+  #
+  # * Provides the project's configuration as global variables in the document.
+  #
+  #   For example, <%= $version %> is the same as
+  #   <%= project_module::VERSION %> in the document.
+  #
+  # * Defines a "project_summary" node for use in the document.  The body
+  #   of this node should contain a brief introduction to the project.
+  #
+  # * Defines a "project_history" node for use in the document.  The body
+  #   of this node should contain other nodes, each of which represent a
+  #   single set of release notes for one of the project's releases.
+  #
+  # It is assumed that this method is called
+  # from within the Inochi.rake() environment.
+  #
+  # @param [Symbol] project_symbol
+  #   Name of the Ruby constant which serves
+  #   as a namespace for the entire project.
+  #
+  # @param [ERBook::Document::Template] book_template
+  #   The eRuby template which serves as the documentation for the project.
+  #
+  def book project_symbol, book_template
     project_module = fetch_project_module(project_symbol)
 
     # provide project constants as global variables to the user manual
@@ -731,6 +741,24 @@ class << self
         [name, addr]
       end.flatten
     ]
+
+    class << book_template
+      def project_summary
+        raise ArgumentError, 'block must be given' unless block_given?
+        node do
+          $project_summary_node = @nodes.last
+          yield
+        end
+      end
+
+      def project_history
+        raise ArgumentError, 'block must be given' unless block_given?
+        node do
+          $project_history_node = @nodes.last
+          yield
+        end
+      end
+    end
   end
 
   private
