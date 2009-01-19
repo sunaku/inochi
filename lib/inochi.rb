@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'inochi', 'inochi')
+require File.join(File.dirname(File.expand_path(__FILE__)), 'inochi', 'inochi')
 
 Inochi.init :Inochi,
   :version => '0.0.0',
