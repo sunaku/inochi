@@ -146,6 +146,9 @@ class << self
   # * A list of command-line options is displayed at
   #   the bottom of the program's help information.
   #
+  # It is assumed that this method is invoked from only within
+  # the main project executable (in the project bin/ directory).
+  #
   # @param [Symbol] project_symbol
   #   Name of the Ruby constant which serves
   #   as a namespace for the entire project.
@@ -160,11 +163,10 @@ class << self
   #
   def main project_symbol, *trollop_args, &trollop_config
     program_file = first_caller_file
+    program_name = File.basename(program_file)
     program_home = File.dirname(File.dirname(program_file))
 
     # load the project module
-      program_name = File.basename(program_home)
-
       require File.join(program_home, 'lib', program_name)
       project_module = fetch_project_module(project_symbol)
 
