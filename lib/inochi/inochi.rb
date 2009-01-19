@@ -126,6 +126,23 @@ class << self
     # make configuration parameters available as constants
       project_config[:inochi] = project_config
 
+      class << project_config[:version]
+        # Returns the major number in this version.
+        def major
+          to_s[/^\d+/]
+        end
+
+        # Returns a string describing any version with the current major number.
+        def series
+          "#{major}.x.x"
+        end
+
+        # Returns a Gem::Requirement expression.
+        def requirement
+          "~> #{major}"
+        end
+      end
+
       project_config.each_pair do |param, value|
         project_module.const_set param.to_s.upcase, value
       end
@@ -606,7 +623,7 @@ class << self
           gem.has_rdoc    = true
 
           unless project_module == Inochi
-            gem.add_dependency 'inochi', "~> #{Inochi::VERSION[/^\d+/]}"
+            gem.add_dependency 'inochi', Inochi::VERSION.requirement
           end
 
           project_module::REQUIRE.each_pair do |gem_name, version_reqs|

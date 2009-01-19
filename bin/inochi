@@ -73,7 +73,7 @@
 
   preamble = %{
     require 'rubygems'
-    gem '#{Inochi::PROGRAM}', '~> #{Inochi::VERSION[/^\d+/]}'
+    gem '#{Inochi::PROGRAM}', '#{Inochi::VERSION.requirement}'
     require '#{Inochi::PROGRAM}'
   }.strip
 
