@@ -312,11 +312,11 @@ class << self
     # supply default options
       options[:rubyforge_project] ||= program_name
       options[:rubyforge_section] ||= program_name
-      options[:raa_project] ||= program_name
-      options[:license_file] ||= 'LICENSE'
-      options[:logins_file] ||= File.join(ENV['HOME'], '.config', 'inochi', 'logins.yaml')
-      options[:upload_delete] ||= false
-      options[:upload_options] ||= []
+      options[:raa_project]       ||= program_name
+      options[:license_file]      ||= 'LICENSE'
+      options[:logins_file]       ||= File.join(ENV['HOME'], '.config', 'inochi', 'logins.yaml')
+      options[:upload_delete]     ||= false
+      options[:upload_options]    ||= []
 
     # add AUTHORS constant to the project module
       unless project_module.const_defined? :AUTHORS

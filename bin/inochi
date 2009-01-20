@@ -168,7 +168,7 @@
       <% project_summary do %>
         > TODO: explain the purpose of your project
 
-        ****<%= $project %>**** is a __________ that __________.
+        **<%= $project %>** is a __________ that __________.
       <% end %>
 
       > TODO: explain why your project is important
@@ -254,9 +254,9 @@
       <% section "Requirements" do %>
         Your system needs the following software to run **<%= $project %>**.
 
-        | Software                        | Description               | Notes                               |
-        | --------                        | -----------               | -----                               |
-        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required. |
+        | Software                        | Description               | Notes                                        |
+        | --------                        | -----------               | -----                                        |
+        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required.         |
         | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} is required. |
       <% end %>
 

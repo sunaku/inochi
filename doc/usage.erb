@@ -24,7 +24,7 @@
               output_file=$1
               shift
 
-              kdiff3 --auto "$old_file" "$new_file" --output "$output_file"
+              kdiff3 --merge "$old_file" "$new_file" --output "$output_file"
 
       2.  Make the file executable:
 
@@ -120,47 +120,60 @@
         <% cd "word_count" %>
         </pre>
 
-        View the available Rake tasks:
+        <% paragraph "View Rake tasks" do %>
+          <pre>
+          # rake -T
+          <%= verbatim `rake -T` %>
+          </pre>
+        <% end %>
 
-        <pre>
-        # rake -T
-        <%= verbatim `rake -T` %>
-        </pre>
+        <% paragraph "Run unit tests" do %>
+          <pre>
+          # rake test
+          <%= verbatim `rake test` %>
+          </pre>
+        <% end %>
 
-        Try the main project executable:
+        <% paragraph "Run project executable" do %>
+          <pre>
+          <% command = main_executable %>
+          # ruby <%= command %>
+          <%= verbatim `ruby #{command}` %>
+          </pre>
 
-        <pre>
-        <% command = main_executable %>
-        # ruby <%= command %>
-        <%= verbatim `ruby #{command}` %>
-        </pre>
+          See usage information:
 
-        See usage information:
+          <pre>
+          <% command = "#{main_executable} --help" %>
+          # ruby <%= command %>
+          <%= verbatim `ruby #{command}` %>
+          </pre>
 
-        <pre>
-        <% command = "#{main_executable} --help" %>
-        # ruby <%= command %>
-        <%= verbatim `ruby #{command}` %>
-        </pre>
+          See project & version information:
 
-        See project & version information:
+          <pre>
+          <% command = "#{main_executable} --version" %>
+          # ruby <%= command %>
+          <%= verbatim `ruby #{command}` %>
+          </pre>
+        <% end %>
 
-        <pre>
-        <% command = "#{main_executable} --version" %>
-        # ruby <%= command %>
-        <%= verbatim `ruby #{command}` %>
-        </pre>
+        <% paragraph "Show user manual" do %>
+          Build the user manual (please disregard any "unclosed span" warnings):
 
-        See the user manual:
+          <pre>
+          # rake doc:man
+          </pre>
 
-        <pre>
-        # rake doc:man 2>/dev/null
+          Launch the user manual:
 
-        <% command = "#{main_executable} --manual" %>
-        # ruby <%= command %>
-        </pre>
+          <pre>
+          <% command = "#{main_executable} --manual" %>
+          # ruby <%= command %>
+          </pre>
 
-        The manual will now appear in your default web browser.
+          The manual will now appear in your default web browser.
+        <% end %>
       <% end %>
 
       <% section "Configure your project" do %>
