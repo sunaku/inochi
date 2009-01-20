@@ -257,7 +257,7 @@
         | Software                        | Description               | Notes                               |
         | --------                        | -----------               | -----                               |
         | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required. |
-        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{`gem --version`.chomp} is required. |
+        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} is required. |
       <% end %>
 
       <% section "Installation" do %>
