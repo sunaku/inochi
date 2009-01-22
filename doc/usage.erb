@@ -237,7 +237,7 @@
       <% end %>
 
       <% section "Implement your project" do %>
-        Add the following code to the bottom of the main project library:
+        Add the following code to the bottom of <tt>lib/word_count.rb</tt>, the main project library:
 
         <code>
         module WordCount
@@ -248,12 +248,45 @@
         end
         </code>
 
-        Add the following code to the bottom of the main project executable:
+        Add the following code to the bottom of <tt>bin/word_count</tt>, the main project executable:
 
         <code>
         input = ARGF.read
         total = WordCount.count(input)
         puts "There are #{total} words in the input."
+        </code>
+
+        Add the following code to the bottom of <tt>test/word_count.rb</tt>, a unit test for the main project library:
+
+        <code>
+        describe WordCount do
+          it 'handles empty input' do
+            WordCount.count(nil).must_equal(0)
+            WordCount.count('').must_equal(0)
+            WordCount.count(' ').must_equal(0)
+          end
+
+          it 'handles single words' do
+            WordCount.count('a').must_equal(1)
+            WordCount.count('foo').must_equal(1)
+            WordCount.count('bar').must_equal(1)
+          end
+
+          it 'handles multiple words' do
+            WordCount.count('a b').must_equal(2)
+            WordCount.count('a-b').must_equal(2)
+            WordCount.count('a/b').must_equal(2)
+          end
+
+          it 'ignores punctuation and space' do
+            WordCount.count('!').must_equal(0)
+            WordCount.count('! @ # % #!@#').must_equal(0)
+            WordCount.count(' !').must_equal(0)
+            WordCount.count('! ').must_equal(0)
+            WordCount.count(' ! ').must_equal(0)
+            WordCount.count('   !   ').must_equal(0)
+          end
+        end
         </code>
 
         <% paragraph "Goodbye `$LOAD_PATH`, hello `require()`" do %>
@@ -274,9 +307,41 @@
       <% end %>
 
       <% section "Test your project" do %>
-        > TODO: show how to write a unit test for the code
+        To reduce the amount of code you have to write, **<%= $project %>** defines the following convention for unit tests.
 
-        > TODO: integrate minitest tasks into Inochi.rake()
+        <% paragraph "Units and tests" do %>
+          Every Ruby source file in your project's <tt>lib/</tt> directory is considered to be a **unit**.  Likewise, every Ruby source file in your project's <tt>test/</tt> is considered to be a **test**.
+
+          As a result, your project's <tt>test/</tt> directory structure *mirrors* the structure of your project's <tt>lib/</tt> directory.  For example, if your project has a <tt>lib/foo/bar.rb</tt> unit, then <tt>test/foo/bar.rb</tt> would be its the corresponding test.
+        <% end %>
+
+        <% paragraph "Test execution" do %>
+          <pre>rake test</pre>
+
+          The above command begins the testing process, during which:
+
+          * Tests which lack corresponding units are *skipped* and not executed.  A message specifying which test file was skipped is printed to the standard error stream whenever this occurs.
+
+          * Before a test is executed, its corresponding unit is automatically loaded into the Ruby environment using `require()`.
+
+          As for the details of test execution:
+
+          * Tests are executed by the [minitest] library, which allows you to write unit tests in a combination of styles: traditional TDD, modern BDD, alternative rSpec BDD, and mock-based validation styles.
+
+          * Within each test, test cases are executed in random order.  This is the default behavior of the [minitest] library.
+
+          [minitest]: http://rubyforge.org/projects/bfts/
+        <% end %>
+
+        <% paragraph "Helper libraries" do %>
+          Your project's main directory is added to Ruby's load path.  So if your tests have helper libraries stored in your project's <tt>test/</tt> directory, you can load them into your tests by adding a "test/" prefix.
+
+          For example, if your <tt>test/foo/bar.rb</tt> test has a <tt>test/foo/qux.rb</tt> helper library, then you would write the following code inside the test to load the helper library:
+
+          <code>
+          require 'test/foo/qux'
+          </code>
+        <% end %>
       <% end %>
 
       <% section "Publish your project" do %>

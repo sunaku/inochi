@@ -186,6 +186,21 @@
       }
   }
 
+  create "#{program_name}/test/#{program_name}.rb", %{
+    describe #{project_symbol} do
+      it 'has inochi' do
+        assert #{project_symbol}.const_defined? :INOCHI
+
+        #{project_symbol}::INOCHI.each do |param, value|
+          const = param.to_s.upcase
+
+          assert #{project_symbol}.const_defined? const
+          #{project_symbol}.const_get(const).must_equal value
+        end
+      end
+    end
+  }
+
   create "#{program_name}/doc/index.erb", %{
     <% Inochi.book #{project_symbol.inspect}, self %>
 

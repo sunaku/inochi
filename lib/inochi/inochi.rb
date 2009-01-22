@@ -305,8 +305,9 @@ class << self
 
     # load the project module
       program_name = File.basename(program_home)
+      project_libs = File.join('lib', program_name)
 
-      require File.join('lib', program_name)
+      require project_libs
       project_module = fetch_project_module(project_symbol)
 
     # supply default options
@@ -334,6 +335,38 @@ class << self
     hide_rake_task = lambda do |name|
       Rake::Task[name].instance_variable_set :@comment, nil
     end
+
+    # testing
+      desc 'Run all unit tests.'
+      task :test do
+        ruby '-w', '-I.', '-Ilib', '-r', program_name, '-e', %q{
+          # set title of test suite
+          $0 = File.basename(Dir.pwd)
+
+          require 'minitest/unit'
+          require 'minitest/spec'
+          require 'minitest/mock'
+          MiniTest::Unit.autorun
+
+          Dir['test/**/*.rb'].sort.each do |test|
+            unit = test.sub('test/', 'lib/')
+
+            if File.exist? unit
+              # strip file extension because require()
+              # does not normalize its input and it
+              # will think that the two paths (with &
+              # without file extension) are different
+              unit_path = unit.sub(/\.rb$/, '').sub('lib/', '')
+              test_path = test.sub(/\.rb$/, '')
+
+              require unit_path
+              require test_path
+            else
+              warn "Skipped test #{test.inspect} because it lacks a corresponding #{unit.inspect} unit."
+            end
+          end
+        }
+      end
 
     # documentation
       desc 'Build all documentation.'
