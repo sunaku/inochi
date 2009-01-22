@@ -1,6 +1,12 @@
 #!/usr/bin/ruby -w
 #
-# Progress indicators:
+# Generates a project scaffold using the given information.
+#
+# Existing files are backed up and NOT overwritten.  It is your
+# responsibility to merge changes between the existing files and
+# the newly generated files.  See the --merge option for details.
+#
+# This tool announces its progress as it runs, using these indicators:
 #
 #   create:   A file is being created because it does not exist.
 #
@@ -14,7 +20,19 @@
 #
 # Usage:
 #
-#   inochi [Option...] ModuleName
+#   inochi [Options] ProjectName [ProgramName]
+#
+#
+#   ProjectName:  Name of your project, which will be normalized
+#                 into the naame of a Ruby module that will serve
+#                 as a namespace for all code in your project.
+#
+#   ProgramName:  (Optional) Name of the main project executable,
+#                 which also serves as the name of the generated
+#                 project directory and the main project library.
+#
+#
+# Options:
 #
 
 # command line
@@ -63,21 +81,25 @@
   end
 
 # program body
-  target = ARGV.shift or
-    raise ArgumentError, "Project was not specified.  Run `#{$0} -h` for help."
+  project_name, program_name = ARGV
 
-  project = Inochi.calc_project_symbol(target)
-  program = Inochi.calc_program_name(project)
-  version = '0.0.0'
-  release = Time.now.strftime('%F')
+  unless project_name
+    raise ArgumentError, "ProjectName must be given.  Run `#{$0} -h` for help."
+  end
 
-  preamble = %{
+  project_symbol = Inochi.calc_project_symbol(project_name)
+  program_name ||= Inochi.calc_program_name(project_symbol)
+
+  project_version = '0.0.0'
+  project_release = Time.now.strftime('%F')
+
+  inochi_preamble = %{
     require 'rubygems'
     gem '#{Inochi::PROGRAM}', '#{Inochi::VERSION.requirement}'
     require '#{Inochi::PROGRAM}'
   }.strip
 
-  create "#{program}/LICENSE", %{
+  create "#{program_name}/LICENSE", %{
     Copyright #{Time.now.year} Your Name <your@email.here>
 
     Permission to use, copy, modify, and/or distribute this software for any
@@ -93,10 +115,10 @@
     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   }
 
-  create "#{program}/Rakefile", %{
-    #{preamble}
+  create "#{program_name}/Rakefile", %{
+    #{inochi_preamble}
 
-    Inochi.rake #{project.inspect} do |gem|
+    Inochi.rake #{project_symbol.inspect} do |gem|
       # TODO: additional gem configuration.
       # NOTE: this is completely optional!
       #
@@ -105,20 +127,31 @@
     end
   }
 
-  bin_file = "#{program}/bin/#{program}"
+  bin_file = "#{program_name}/bin/#{program_name}"
   create bin_file, %{
     #!/usr/bin/ruby -w
     #
     # TODO: Explain the command-line usage of this program here.
     #
+    #
     # Usage:
     #
-    #   #{program} [Option...] Arg1 Arg2 Arg3...
+    #   #{program_name} [Options] Param1 Param2 Param3...
+    #
+    #
+    #   Param1:   Description for the first parameter.
+    #
+    #   Param2:   Description for the second parameter.
+    #
+    #   Param3:   Description for the third parameter.
+    #
+    #
+    # Options:
     #
 
-    #{preamble}
+    #{inochi_preamble}
 
-    options = Inochi.main #{project.inspect} do
+    options = Inochi.main #{project_symbol.inspect} do
       # TODO: define command-line options here.
       #       see http://trollop.rubyforge.org/
       #
@@ -132,14 +165,14 @@
   }
   FileUtils.chmod 0755, bin_file
 
-  create "#{program}/lib/#{program}.rb", %{
-    #{preamble}
+  create "#{program_name}/lib/#{program_name}.rb", %{
+    #{inochi_preamble}
 
-    Inochi.init #{project.inspect},
-      :project => '#{target}',
-      :version => '#{version}',
-      :release => '#{release}',
-      :website => 'http://#{program}.rubyforge.org',
+    Inochi.init #{project_symbol.inspect},
+      :project => '#{project_name}',
+      :version => '#{project_version}',
+      :release => '#{project_release}',
+      :website => 'http://#{program_name}.rubyforge.org',
       :tagline => 'TODO: put a single line description of your project here.',
       :require => {
         # TODO: list gems required by your project here.
@@ -153,8 +186,8 @@
       }
   }
 
-  create "#{program}/doc/index.erb", %{
-    <% Inochi.book #{project.inspect}, self %>
+  create "#{program_name}/doc/index.erb", %{
+    <% Inochi.book #{project_symbol.inspect}, self %>
 
     <%# include intro.erb #%>
     <%# include setup.erb #%>
@@ -163,7 +196,7 @@
     <%# include history.erb #%>
   }
 
-  create "#{program}/doc/intro.erb", %{
+  create "#{program_name}/doc/intro.erb", %{
     <% chapter "Introduction" do %>
       <% project_summary do %>
         > TODO: explain the purpose of your project
@@ -249,7 +282,7 @@
     <% end %>
   }
 
-  create "#{program}/doc/setup.erb", %{
+  create "#{program_name}/doc/setup.erb", %{
     <% chapter "Setup" do %>
       <% section "Requirements" do %>
         Your system needs the following software to run **<%= $project %>**.
@@ -308,13 +341,13 @@
     <% end %>
   }
 
-  create "#{program}/doc/theory.erb", %{
+  create "#{program_name}/doc/theory.erb", %{
     <% chapter "Theory of operation" do %>
       > TODO: explain how your project does what it does
     <% end %>
   }
 
-  create "#{program}/doc/usage.erb", %{
+  create "#{program_name}/doc/usage.erb", %{
     <% chapter "Usage" do %>
       <% section "Command-line interface" do %>
         When you run this command:
@@ -323,7 +356,7 @@
 
         You will see this output:
 
-        <pre><%= verbatim `ruby bin/\#{$program} --help` %></pre>
+        <pre><%= verbatim `ruby bin/\#{$program_name} --help` %></pre>
 
         > TODO: explain the command-line arguments
       <% end %>
@@ -343,7 +376,7 @@
     <% end %>
   }
 
-  create "#{program}/doc/history.erb", %{
+  create "#{program_name}/doc/history.erb", %{
     <% chapter "History" do %>
       > TODO: put a brief history about your project here
 
@@ -351,7 +384,7 @@
         > TODO: put release notes for your project
         >       here -- newest first, oldest last.
 
-        <% section "Version #{version} (#{release})" do %>
+        <% section "Version #{project_version} (#{project_release})" do %>
           > TODO: write a short summary of the changes in this release
 
           This release changes __________, adds __________, and fixes __________.
