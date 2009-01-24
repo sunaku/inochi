@@ -436,9 +436,9 @@ class << self
             File.delete tmp_file
           end
 
-          # improve readability of list items that span multiple
-          # lines by adding a blank line between such items
-          text.gsub! %r{^( *[^\*\s].*)(\r?\n)( *\* \S)}, '\1\2\2\3'
+          # improve readability of list items
+          # by adding a blank line between them
+          text.gsub! %r{(\r?\n)( +\* \S)}, '\1\1\2'
 
           text
         end
