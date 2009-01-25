@@ -100,6 +100,8 @@
   }.strip
 
   create "#{program_name}/LICENSE", %{
+    (the ISC license)
+
     Copyright #{Time.now.year} Your Name <your@email.here>
 
     Permission to use, copy, modify, and/or distribute this software for any
