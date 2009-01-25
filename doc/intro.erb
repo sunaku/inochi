@@ -1,6 +1,6 @@
 <% chapter "Introduction" do %>
   <% project_summary do %>
-    **<%= $project %>** is an infrastructure for [RubyGems](http://www.rubygems.org)-based software projects that encourages good documentation, reduces programming effort, and automates common tasks.
+    **<%= $project %>** is an infrastructure for [RubyGems](http://www.rubygems.org)-based software projects that encourages good documentation and reduces programming effort by automating common tasks.
   <% end %>
 
   **<%= $project %>** is exciting because:
@@ -27,26 +27,16 @@
   * [GemMake](https://simonmenke.github.com/gm/)
   * [SimpleGem](http://github.com/reagent/simple-gem/tree/master)
 
-  <!--
-      Say goodbye to the days of manually requiring libraries:
-
-        require File.join(File.dirname(__FILE__), 'project', 'library')
-
-      With **<%= $project %>** you can require any library in your project:
-
-        require 'project/library'
-  -->
-
   <% paragraph "Etymology" do %>
     In the past, software development was thought to be like mathematical modeling or building construction:  the assembly of inanimate objects.  Nowadays, it is thought to be more like gardening: the cultivation of life!
 
     In this manner, I consider this project not as a generator of skeletons or as a builder of scaffolds, but as a *giver of life*.  That is why I named this project "inochi", the Japanese word for *life*.
 
-    Happy gardening!
+    Happy cultivation!
   <% end %>
 
   <% section "Logistics" do %>
-    * <%= xref "history", "Release notes" %> --- history of project releases.
+    * <%= xref "History", "Release notes" %> --- history of project releases.
     * [Source code](http://github.com/sunaku/<%= $program %>) --- obtain via [Git](http://git.or.cz) or browse online.
     * [API reference](api/index.html) --- documentation for source code.
     * [Project home](<%= $website %>) --- the **<%= $project %>** project home page.

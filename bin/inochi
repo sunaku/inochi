@@ -3,8 +3,8 @@
 # Generates a project scaffold using the given information.
 #
 # Existing files are backed up and NOT overwritten.  It is your
-# responsibility to merge changes between the existing files and
-# the newly generated files.  See the --merge option for details.
+# responsibility to merge changes (see the --merger option)
+# between the existing files and the newly generated files.
 #
 # This tool announces its progress as it runs, using these indicators:
 #
@@ -12,8 +12,8 @@
 #
 #   skip:     A file is being skipped because it is already up to date.
 #
-#   update:   A file will be updated because it is out of date.  A text
-#             merging tool (see the "--merger" option) will be launched to
+#   update:   A file is being updated because it is out of date.  A text
+#             merging tool (see the --merger option) will be launched to
 #             transfer content from the old file (*.old) and the new file
 #             (*.new) to the out of date file.  If a text merging tool is
 #             not specified, then you will have to do the merging by hand.
@@ -39,7 +39,7 @@
   require File.join(File.dirname(__FILE__), '..', 'lib', 'inochi')
 
   @options = Inochi.main :Inochi do
-    opt :merger, 'A command that invokes a text merging tool with three arguments: (1) old file, (2) new file, (3) output file.  The command should write the result of merging the old file and the new file to the output file.  The command may only modify the output file; it must NOT modify the old file or the new file.', :type => :string
+    opt :merger, 'A command that invokes a text merging tool with three arguments: (1) old file, (2) new file, (3) output file.  The command should direct the result of merging the old file and the new file to the output file.  In addition, the command *must not* modify the old file or the new file.', :type => :string
   end
 
 # utility logic

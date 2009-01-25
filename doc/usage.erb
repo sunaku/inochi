@@ -312,7 +312,7 @@
         <% paragraph "Units and tests" do %>
           Every Ruby source file in your project's <tt>lib/</tt> directory is considered to be a **unit**.  Likewise, every Ruby source file in your project's <tt>test/</tt> is considered to be a **test**.
 
-          As a result, your project's <tt>test/</tt> directory structure *mirrors* the structure of your project's <tt>lib/</tt> directory.  For example, if your project has a <tt>lib/foo/bar.rb</tt> unit, then <tt>test/foo/bar.rb</tt> would be its the corresponding test.
+          As a result, your project's <tt>test/</tt> directory structure *mirrors* the structure of your project's <tt>lib/</tt> directory.  For example, if your project has a <tt>lib/foo/bar.rb</tt> unit, then <tt>test/foo/bar.rb</tt> would be its corresponding test.
         <% end %>
 
         <% paragraph "Test execution" do %>
@@ -326,7 +326,7 @@
 
           As for the details of test execution:
 
-          * Tests are executed by the [minitest] library, which allows you to write unit tests in a combination of styles: traditional TDD, modern BDD, alternative rSpec BDD, and mock-based validation styles.
+          * Tests are executed by the [minitest] library, which allows you to write unit tests in a combination of styles: traditional xUnit TDD, alternative rSpec BDD, and mock-based validation styles.
 
           * Within each test, test cases are executed in random order.  This is the default behavior of the [minitest] library.
 
@@ -345,11 +345,11 @@
       <% end %>
 
       <% section "Publish your project" do %>
-        This command performs all of the automated steps described in the following sections:
-
         <pre>
         # rake pub
         </pre>
+
+        The above command performs all automated steps described in the following sections.
 
         <% section "Build a RubyGem" do %>
           Build a RubyGem by running:

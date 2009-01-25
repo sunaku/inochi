@@ -1,4 +1,4 @@
-<% chapter "History", "history" do %>
+<% chapter "History" do %>
   <% project_history do %>
     <% section "Version 0.2.0 (2009-01-25)" do %>
       This release adds support for unit testing, improves the portability of **Inochi** and configurability of your projects, adds new content to the user manual, and fixes some bugs.
@@ -45,7 +45,7 @@
       This release reattempts to fix the [circular dependency problem](http://www.ruby-forum.com/topic/176173#771281) that occurred when installing either **Inochi** or **ERBook**.
 
       <% paragraph "New features" do %>
-        * `**Inochi**.init()` now adds `#major()`, `#series()`, and `#requirement()` instance methods to a project's `VERSION` constant.
+        * `Inochi.init()` now adds `#major()`, `#series()`, and `#requirement()` instance methods to a project's `VERSION` constant.
       <% end %>
 
       <% paragraph "Bug fixes" do %>

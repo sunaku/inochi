@@ -764,14 +764,13 @@ class << self
               already_announced = posts.include? ann_subject
 
             if already_announced
-              warn "This release was already announced to RubyForge news, so I will NOT announce it there again."
+              warn 'This release was already announced to RubyForge news, so I will NOT announce it there again.'
             else
               # make the announcement
               Rake::Task[:ann_text].invoke
               pub_forge.post_news project, ann_subject, ann_text
 
-              puts "Successfully announced to RubyForge news:"
-              puts page.uri
+              puts 'Successfully announced to RubyForge news:', page.uri
             end
           else
             raise "Could not determine the group_id of the #{project.inspect} RubyForge project.  Run `rubyforge config` and try again."
@@ -800,7 +799,7 @@ class << self
             end
 
           if already_announced
-            warn "This release was already announced to the ruby-talk mailing list, so I will NOT announce it there again."
+            warn 'This release was already announced to the ruby-talk mailing list, so I will NOT announce it there again.'
           else
             # log in to RubyForum
             page = www.get "#{host}/user/login"
@@ -829,10 +828,9 @@ class << self
 
               errors = [page/'//div[@class="error"]/text()'].flatten
               if errors.empty?
-                puts "Successfully announced to ruby-talk mailing list:"
-                puts page.uri
+                puts 'Successfully announced to ruby-talk mailing list:', page.uri
               else
-                warn "Could not announce to ruby-talk mailing list:"
+                warn 'Could not announce to ruby-talk mailing list:'
                 warn errors.join("\n")
               end
             end
@@ -870,7 +868,7 @@ class << self
             if page.title =~ /error/i
               show_page_error[page, "Could not update #{resource}"]
             else
-              puts "Successfully announced to RAA (Ruby Application Archive)."
+              puts 'Successfully announced to RAA (Ruby Application Archive).'
             end
           else
             show_page_error[page, "Could not access #{resource}"]
