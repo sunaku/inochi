@@ -2,8 +2,8 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'inochi/inochi'
 
 Inochi.init :Inochi,
-  :version => '0.1.0',
-  :release => '2009-01-19',
+  :version => '0.2.0',
+  :release => '2009-01-25',
   :website => 'http://snk.tuxfamily.org/lib/inochi',
   :tagline => 'Gives life to RubyGems-based software',
   :require => {

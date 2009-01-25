@@ -1,5 +1,50 @@
 <% chapter "History", "history" do %>
   <% project_history do %>
+    <% section "Version 0.2.0 (2009-01-25)" do %>
+      This release adds support for unit testing, improves the portability of **Inochi** and configurability of your projects, adds new content to the user manual, and fixes some bugs.
+
+      <% paragraph "Contributor kudos" do %>
+        Florian Gilcher patched **Inochi** to:
+
+        * Run on both JRuby and normal Ruby in multiple versions and with different executable names on Windows.
+
+        * Allow project authors to be specified by hand instead of always relying on the license file to be in expected form, because his license template doesn't follow that form.
+      <% end %>
+
+      <% paragraph "New features" do %>
+        * Added support for unit testing via the [minitest](http://rubyforge.org/projects/bfts/) library.  See <%= xref "Test your project" %> for documentation.
+
+          Also, in related news, the scaffold generator now emits a default unit test for the main project library.
+
+        * Added optional ProgramName parameter to the scaffold generator.  This allows you to specify reasonable program names when your project module has a strange capitalization:
+
+              > inochi ERBook
+                create  er_book/LICENSE
+
+              > inochi ERBook erbook
+                create  erbook/LICENSE
+
+              > inochi ERBook foobar
+                create  foobar/LICENSE
+
+        * Allow project authors to be specified via
+
+          `Inochi.init :YourProject, :authors => ...`
+      <% end %>
+
+      <% paragraph "Bug fixes" do %>
+        * Use `Gem::RubyGemsVersion` instead of a shell command to determine rubygems version for generation of <tt>setup.erb</tt>. (Florian Gilcher)
+
+        * Add blank lines between all list items, not just multi-line ones, in the plain-text version of the relase announcement for improved readability.
+
+        * Omit LaTeX-style heading numbers from release announcements.  They caused confusion, especially in plain-text announcements, when trying to determine which version of a project was released.
+      <% end %>
+
+      <% paragraph "Housekeeping" do %>
+        * Added unit tests for utility methods provided by the **Inochi** module: project name calculation and CamelCase to snake\_case conversion.
+      <% end %>
+    <% end %>
+
     <% section "Version 0.1.0 (2009-01-13)" do %>
       This release reattempts to fix the [circular dependency problem](http://www.ruby-forum.com/topic/176173#771281) that occurred when installing either **Inochi** or **ERBook**.
 
