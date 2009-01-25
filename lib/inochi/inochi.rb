@@ -224,11 +224,12 @@ class << self
   ##
   # Provides Rake tasks for packaging, publishing, and announcing your project.
   #
-  # * If not present, an AUTHORS constant (which has the form "[[name,
-  #   info]]" where "name" is the name of a copyright holder and "info"
-  #   is their contact information) is added to the project module.
+  # * An AUTHORS constant (which has the form "[[name, info]]"
+  #   where "name" is the name of a copyright holder and "info" is
+  #   their contact information) is added to the project module.
   #
-  #   This information is extracted from copyright notices in the
+  #   Unless this information is supplied via the :authors option,
+  #   it is automatically extracted from copyright notices in the
   #   project license file, where the first copyright notice is
   #   expected to correspond to the primary project maintainer.
   #
@@ -246,6 +247,11 @@ class << self
   #
   # @param [Hash] options
   #   Additional method parameters, which are all optional:
+  #
+  #   [Array] :authors =>
+  #     A list of project authors and their contact information.  This
+  #     list must have the form "[[name, info]]" where "name" is the name
+  #     of a project author and "info" is their contact information.
   #
   #   [String] :license_file =>
   #     Path (relative to the main project directory which contains the
@@ -320,15 +326,12 @@ class << self
       options[:upload_options]    ||= []
 
     # add AUTHORS constant to the project module
-      unless project_module.const_defined? :AUTHORS
-        license = File.read(options[:license_file])
+      copyright_holders = options[:authors] ||
+        File.read(options[:license_file]).
+        scan(/Copyright.*?\d+\s+(.*)/).flatten.
+        map {|s| (s =~ /\s*<(.*?)>/) ? [$`, $1] : [s, ''] }
 
-        copyright_holders =
-          license.scan(/Copyright.*?\d+\s+(.*)/).flatten.
-          map {|s| (s =~ /\s*<(.*?)>/) ? [$`, $1] : [s, ''] }
-
-        project_module.const_set :AUTHORS, copyright_holders
-      end
+      project_module.const_set :AUTHORS, copyright_holders
 
     require 'rake/clean'
 
