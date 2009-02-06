@@ -103,5 +103,11 @@
   <% section "Credits" do %>
     <%= $logo = "![project logo](#{$program}.png)".to_inline_xhtml %>
     <%# include README #%>
+
+    **<%= $project %>** is made possible by
+    <%= xref "History", "contributions" %>
+    from users like you:
+
+    * Florian Gilcher
   <% end %>
 <% end %>

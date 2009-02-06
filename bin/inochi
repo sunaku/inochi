@@ -295,6 +295,14 @@
 
       <% section "Credits" do %>
         > TODO: give attribution to your predecessors and contributors
+
+        **<%= $project %>** is made possible by
+        <%= xref "History", "contributions" %>
+        from users like you:
+
+        * __________ (contributor name)
+        * __________ (contributor name)
+        * __________ (contributor name)
       <% end %>
     <% end %>
   }
@@ -406,56 +414,45 @@
 
           This release changes __________, adds __________, and fixes __________.
 
-          <% paragraph "Contributor kudos" do %>
-            > TODO: list everyone who contributed to this
-            >       release and what their contribution was
-
-            * __________ contributed __________ which __________.
-
-            * __________ fixed __________ which __________.
-
-            * __________ added __________ which __________.
-          <% end %>
-
           <% paragraph "Incompatible changes" do %>
             > TODO: list all backward-incompatible changes in this release
 
-            * __________ has been __________ to __________.
+            * __________ has been __________ to __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
           <% end %>
 
           <% paragraph "New features" do %>
             > TODO: list new features added in this release
 
-            * __________.
+            * __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
           <% end %>
 
           <% paragraph "Bug fixes" do %>
             > TODO: describe all bugs that are fixed in this release
 
-            * __________ was __________.
+            * __________ was __________. (contributor name)
 
-            * __________ were __________.
+            * __________ were __________. (contributor name)
 
-            * __________ did __________.
+            * __________ did __________. (contributor name)
           <% end %>
 
           <% paragraph "Housekeeping" do %>
             > TODO: list the refactorings, clean ups, and other
             >       improvements that were done for this release
 
-            * __________.
+            * __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
 
-            * __________.
+            * __________. (contributor name)
           <% end %>
         <% end %>
       <% end %>

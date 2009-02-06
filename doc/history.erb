@@ -3,36 +3,32 @@
     <% section "Version 0.2.0 (2009-01-25)" do %>
       This release adds support for unit testing, improves the portability of **Inochi** and configurability of your projects, adds new content to the user manual, and fixes some bugs.
 
-      <% paragraph "Contributor kudos" do %>
-        Florian Gilcher patched **Inochi** to:
-
-        * Run on both JRuby and normal Ruby in multiple versions and with different executable names on Windows.
-
-        * Allow project authors to be specified by hand instead of always relying on the license file to be in expected form, because his license template doesn't follow that form.
-      <% end %>
-
       <% paragraph "New features" do %>
-        * Added support for unit testing via the [minitest](http://rubyforge.org/projects/bfts/) library.  See <%= xref "Test your project" %> for documentation.
+        * Added <%= xref "Test your project", "support for unit testing" %> via the [minitest](http://rubyforge.org/projects/bfts/) library.
 
-          Also, in related news, the scaffold generator now emits a default unit test for the main project library.
+          * The scaffold generator now emits a default unit test for the main project library.
 
         * Added optional ProgramName parameter to the scaffold generator.  This allows you to specify reasonable program names when your project module has a strange capitalization:
 
-              > inochi ERBook
+              # inochi ERBook
                 create  er_book/LICENSE
 
-              > inochi ERBook erbook
+              # inochi ERBook erbook
                 create  erbook/LICENSE
 
-              > inochi ERBook foobar
+              # inochi ERBook foobar
                 create  foobar/LICENSE
 
         * Allow project authors to be specified via
 
-          `Inochi.init :YourProject, :authors => ...`
+          `Inochi.init :YourProject, :authors => [['name', 'mail']]`
+
+          (Florian Gilcher)
       <% end %>
 
       <% paragraph "Bug fixes" do %>
+        * Run on both JRuby and normal Ruby in multiple versions and with different executable names on Windows. (Florian Gilcher)
+
         * Use `Gem::RubyGemsVersion` instead of a shell command to determine rubygems version for generation of <tt>setup.erb</tt>. (Florian Gilcher)
 
         * Add blank lines between all list items, not just multi-line ones, in the plain-text version of the relase announcement for improved readability.
@@ -64,14 +60,10 @@
     <% section "Version 0.0.1 (2009-01-13)" do %>
       This release fixes some show-stopper bugs.
 
-      <% paragraph "Contributor kudos" do %>
-        * Florian Gilcher tried the first release of **Inochi** and reported bugs.
-      <% end %>
-
       <% paragraph "Bug fixes" do %>
-        * Florian Gilcher reported that the name of the project library was [being determined incorrectly](http://www.ruby-forum.com/topic/176173#771351).
+        * The name of the project library was [being determined incorrectly](http://www.ruby-forum.com/topic/176173#771351). (Florian Gilcher)
 
-        * Florian Gilcher reported that there was a [circular dependency problem](http://www.ruby-forum.com/topic/176173#771281) when installing the **Inochi** gem.
+        * There was a [circular dependency problem](http://www.ruby-forum.com/topic/176173#771281) when installing the **Inochi** gem. (Florian Gilcher)
 
           The solution is to specify the <tt>--force</tt> option when installing the gem.  <%= xref "Installation" %> has been updated accordingly.
 
