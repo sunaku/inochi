@@ -313,7 +313,7 @@
       <% section "Installation" do %>
         You can install **<%= $project %>** by running this command:
 
-            gem install <%= $program %>
+            gem install -f <%= $program %>
 
         To check whether the installation was sucessful, run this command:
 

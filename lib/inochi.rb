@@ -11,6 +11,7 @@ Inochi.init :Inochi,
     'rubyforge'   => '~> 1',              # for publishing gems to RubyForge
     'mechanize'   => '~> 0',              # for automating web browsing
     'trollop'     => '~> 1',              # for parsing command-line options
+    'erbook'      => '~> 6',              # for processing the user manual
     'launchy'     => '~> 0',              # for launching a web browser
     'yard'        => nil,                 # for generating API documentation
     'addressable' => '~> 2',              # for parsing URIs properly
