@@ -749,6 +749,8 @@ class << self
 
         desc 'Announce to RubyForge news.'
         task 'pub:ann:forge' => :pub_forge do
+          puts 'Announcing to RubyForge news...'
+
           project = options[:rubyforge_project]
 
           if group_id = pub_forge.autoconfig['group_ids'][project]
@@ -778,6 +780,8 @@ class << self
 
         desc 'Announce to ruby-talk mailing list.'
         task 'pub:ann:talk' => :ann_logins do
+          puts 'Announcing to ruby-talk mailing list...'
+
           host = 'http://ruby-forum.com'
           ruby_talk = 4 # ruby-talk forum ID
 
@@ -837,6 +841,8 @@ class << self
 
         desc 'Announce to RAA (Ruby Application Archive).'
         task 'pub:ann:raa' => :ann_logins do
+          puts 'Announcing to RAA (Ruby Application Archive)...'
+
           show_page_error = lambda do |page, message|
             warn "#{message}, so I can NOT announce this release to RAA:"
             warn "#{(page/'h2').text} -- #{(page/'p').first.text.strip}"
