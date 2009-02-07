@@ -1,5 +1,14 @@
+require 'rubygems'
+
+module Inochi
+end
+
 $LOAD_PATH << File.dirname(__FILE__)
-require 'inochi/inochi'
+require 'inochi/init'
+require 'inochi/main'
+require 'inochi/rake'
+require 'inochi/book'
+require 'inochi/util'
 
 Inochi.init :Inochi,
   :version => '0.2.0',
