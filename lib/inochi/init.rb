@@ -180,7 +180,7 @@ class << Inochi
       @locale = locale.to_s
 
       # extract the language portion of the locale
-      language  = @locale[/^[[:alpha:]]+/]
+      language  = @locale[/^[[:alpha:]]+/].to_s
       @language = language =~ /^(C|POSIX)?$/i ? :en : language.downcase.to_sym
     end
 

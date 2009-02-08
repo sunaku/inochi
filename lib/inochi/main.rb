@@ -58,12 +58,17 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
       }.join("\n")
 
       opt :manual, 'Show the user manual'
+      opt :locale, 'Set preferred language', :type => :string
     end
 
     if options[:manual]
       require 'launchy'
       Launchy::Browser.run "#{project_module::INSTALL}/doc/index.xhtml"
       exit
+    end
+
+    if locale = options[:locale]
+      project_module::PHRASES.locale = locale
     end
 
     options
