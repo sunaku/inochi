@@ -160,7 +160,9 @@ class << Inochi
         lang_dir = File.join(project_install_dir, 'lang')
 
         @phrases_by_language = Hash.new do |cache, language|
-          phrases = {}
+          # store the phrase upon failure so that
+          # the phrases() method will know about it
+          phrases = Hash.new {|h,k| h[k] = nil }
 
           lang_file = File.join(lang_dir, "#{language}.yaml")
           lang_data = YAML.load_file(lang_file) rescue nil
@@ -182,6 +184,14 @@ class << Inochi
       # extract the language portion of the locale
       language  = @locale[/^[[:alpha:]]+/].to_s
       @language = language =~ /^(C|POSIX)?$/i ? :en : language.downcase.to_sym
+    end
+
+    ##
+    # Returns all phrases that underwent (or
+    # attempted) translation via this object.
+    #
+    def phrases
+      @phrases_by_language.values.map {|h| h.keys }.flatten.uniq.sort
     end
 
     ##

@@ -121,10 +121,38 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     Rake::Task[name].instance_variable_set :@comment, nil
   end
 
+  # translation
+    directory 'lang'
+
+    lang_dump_deps = 'lang'
+    lang_dump_file = 'lang/phrases.yaml'
+
+    desc 'Extract language phrases for translation.'
+    task 'lang:dump' => lang_dump_file
+
+    file lang_dump_file => lang_dump_deps do
+      ENV['dump_lang_phrases'] = '1'
+      Rake::Task[:test].invoke
+    end
+
   # testing
     desc 'Run all unit tests.'
     task :test do
       ruby '-w', '-I.', '-Ilib', '-r', program_name, '-e', %q{
+        # dump language phrases *after* exercising all code (and
+        # thereby populating the phrases cache) in the project
+        at_exit do
+          if ENV['dump_lang_phrases'] == '1'
+            file = %s
+            list = %s::PHRASES.phrases
+            data = list.map {|s| s + ':' }.join("\n")
+
+            File.write file, data
+
+            puts "Extracted #{list.length} language phrases into #{file.inspect}"
+          end
+        end
+
         # set title of test suite
         $0 = File.basename(Dir.pwd)
 
@@ -150,7 +178,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             warn "Skipped test #{test.inspect} because it lacks a corresponding #{unit.inspect} unit."
           end
         end
-      }
+      } % [lang_dump_file.inspect, project_symbol]
     end
 
   # documentation
