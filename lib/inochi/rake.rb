@@ -135,6 +135,56 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       Rake::Task[:test].invoke
     end
 
+    lang_conv_delim = "\n" * 5
+
+    desc 'Translate extracted language phrases (from=LANGUAGE_CODE).'
+    task 'lang:conv' => lang_dump_file do |t|
+      require 'babelfish'
+
+      unless
+        src_lang = ENV['from'] and
+        BabelFish::LANGUAGE_CODES.include? src_lang
+      then
+        message = ['The "from" parameter must be specified as follows:']
+
+        BabelFish::LANGUAGE_CODES.each do |c|
+          n = BabelFish::LANGUAGE_NAMES[c]
+          message << "  rake #{t.name} from=#{c}  # from #{n}"
+        end
+
+        raise ArgumentError, message.join("\n")
+      end
+
+      begin
+        require 'yaml'
+        phrases = YAML.load_file(lang_dump_file).keys.sort
+      rescue
+        warn "Could not load phrases from #{lang_dump_file.inspect}"
+        raise
+      end
+
+      src_lang_name = BabelFish::LANGUAGE_NAMES[src_lang]
+
+      BabelFish::LANGUAGE_PAIRS[src_lang].each do |dst_lang|
+        dst_file      = "lang/#{dst_lang}.yaml"
+        dst_lang_name = BabelFish::LANGUAGE_NAMES[dst_lang]
+
+        puts "Translating phrases from #{src_lang_name} into #{dst_lang_name} as #{dst_file.inspect}"
+
+        translations = BabelFish.translate(
+          phrases.join(lang_conv_delim), src_lang, dst_lang
+        ).split(lang_conv_delim)
+
+        File.open(dst_file, 'w') do |f|
+          f.puts "# #{dst_lang} (#{dst_lang_name})"
+
+          phrases.zip(translations).each do |a, b|
+            f.puts "#{a}: #{b}"
+          end
+        end
+      end
+    end
+
   # testing
     desc 'Run all unit tests.'
     task :test do
