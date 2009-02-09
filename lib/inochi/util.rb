@@ -34,13 +34,21 @@ class << Inochi
 
   private
 
+  INOCHI_LIBRARY_PATH = File.dirname(__FILE__)
+
   ##
   # Returns the path of the first file outside
   # Inochi's core from which this method was called.
   #
   def first_caller_file
-    File.expand_path \
-      caller.find {|s| s !~ /^#{File.dirname __FILE__}/o }[/^[^:]+/]
+    caller.each do |step|
+      if file = step[/^.+(?=:\d+$)/]
+        file = File.expand_path(file)
+        base = File.dirname(file)
+
+        break file unless base.index(INOCHI_LIBRARY_PATH) == 0
+      end
+    end
   end
 
   ##
