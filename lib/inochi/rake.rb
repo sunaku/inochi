@@ -97,8 +97,13 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     options[:rubyforge_project] ||= program_name
     options[:rubyforge_section] ||= program_name
     options[:raa_project]       ||= program_name
+
     options[:license_file]      ||= 'LICENSE'
-    options[:logins_file]       ||= File.join(ENV['HOME'], '.config', 'inochi', 'logins.yaml')
+    options[:logins_file]       ||= File.join(
+                                      ENV['HOME'] || ENV['USERPROFILE'] || '.',
+                                      '.config', 'inochi', 'logins.yaml'
+                                    )
+
     options[:upload_delete]     ||= false
     options[:upload_options]    ||= []
 
