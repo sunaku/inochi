@@ -1,3 +1,5 @@
+<% yaml_addr = "http://yaml.kwiki.org/?YamlInFiveMinutes" %>
+
 <% part "Usage" do %>
   <% section "Command-line interface" do %>
     When you run this command:
@@ -344,6 +346,109 @@
         <% end %>
       <% end %>
 
+      <% section "Translate your project" do %>
+        <% phrases_file = "<tt>lang/phrases.yaml</tt>" %>
+
+        Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  **<%= $project %>** makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
+
+        <% section "Language phrases" do %>
+          **<%= $project %>** equips your project module with a `PHRASES` constant (see the [`Inochi::Phrases` class](api/Inochi/Phrases.html)) which provides access to translations of language phrases used in your project.
+
+          The [`Inochi::Phrases#[]` method](api/Inochi/Phrases.html#[]-instance_method) translates a given language phrase into the user's preferred language, which is automatically inferred from their environment, but may be explictly overridden by the user via the <tt>--locale</tt> option of <%= xref "Run project executable", "your project's main executable" %>:
+
+          <code>
+          your_project::PHRASES['Have a nice day!']
+          </code>
+
+          If there is no <%= xref "Translation files", "translation file" %> for the user's preferred language, or it does not define a translation for a particular language phrase, then the language phrase will be used untranslated:
+
+          <code>
+          your_project::PHRASES['No translation for this']
+          #=> 'No translation for this'
+          </code>
+
+          <% paragraph "Parameterizing language phrases" do %>
+            Language phrases can be parameterized using [`printf` format placeholders](http://en.wikipedia.org/wiki/Printf#printf_format_placeholders) to ease translation:
+
+            <code>
+            your_project::PHRASES['Good afternoon, %s.', user_name]
+            your_project::PHRASES['You are %d years old.', user_age]
+            </code>
+          <% end %>
+
+          <% paragraph "Explicit translation into a language" do %>
+            If a language phrase must be translated into a specific language, regardless of the user's preference, you can invoke the respective method (whose name is the same as the [ISO-639 language code](http://en.wikipedia.org/wiki/ISO_639) of the language into which you wish to translate) on your `PHRASES` object:
+
+            <code>
+            # explictly translate into Japanese (ja)
+            your_project::PHRASES.ja('Goodbye %s!', user_name)
+
+            # explictly translate into French (fr)
+            your_project::PHRASES.fr('Farewell %s!', user_name)
+            </code>
+          <% end %>
+        <% end %>
+
+        <% section "Translation files" do %>
+          Translation files are [YAML documents](<%= yaml_addr %>) that reside in your project's <tt>lang/</tt> directory.  They provide translations for <%= xref "Language phrases", "language phrases" %> used in your project.
+
+          For example, suppose that your language phrases are written in English, the <tt>lang/es.yaml</tt> (Spanish) translation file would appear like this:
+
+          <pre>
+          #
+          # (this is a comment)
+          #
+          # language phrase : translation
+          #
+          Hello %s! : ¡Hola %s!
+          Money : Dinero
+          Ticket : Tarjeta
+          See you later %s! : ¡Hasta la vista %s!
+          "%s: Quickly, please!" : "%s: ¡Rápidamente, por favor!"
+          </pre>
+
+          On each line, the original language phrase (as used in your project) appears first, then a single semicolon (:), followed by the translation.
+
+          Also, notice that if a language phrase contains a semicolon, then the entire phrase must be enclosed in quotation marks.  The same rule applies to its corresponding translation.
+        <% end %>
+
+        <% section "Extracting language phrases" do %>
+          <pre>
+          # rake lang:dump
+          <%= verbatim `rake lang:dump` %>
+          </pre>
+
+          The above command exercises your project's code and extracts all *utilized* language phrases into the <%= phrases_file %> file.  Continue reading to learn how this is accomplished.
+
+          <% paragraph "Dynamic analysis" do %>
+            Because Ruby is a dynamically interpreted language, the easiest way to extract language phrases is to evaluate the code that defines them and keep track of which phrases are defined.
+
+            But how can **<%= $project %>** exercise all Ruby code in your project?  The answer is through *unit tests*.  Because unit tests already exercise your project's code, **<%= $project %>** can use them to reach and extract all language phrases from your project.
+
+            However, note that if your unit tests *do not* exercise a part of your project that defines language phrases, then those phrases *will not* be extracted by **<%= $project %>**.
+
+            This gives you extra motivation to improve the coverage of your test suite---at least to the point where all code that defines language phrases is covered.
+          <% end %>
+
+          <% paragraph "Static analysis" do %>
+            In a future release, I plan to extract language phrases through static analysis of Ruby code.  This approach will supplement the current practice of reaching language phrases through unit tests.
+
+            Patches are welcome! :-)
+          <% end %>
+        <% end %>
+
+        <% section "Translating language phrases" do %>
+          After you have extracted all language phrases from your project (either manually or via <%= xref "Extracting language phrases" %>) into the <%= phrases_file %> file, **<%= $project %>** can automatically translate them into various languages using the [Yahoo! BabelFish translation service](http://babelfish.yahoo.com):
+
+          <pre>
+          # rake lang:conv from=LANGUAGE_CODE
+          <%= verbatim `rake lang:conv from=LANGUAGE_CODE 2>&1` %>
+          </pre>
+
+          Notice that you must specify the language in which your phrases are written, via the <tt>from=</tt> parameter.  **<%= $project %>** cannot determine this automatically.
+        <% end %>
+      <% end %>
+
       <% section "Publish your project" do %>
         <pre>
         # rake pub
@@ -391,7 +496,7 @@
 
             <% logins_file = "~/.config/inochi/logins.yaml" %>
 
-            This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML](http://www.yaml.org) document containing the following parameters:
+            This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML document](<%= yaml_addr %>) containing the following parameters:
 
             <code lang="yaml">
             www.ruby-forum.com:
