@@ -1,5 +1,43 @@
 <% chapter "History" do %>
   <% project_history do %>
+    <% section "Version 0.3.0 (2009-02-12)" do %>
+      This release adds support for <%= xref "Translate your project", "language translations / internationalization / multilingualization" %>, improves the user interface, and fixes a show-stopper bug for Windows users.
+
+      <% paragraph "New features" do %>
+        * Add support for <%= xref "Translate your project", "language translations" %> of phrases used in a project.
+
+          * Add "lang:dump" Rake task for extracting language phrases from project.
+
+          * Add "lang:conv" Rake task for translating dumped phrases into various languages using the BabelFish translation service.
+
+          * Add <tt>--locale</tt> option to a project's main executable for setting user's preferred language in spite of the user's locale environment.
+
+        * Notify user when attempting to publish announcements in the "pub" Rake tasks.
+      <% end %>
+
+      <% paragraph "Bug fixes" do %>
+        * In Windows, `ENV['USERPROFILE']` gives the path to the user's home directory and `ENV['HOME']` is not defined.
+
+        * The only real solution to the circular gem dependency problem is:
+
+              gem install --force
+
+          You should update <%= xref "Setup" %> in your projects' user manuals accordingly.
+      <% end %>
+
+      <% paragraph "Housekeeping" do %>
+        * Break the huge <tt>lib/inochi/inochi.rb</tt> library into smaller files.
+
+        * Instead of adding methods to singleton classes directly, define modules and extend to them so that YARDoc documents the methods appropriately.
+
+        * List all project contributors globally in the "Credits" section.
+
+        * Remove "Contributor kudos" paragraph in release notes in favor of crediting contributors inline with each item in the release notes.
+
+        * Mention that the project license is ISC for the reader's convenience.
+      <% end %>
+    <% end %>
+
     <% section "Version 0.2.0 (2009-01-25)" do %>
       This release adds support for unit testing, improves the portability of **Inochi** and configurability of your projects, adds new content to the user manual, and fixes some bugs.
 

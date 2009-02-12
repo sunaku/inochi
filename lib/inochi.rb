@@ -11,8 +11,8 @@ require 'inochi/book'
 require 'inochi/util'
 
 Inochi.init :Inochi,
-  :version => '0.2.0',
-  :release => '2009-01-25',
+  :version => '0.3.0',
+  :release => '2009-02-12',
   :website => 'http://snk.tuxfamily.org/lib/inochi',
   :tagline => 'Gives life to RubyGems-based software',
   :require => {
