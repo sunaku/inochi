@@ -90,8 +90,8 @@
     <%# include ../LICENSE #%>
   <% end %>
 
-  <% section "Credits" do %>
-    <%= $logo = "![project logo](#{$program}.png)".to_inline_xhtml %>
+  <% section "Credits" do |n| %>
+    <%= $logo = n.xref_link("![#{$project} logo](#{$program}.png)".to_inline_xhtml) %>
     <%# include README #%>
 
     **<%= $project %>** is made possible by
