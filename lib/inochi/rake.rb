@@ -25,6 +25,12 @@
 # @param [Hash] options
 #   Additional method parameters, which are all optional:
 #
+#   [Symbol, Array of Symbol] :test_with =>
+#     Names of Ruby libraries inside the "inochi/test/"
+#     namespace to load before running the test suite.
+#
+#     The default value is an empty Array.
+#
 #   [Array] :authors =>
 #     A list of project authors and their contact information.  This
 #     list must have the form "[[name, info]]" where "name" is the name
@@ -97,6 +103,8 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     project_module = fetch_project_module(project_symbol)
 
   # supply default options
+    options[:test_with]         ||= []
+
     options[:rubyforge_project] ||= program_name
     options[:rubyforge_section] ||= program_name
     options[:raa_project]       ||= program_name
@@ -191,7 +199,10 @@ def Inochi.rake project_symbol, options = {}, &gem_config
   # testing
     desc 'Run all unit tests.'
     task :test do
-      ruby '-w', '-I.', '-Ilib', '-r', program_name, '-e', %q{
+      code = %q{
+        # set title of test suite
+        $0 = File.basename(Dir.pwd)
+
         # dump language phrases *after* exercising all code (and
         # thereby populating the phrases cache) in the project
         at_exit do
@@ -205,14 +216,6 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             puts "Extracted #{list.length} language phrases into #{file.inspect}"
           end
         end
-
-        # set title of test suite
-        $0 = File.basename(Dir.pwd)
-
-        require 'minitest/unit'
-        require 'minitest/spec'
-        require 'minitest/mock'
-        MiniTest::Unit.autorun
 
         Dir['test/**/*.rb'].sort.each do |test|
           unit = test.sub('test/', 'lib/')
@@ -232,6 +235,17 @@ def Inochi.rake project_symbol, options = {}, &gem_config
           end
         end
       } % [lang_dump_file.inspect, project_symbol]
+
+      libs = [program_name] + # load the project under test FIRST!
+        [options[:test_with]].flatten.map {|lib| "inochi/test/#{lib}" }
+
+      reqs = libs.map {|lib| ['-r', lib] }.flatten
+
+      # NOTE: the "-I." option lets us load helper libraries inside
+      #       the test suite via "test/PROJECT_NAME/LIBRARY_NAME"
+      args = %w[-w -Ilib -I.] + reqs + ['-e', code]
+
+      ruby(*args)
     end
 
   # documentation

@@ -24,6 +24,5 @@ Inochi.init :Inochi,
     'launchy'     => '~> 0',              # for launching a web browser
     'yard'        => nil,                 # for generating API documentation
     'addressable' => '~> 2',              # for parsing URIs properly
-    'minitest'    => ['>= 1.3.1', '< 2'], # for unit testing
     'babelfish'   => '~> 0',              # for human language translation
   }

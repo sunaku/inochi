@@ -189,18 +189,23 @@
   }
 
   create "#{program_name}/test/#{program_name}.rb", %{
-    describe #{project_symbol} do
-      it 'has inochi' do
-        assert #{project_symbol}.const_defined? :INOCHI
+    unless #{project_symbol}.const_defined? :INOCHI
+      fail "#{project_symbol} must be established by Inochi"
+    end
 
-        #{project_symbol}::INOCHI.each do |param, value|
-          const = param.to_s.upcase
+    #{project_symbol}::INOCHI.each do |param, value|
+      const = param.to_s.upcase
 
-          assert #{project_symbol}.const_defined? const
-          #{project_symbol}.const_get(const).must_equal value
-        end
+      unless #{project_symbol}.const_defined? const
+        fail "#{project_symbol}::\#{const} must be established by Inochi"
+      end
+
+      unless #{project_symbol}.const_get(const) == value
+        fail "#{project_symbol}::\#{const} is not what Inochi established"
       end
     end
+
+    puts "Inochi establishment tests passed!"
   }
 
   create "#{program_name}/doc/index.erb", %{
