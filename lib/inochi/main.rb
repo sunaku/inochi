@@ -63,7 +63,10 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
 
     if options[:manual]
       require 'launchy'
-      Launchy::Browser.run "#{project_module::INSTALL}/doc/index.xhtml"
+
+      manual = File.join(project_module::INSTALL, 'doc', 'index.xhtml')
+      Launchy::Browser.run manual
+
       exit
     end
 

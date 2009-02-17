@@ -30,6 +30,9 @@
 #     list must have the form "[[name, info]]" where "name" is the name
 #     of a project author and "info" is their contact information.
 #
+#     The default value is automatically extracted from
+#     your project's license file (see description above).
+#
 #   [String] :license_file =>
 #     Path (relative to the main project directory which contains the
 #     project Rakefile) to the file which contains the project license.
