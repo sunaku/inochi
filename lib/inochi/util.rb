@@ -42,7 +42,7 @@ class << Inochi
   #
   def first_caller_file
     caller.each do |step|
-      if file = step[/^.+(?=:\d+$)/]
+      if file = step[/^.+(?=:\d+(?::|\z))/]
         file = File.expand_path(file)
         base = File.dirname(file)
 
