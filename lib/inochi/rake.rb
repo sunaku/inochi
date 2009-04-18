@@ -87,6 +87,11 @@
 #
 #     The default value is an empty array.
 #
+#   [:inochi_consumer]
+#     Add Inochi as a dependency to the created gem?
+#
+#     The default value is true.
+#
 # [gem_config]
 #   Optional block that is passed
 #   to Gem::specification.new() for
@@ -118,6 +123,8 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     options[:upload_delete]     ||= false
     options[:upload_options]    ||= []
+
+    options[:inochi_consumer]   = true unless options.key? :inochi_consumer
 
   # add AUTHORS constant to the project module
     copyright_holders = options[:authors] ||
@@ -557,12 +564,12 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         executable_path = File.join(gem.bindir, executable)
         gem.executables = executable if File.exist? executable_path
 
-        unless project_module == Inochi
-          gem.add_dependency 'inochi', Inochi::VERSION.requirement
-        end
-
         project_module::REQUIRE.each_pair do |gem_name, version_reqs|
           gem.add_dependency gem_name, *version_reqs
+        end
+
+        if options[:inochi_consumer] && project_module != Inochi
+          gem.add_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
         end
 
         # additional configuration is done by user
