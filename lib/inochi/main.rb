@@ -14,17 +14,19 @@
 # It is assumed that this method is invoked from only within
 # the main project executable (in the project bin/ directory).
 #
-# @param [Symbol] project_symbol
+# ==== Parameters
+#
+# [project_symbol]
 #   Name of the Ruby constant which serves
 #   as a namespace for the entire project.
 #
-# @param trollop_args
-#   Optional arguments for Trollop::options().
+# [trollop_args]
+#   Optional array of arguments for Trollop::options().
 #
-# @param trollop_config
-#   Optional block argument for Trollop::options().
+# [trollop_config]
+#   Optional block parameter passed to Trollop::options().
 #
-# @return The result of Trollop::options().
+# Returns the result of Trollop::options().
 #
 def Inochi.main project_symbol, *trollop_args, &trollop_config
   program_file = first_caller_file

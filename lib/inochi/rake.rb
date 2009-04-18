@@ -18,20 +18,22 @@
 #   when the copyright holder first began working on the project, and
 #   EMAIL is (optional) the email address of the copyright holder.
 #
-# @param [Symbol] project_symbol
+# ==== Parameters
+#
+# [project_symbol]
 #   Name of the Ruby constant which serves
 #   as a namespace for the entire project.
 #
-# @param [Hash] options
-#   Additional method parameters, which are all optional:
+# [options]
+#   Optional hash of configuration parameters:
 #
-#   [Symbol, Array of Symbol] :test_with =>
+#   [:test_with]
 #     Names of Ruby libraries inside the "inochi/test/"
 #     namespace to load before running the test suite.
 #
 #     The default value is an empty Array.
 #
-#   [Array] :authors =>
+#   [:authors]
 #     A list of project authors and their contact information.  This
 #     list must have the form "[[name, info]]" where "name" is the name
 #     of a project author and "info" is their contact information.
@@ -39,57 +41,56 @@
 #     The default value is automatically extracted from
 #     your project's license file (see description above).
 #
-#   [String] :license_file =>
+#   [:license_file]
 #     Path (relative to the main project directory which contains the
-#     project Rakefile) to the file which contains the project license.
+#     project rakefile) to the file which contains the project license.
 #
 #     The default value is "LICENSE".
 #
-#   [String] :logins_file =>
+#   [:logins_file]
 #     Path to the YAML file which contains login
 #     information for publishing release announcements.
 #
 #     The default value is "~/.config/inochi/logins.yaml"
 #     where "~" is the path to your home directory.
 #
-#   [String] :rubyforge_project =>
+#   [:rubyforge_project]
 #     Name of the RubyForge project where
 #     release packages will be published.
 #
 #     The default value is the value of the PROGRAM constant.
 #
-#   [String] :rubyforge_section =>
+#   [:rubyforge_section]
 #     Name of the RubyForge project's File Release System
 #     section where release packages will be published.
 #
 #     The default value is the value of the :rubyforge_project parameter.
 #
-#   [String] :raa_project =>
+#   [:raa_project]
 #     Name of the RAA (Ruby Application Archive) entry for this project.
 #
 #     The default value is the value of the PROGRAM constant.
 #
-#   [String] :upload_target =>
+#   [:upload_target]
 #     Where to upload the project documentation.
 #     See "destination" in the rsync manual.
 #
 #     The default value is nil.
 #
-#   [String] :upload_delete =>
+#   [:upload_delete]
 #     Delete unknown files at the upload target location?
 #
 #     The default value is false.
 #
-#   [Array] :upload_options =>
-#     Additional command-line arguments to the rsync command.
+#   [:upload_options]
+#     Array of command-line arguments to the rsync command.
 #
 #     The default value is an empty array.
 #
-# @param gem_config
-#   Block that is passed to Gem::specification.new()
-#   for additonal gem configuration.
-#
-# @yieldparam [Gem::Specification] gem_spec the gem specification
+# [gem_config]
+#   Optional block that is passed
+#   to Gem::specification.new() for
+#   additonal gem configuration.
 #
 def Inochi.rake project_symbol, options = {}, &gem_config
   program_file = first_caller_file
@@ -281,20 +282,32 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       doc_api_dst = 'doc/api'
 
       desc 'Build API reference.'
-      task 'doc:api' => doc_api_dst
+      task 'doc:api' => 'doc:api:rdoc'
 
-      require 'yard'
-      YARD::Rake::YardocTask.new doc_api_dst do |t|
-        t.options.push '--protected',
-          '--output-dir', doc_api_dst,
-          '--readme', options[:license_file]
+      namespace :doc do
+        namespace :api do
+          require 'sdoc'
+          require 'rake/rdoctask'
 
-        task doc_api_dst => options[:license_file]
+          Rake::RDocTask.new do |t|
+            t.rdoc_dir = doc_api_dst
+            t.template = 'direct' # lighter template used on railsapi.com
+            t.options.push '--fmt', 'shtml' # explictly set shtml generator
+            t.rdoc_files.include '[A-Z]*', 'lib/**/*.rb', 'ext/**/*.{rb,c*}'
+
+            # regen when sources change
+            task t.name => t.rdoc_files
+
+            t.main = options[:license_file]
+            task t.name => t.main
+          end
+
+          %w[rdoc clobber_rdoc rerdoc].each do |inner|
+            hide_rake_task["doc:api:#{inner}"]
+          end
+        end
       end
 
-      hide_rake_task[doc_api_dst]
-
-      CLEAN.include '.yardoc'
       CLOBBER.include doc_api_dst
 
   # announcements

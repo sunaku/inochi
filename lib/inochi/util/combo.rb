@@ -4,10 +4,12 @@ class Array
     # Returns all possible enumerations made from
     # sample_size number of items from this list.
     #
-    # @param [Integer] sample_size
+    # ==== Parameters
+    #
+    # [sample_size]
     #   The length of each enumeration.
     #
-    # @param [block] sampler
+    # [sampler]
     #   If given, each enumeration is passed to this block.
     #
     def enumeration(sample_size = self.length, &sampler)
@@ -37,7 +39,9 @@ class Array
     ##
     # Returns all possible enumerations of all possible lengths.
     #
-    # @param [block] sampler
+    # ==== Parameters
+    #
+    # [sampler]
     #   If given, each enumeration is passed to this block.
     #
     def enumerations &sampler
@@ -50,10 +54,12 @@ class Array
     # Returns all possible combinations made from
     # sample_size number of items from this list.
     #
-    # @param [Integer] sample_size
+    # ==== Parameters
+    #
+    # [sample_size]
     #   The length of each combination.
     #
-    # @param [block] sampler
+    # [sampler]
     #   If given, each combination is passed to this block.
     #
     def combination(sample_size = self.length, &sampler)
@@ -65,7 +71,9 @@ class Array
     ##
     # Returns all possible combinations of all possible lengths.
     #
-    # @param [block] sampler
+    # ==== Parameters
+    #
+    # [sampler]
     #   If given, each combination is passed to this block.
     #
     def combinations &sampler
@@ -78,10 +86,12 @@ class Array
     # Returns all possible permutations made from
     # sample_size number of items from this list.
     #
-    # @param [Integer] sample_size
+    # ==== Parameters
+    #
+    # [sample_size]
     #   The length of each permutation.
     #
-    # @param [block] sampler
+    # [sampler]
     #   If given, each permutation is passed to this block.
     #
     def permutation(sample_size = self.length, &sampler)
@@ -93,7 +103,9 @@ class Array
     ##
     # Returns all possible permutations of all possible lengths.
     #
-    # @param [block] sampler
+    # ==== Parameters
+    #
+    # [sampler]
     #   If given, each permutation is passed to this block.
     #
     def permutations &sampler
@@ -119,11 +131,13 @@ class Array
   ##
   # Common implementation for permutation and combination functions.
   #
-  # @param [Integer] sample_size
+  # ==== Parameters
+  #
+  # [sample_size]
   #   Maximum depth of traversal, at which point to stop
   #   further traversal and to start collecting results.
   #
-  # @param [boolean] exclude_parents
+  # [exclude_parents]
   #   Prevent already visited vertices from being
   #   visited again in subsequent iterations?
   #
@@ -132,13 +146,15 @@ class Array
 
     if sample_size >= 0 && sample_size < self.length
       ##
-      # @param [#each] parents
+      # ==== Parameters
+      #
+      # [parents]
       #   list of visited vertices, including the current vertex
       #
-      # @param [#each] children
+      # [children]
       #   list of unvisited vertices adjacent to current vertex
       #
-      # @param [Integer] depth
+      # [depth]
       #   current depth of the traversal tree
       #
       visitor = lambda do |parents, children, depth|

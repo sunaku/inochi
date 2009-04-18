@@ -25,11 +25,13 @@ class << Inochi
   # It is assumed that this method is called
   # from within the Inochi.rake() environment.
   #
-  # @param [Symbol] project_symbol
+  # ==== Parameters
+  #
+  # [project_symbol]
   #   Name of the Ruby constant which serves
   #   as a namespace for the entire project.
   #
-  # @param [ERBook::Document::Template] book_template
+  # [book_template]
   #   The eRuby template which serves as the documentation for the project.
   #
   def book project_symbol, book_template

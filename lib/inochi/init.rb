@@ -17,63 +17,65 @@ class << Inochi
   # within any of its descendant directories) the project lib/ directory.
   # Ideally, this method would be invoked from the main project library.
   #
-  # @param [Symbol] project_symbol
+  # ==== Parameters
+  #
+  # [project_symbol]
   #   Name of the Ruby constant which serves
   #   as a namespace for the entire project.
   #
-  # @param [Hash] project_config
-  #   Project configuration parameters:
+  # [project_config]
+  #   Optional hash of project configuration parameters:
   #
-  #   [String] :project =>
+  #   [:project]
   #     Name of the project.
   #
   #     The default value is the value of the project_symbol parameter.
   #
-  #   [String] :tagline =>
+  #   [:tagline]
   #     An enticing, single line description of the project.
   #
   #     The default value is an empty string.
   #
-  #   [String] :website =>
+  #   [:website]
   #     URL of the published project website.
   #
   #     The default value is an empty string.
   #
-  #   [String] :docsite =>
+  #   [:docsite]
   #     URL of the published user manual.
   #
   #     The default value is the same value as the :website parameter.
   #
-  #   [String] :program =>
+  #   [:program]
   #     Name of the main project executable.
   #
   #     The default value is the value of the :project parameter
   #     in lowercase and CamelCase converted into snake_case.
   #
-  #   [String] :version =>
+  #   [:version]
   #     Version of the project.
   #
   #     The default value is "0.0.0".
   #
-  #   [String] :release =>
+  #   [:release]
   #     Date when this version was released.
   #
   #     The default value is the current time.
   #
-  #   [String] :display =>
+  #   [:display]
   #     How the project name should be displayed.
   #
   #     The default value is the project name and version together.
   #
-  #   [String] :install =>
+  #   [:install]
   #     Path to the directory which contains the project.
   #
   #     The default value is one directory above the parent
   #     directory of the file from which this method was called.
   #
-  #   [Hash] :require =>
-  #     The names and version constraints of ruby gems required by
-  #     this project.  This information must be expressed as follows:
+  #   [:require]
+  #     Hash containing the names and version constraints of ruby gems required
+  #     by this project.  This information must be expressed as follows:
   #
   #     * Each hash key must be the name of a ruby gem.
   #
@@ -82,7 +84,9 @@ class << Inochi
   #
   #     The default value is an empty Hash.
   #
-  # @return [Module] The newly configured project module.
+  # ==== Returns
+  #
+  # The newly configured project module.
   #
   def init project_symbol, project_config = {}
     project_module = fetch_project_module(project_symbol)
