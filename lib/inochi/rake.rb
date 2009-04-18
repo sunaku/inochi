@@ -496,15 +496,15 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
   # packaging
     desc 'Build a release.'
-    task :pak => [:clobber, :doc] do
-      sh $0, 'package'
+    task :gem => [:clobber, :doc] do
+      sh $0, 'gem:package'
     end
     CLEAN.include 'pkg'
 
     # ruby gem
       require 'rake/gempackagetask'
 
-      gem = Gem::Specification.new do |gem|
+      gem_spec = Gem::Specification.new do |gem|
         authors = project_module::AUTHORS
 
         if author = authors.first
@@ -553,14 +553,19 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         yield gem if gem_config
       end
 
-      Rake::GemPackageTask.new(gem).define
+      namespace :gem do
+        Rake::GemPackageTask.new(gem_spec).define
 
-      # XXX: hide the tasks defined by the above gem packaging library
-      %w[gem package repackage clobber_package].each {|t| hide_rake_task[t] }
+        %w[gem package repackage clobber_package].each do |t|
+          hide_rake_task.call "gem:#{t}"
+        end
+      end
+
+      task :clobber => "gem:clobber_package"
 
   # releasing
     desc 'Publish a release.'
-    task 'pub' => %w[ pub:pak pub:doc pub:ann ]
+    task 'pub' => %w[ pub:gem pub:doc pub:ann ]
 
     # connect to RubyForge services
       pub_forge = nil
@@ -754,7 +759,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     # release packages
       desc 'Publish release packages to RubyForge.'
-      task 'pub:pak' => :pub_forge do
+      task 'pub:gem' => :pub_forge do
         # check if this release was already published
         version = project_module::VERSION
         packages = pub_forge.autoconfig['release_ids'][pub_forge_section]
@@ -772,7 +777,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             pub_forge.__send__ command, pub_forge_project, pub_forge_section, version, *files
           end
 
-          Rake::Task[:pak].invoke
+          Rake::Task[:gem].invoke
           packages = Dir['pkg/*.[a-z]*']
 
           unless packages.empty?
