@@ -219,23 +219,36 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     end
 
   # testing
-    desc 'Run all unit tests.'
-    task :test do
-      code = %q{
+    test_runner = lambda do |interpreter|
+      require 'tempfile'
+      script = Tempfile.new($$).path # will be deleted on program exit
+
+      libs = [program_name] + # load the project-under-test's library FIRST!
+        Array(options[:test_with]).map {|lib| "inochi/test/#{lib}" }
+
+      File.write script, %{
+        # the "-I." option lets us load helper libraries inside
+        # the test suite via "test/PROJECT_NAME/LIBRARY_NAME"
+        $LOAD_PATH.unshift '.', 'lib'
+
+        #{libs.inspect}.each do |lib|
+          require lib
+        end
+
         # set title of test suite
-        $0 = File.basename(Dir.pwd)
+        $0 = #{project_module.to_s.inspect}
 
         # dump language phrases *after* exercising all code (and
         # thereby populating the phrases cache) in the project
         at_exit do
           if ENV['dump_lang_phrases'] == '1'
-            file = %s
-            list = %s::PHRASES.phrases
+            file = #{File.expand_path(lang_dump_file).inspect}
+            list = eval(#{project_symbol.to_s.inspect})::PHRASES.phrases
             data = list.map {|s| s + ':' }.join("\n")
 
             File.write file, data
 
-            puts "Extracted #{list.length} language phrases into #{file.inspect}"
+            puts "Extracted \#{list.length} language phrases into \#{file.inspect}"
           end
         end
 
@@ -253,22 +266,44 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             require unit_path
             require test_path
           else
-            warn "Skipped test #{test.inspect} because it lacks a corresponding #{unit.inspect} unit."
+            warn "Skipped test \#{test.inspect} because it lacks a corresponding \#{unit.inspect} unit."
           end
         end
-      } % [lang_dump_file.inspect, project_symbol]
+      }
 
-      libs = [program_name] + # load the project under test FIRST!
-        [options[:test_with]].flatten.map {|lib| "inochi/test/#{lib}" }
+      command = [interpreter.to_s]
 
-      reqs = libs.map {|lib| ['-r', lib] }.flatten
+      if interpreter == :rcov
+        # omit internals from coverage analysis
+        command.push '--exclude-only', script
+        command.push '--exclude', Inochi::INSTALL
 
-      # NOTE: the "-I." option lets us load helper libraries inside
-      #       the test suite via "test/PROJECT_NAME/LIBRARY_NAME"
-      args = %w[-w -Ilib -I.] + reqs + ['-e', code]
+        require 'rbconfig'
+        ruby_internals = File.dirname(Config::CONFIG['rubylibdir'])
+        command.push '--exclude', /^#{Regexp.quote ruby_internals}/.to_s
 
-      ruby(*args)
+        # show results summary after execution
+        command.push '-T'
+      else
+        # enable Ruby warnings during execution
+        command << '-w'
+      end
+
+      command << script
+      sh(*command)
     end
+
+    desc 'Run tests.'
+    task :test do
+      test_runner.call :ruby
+    end
+
+    desc 'Run tests with code coverage analysis.'
+    task 'test:cov' do
+      test_runner.call :rcov
+    end
+
+    CLEAN.include 'coverage'
 
     desc 'Report code quality statistics.'
     task 'lint' do

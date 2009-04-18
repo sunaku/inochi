@@ -20,15 +20,16 @@ Inochi.init :Inochi,
     'launchy'     => '>= 0.3.3', # for launching a web browser
   },
   :develop => {
-    'rake'        => ['>= 0.8.4', '< 0.9'],
-    'rubyforge'   => '~> 1',                # for publishing gems to RubyForge
-    'mechanize'   => '~> 0',                # for automating web browsing
-    'voloko-sdoc' => ['>= 0.2.10', '< 1'],  # for generating API documentation
-    'addressable' => '~> 2',                # for parsing URIs properly
-    'erbook'      => ['>= 6.1.1',  '< 7'],  # for processing the user manual
-    'babelfish'   => '~> 0',                # for human language translation
-    'flay'        => nil,                   # for code quality analysis
-    'reek'        => nil,                   # for code quality analysis
-    'roodi'       => nil,                   # for code quality analysis
-    'ruby_diff'   => nil,                   # for code quality analysis
+    'rake'           => ['>= 0.8.4', '< 0.9'],
+    'rubyforge'      => '~> 1',              # for publishing gems to RubyForge
+    'mechanize'      => '~> 0',              # for automating web browsing
+    'voloko-sdoc'    => ['>= 0.2.10', '< 1'],# for generating API documentation
+    'addressable'    => '~> 2',              # for parsing URIs properly
+    'erbook'         => ['>= 6.1.1',  '< 7'],# for processing the user manual
+    'babelfish'      => '~> 0',              # for human language translation
+    'spicycode-rcov' => nil,                 # for code coverage statistics
+    'flay'           => nil,                 # for code quality analysis
+    'reek'           => nil,                 # for code quality analysis
+    'roodi'          => nil,                 # for code quality analysis
+    'ruby_diff'      => nil,                 # for code quality analysis
   }
