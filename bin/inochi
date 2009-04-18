@@ -175,7 +175,7 @@
       :version => '#{project_version}',
       :release => '#{project_release}',
       :website => 'http://#{program_name}.rubyforge.org',
-      :tagline => 'TODO: put a single line description of your project here.',
+      :tagline => 'put a single line description of your project here',
       :require => {
         # TODO: list gems required by your project here.
         # NOTE: this is completely optional!
