@@ -1,7 +1,8 @@
-<% yaml_addr = "http://yaml.kwiki.org/?YamlInFiveMinutes" %>
+% require 'inochi/util/tempdir'
+% yaml_addr = "http://yaml.kwiki.org/?YamlInFiveMinutes"
 
-<% part "Usage" do %>
-  <% section "Command-line interface" do %>
+%|part "Usage"
+  %|section "Command-line interface"
     When you run this command:
 
         <%= $program %> --help
@@ -10,7 +11,7 @@
 
     <pre><%= verbatim `ruby bin/#{$program} --help` %></pre>
 
-    <% tip "Merging files with **kdiff3**" do %>
+    %|tip "Merging files with **kdiff3**"
       Instead of merging files by hand, you can transfer wanted changes between files semi-automatically using [kdiff3](http://kdiff3.sourceforge.net).  Simply follow these instructions:
 
       1.  Create a file named <tt>merge2</tt> with the following content:
@@ -39,21 +40,18 @@
               <%= $program %> -m merge2
 
           Now **kdiff3** will be invoked to help you transfer your changes.  When you are finished transferring changes, save the file and quit **kdiff3**.  If you do not want to transfer any changes, simply quit **kdiff3** _without_ saving the file.
-    <% end %>
-  <% end %>
 
-  <% section "Ruby library interface" do %>
+  %|section "Ruby library interface"
     The [`Inochi` module](api/Inochi.html) has several class methods which provide a common configuration for various aspects of your project.  These aspects, and their interactions with the `Inochi` module, are as follows:
     * Your project's main library invokes the [`Inochi.init()` method](api/Inochi.html#init-class_method).
     * Your project's main executable invokes the [`Inochi.main()` method](api/Inochi.html#main-class_method).
-    * Your project's <tt>Rakefile</tt> invokes the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
+    * Your project's <tt>rakefile</tt> invokes the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
     * Your project's user manual invokes the [`Inochi.book()` method](api/Inochi.html#book-class_method).
-  <% end %>
 
-  <% section "Tutorial" do %>
+  %|section "Tutorial"
     This tutorial shows how **<%= $project %>** is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
 
-    <% section "Have a brilliant idea" do %>
+    %|section "Have a brilliant idea"
       It is 4am on Sunday morning.  Unwilling to sleep, you have spent the past few hours programming obsessively..  Though your eyes grow heavy and your stomach churns from hunger, your mind charges forth with haste.
 
       > Push on! Keep on!
@@ -93,21 +91,11 @@
       You awaken that evening relaxed and refreshed.  A brilliant idea for a new project enters your mind:  the project will be a tool that counts the number of words in text file.  And, the project can be accessed from Ruby via the `WordCount` module.
 
       *However*, you must go to work the next morning, so there isn't much time.  What can you do?  Let's see how **<%= $project %>** can help us meet this challenge.
-    <% end %>
 
-    <%
-      require 'tempfile'
-      tmp = Tempfile.new($project).path
-      File.delete tmp
-      mkdir_p tmp
+    %|cd TempDir.new.path
+      % main_executable = 'bin/word_count'
 
-      begin
-        old = Dir.pwd
-        cd tmp
-
-        main_executable = 'bin/word_count'
-    %>
-      <% section "Generate your project" do %>
+      %|section "Generate your project"
         Give life to your new project:
 
         <pre>
@@ -122,21 +110,19 @@
         <% cd "word_count" %>
         </pre>
 
-        <% paragraph "View Rake tasks" do %>
+        %|paragraph "View Rake tasks"
           <pre>
           # rake -T
           <%= verbatim `rake -T` %>
           </pre>
-        <% end %>
 
-        <% paragraph "Run unit tests" do %>
+        %|paragraph "Run unit tests"
           <pre>
           # rake test
           <%= verbatim `rake test` %>
           </pre>
-        <% end %>
 
-        <% paragraph "Run project executable" do %>
+        %|paragraph "Run project executable"
           <pre>
           <% command = main_executable %>
           # ruby <%= command %>
@@ -158,9 +144,8 @@
           # ruby <%= command %>
           <%= verbatim `ruby #{command}` %>
           </pre>
-        <% end %>
 
-        <% paragraph "Show user manual" do %>
+        %|paragraph "Show user manual"
           Build the user manual (please disregard any "unclosed span" warnings):
 
           <pre>
@@ -175,13 +160,11 @@
           </pre>
 
           The manual will now appear in your default web browser.
-        <% end %>
-      <% end %>
 
-      <% section "Configure your project" do %>
+      %|section "Configure your project"
         <%= xref "Ruby library interface" %> lists and documents the interactions between your project and **<%= $project %>**.  These points of interaction are illustrated in the following sections.
 
-        <% section "Project information" do %>
+        %|section "Project information"
           <% license_file = 'LICENSE' %>
 
           Open the <tt><%= license_file %></tt> file, which contains the open source [ISC license](http://www.opensource.org/licenses/isc-license.txt) by default, and add a copyright notice with your name and (optional) email address:
@@ -197,31 +180,29 @@
           <code>
           <%= verbatim File.read(main_library) %>
           </code>
-        <% end %>
 
-        <% section "Project executable" do %>
+        %|section "Project executable"
           Open the <tt><%= main_executable %></tt> file and fill in the blanks:
 
           <code>
           <%= verbatim File.read(main_executable) %>
           </code>
-        <% end %>
 
-        <% section "Rake tasks" do %>
-          <% rake_file = 'Rakefile' %>
+        %|section "Rake tasks"
+          <% rake_file = 'rakefile' %>
 
           Open the <tt><%= rake_file %></tt> and fill in the blanks:
 
           <code>
           <%= verbatim File.read(rake_file) %>
           </code>
-        <% end %>
 
-        <% section "User manual" do %>
+        %|section "User manual"
           <%
             whole = 'doc/index.erb'
             parts = File.read(whole).
-              scan(/<%#\s*include\s+(\S+)/).flatten.map {|s| "doc/#{s}" }
+              scan(/^[[:blank:]]*%\+[[:blank:]]*(.*)\s*/).
+              flatten.map {|s| "doc/" + eval(s) }
 
             files = [whole, *parts]
           %>
@@ -230,15 +211,11 @@
 
           Open these source files and fill in the blanks:
 
-          <% files.each do |f| %>
-            <% paragraph "<tt>#{f}</tt>" do %>
+          %|files.each |f|
+            %|paragraph "<tt>#{f}</tt>"
               <code lang="rhtml"><%= verbatim File.read(f) %></code>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
 
-      <% section "Implement your project" do %>
+      %|section "Implement your project"
         Add the following code to the bottom of <tt>lib/word_count.rb</tt>, the main project library:
 
         <code>
@@ -291,7 +268,7 @@
         end
         </code>
 
-        <% paragraph "Goodbye `$LOAD_PATH`, hello `require()`" do %>
+        %|paragraph "Goodbye `$LOAD_PATH`, hello `require()`"
           Notice that, in the Ruby files that you modified so far, there were no `$LOAD_PATH` manipulations and no explicit `require()` statements to pull in the various parts of your project.  That is because **<%= $project %>** does this for you automatically.
 
           Furthermore, you can always `require()` a sub-library anywhere in your project using its canonical path because **<%= $project %>** puts your main project libraries on the Ruby load path.
@@ -305,19 +282,16 @@
           </code>
 
           Regardless of whether a sub-library is used within your project itself or from within an external application, we always `require()` the sub-library using the same canonical path.
-        <% end %>
-      <% end %>
 
-      <% section "Test your project" do %>
+      %|section "Test your project"
         To reduce the amount of code you have to write, **<%= $project %>** defines the following convention for unit tests.
 
-        <% paragraph "Units and tests" do %>
+        %|paragraph "Units and tests"
           Every Ruby source file in your project's <tt>lib/</tt> directory is considered to be a **unit**.  Likewise, every Ruby source file in your project's <tt>test/</tt> is considered to be a **test**.
 
           As a result, your project's <tt>test/</tt> directory structure *mirrors* the structure of your project's <tt>lib/</tt> directory.  For example, if your project has a <tt>lib/foo/bar.rb</tt> unit, then <tt>test/foo/bar.rb</tt> would be its corresponding test.
-        <% end %>
 
-        <% paragraph "Test execution" do %>
+        %|paragraph "Test execution"
           <pre>rake test</pre>
 
           The above command begins the testing process, during which:
@@ -333,9 +307,8 @@
           * Within each test, test cases are executed in random order.  This is the default behavior of the [minitest] library.
 
           [minitest]: http://rubyforge.org/projects/bfts/
-        <% end %>
 
-        <% paragraph "Helper libraries" do %>
+        %|paragraph "Helper libraries"
           Your project's main directory is added to Ruby's load path.  So if your tests have helper libraries stored in your project's <tt>test/</tt> directory, you can load them into your tests by adding a "test/" prefix.
 
           For example, if your <tt>test/foo/bar.rb</tt> test has a <tt>test/foo/qux.rb</tt> helper library, then you would write the following code inside the test to load the helper library:
@@ -343,15 +316,13 @@
           <code>
           require 'test/foo/qux'
           </code>
-        <% end %>
-      <% end %>
 
-      <% section "Translate your project" do %>
+      %|section "Translate your project"
         <% phrases_file = "<tt>lang/phrases.yaml</tt>" %>
 
         Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  **<%= $project %>** makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
 
-        <% section "Language phrases" do %>
+        %|section "Language phrases"
           **<%= $project %>** equips your project module with a `PHRASES` constant (see the [`Inochi::Phrases` class](api/Inochi/Phrases.html)) which provides access to translations of language phrases used in your project.
 
           The [`Inochi::Phrases#[]` method](api/Inochi/Phrases.html#[]-instance_method) translates a given language phrase into the user's preferred language, which is automatically inferred from their environment, but may be explictly overridden by the user via the <tt>--locale</tt> option of <%= xref "Run project executable", "your project's main executable" %>:
@@ -367,16 +338,15 @@
           #=> 'No translation for this'
           </code>
 
-          <% paragraph "Parameterizing language phrases" do %>
+          %|paragraph "Parameterizing language phrases"
             Language phrases can be parameterized using [`printf` format placeholders](http://en.wikipedia.org/wiki/Printf#printf_format_placeholders) to ease translation:
 
             <code>
             your_project::PHRASES['Good afternoon, %s.', user_name]
             your_project::PHRASES['You are %d years old.', user_age]
             </code>
-          <% end %>
 
-          <% paragraph "Explicit translation into a language" do %>
+          %|paragraph "Explicit translation into a language"
             If a language phrase must be translated into a specific language, regardless of the user's preference, you can invoke the respective method (whose name is the same as the [ISO-639 language code](http://en.wikipedia.org/wiki/ISO_639) of the language into which you wish to translate) on your `PHRASES` object:
 
             <code>
@@ -386,10 +356,8 @@
             # explictly translate into French (fr)
             your_project::PHRASES.fr('Farewell %s!', user_name)
             </code>
-          <% end %>
-        <% end %>
 
-        <% section "Translation files" do %>
+        %|section "Translation files"
           Translation files are [YAML documents](<%= yaml_addr %>) that reside in your project's <tt>lang/</tt> directory.  They provide translations for <%= xref "Language phrases", "language phrases" %> used in your project.
 
           For example, suppose that your language phrases are written in English, the <tt>lang/es.yaml</tt> (Spanish) translation file would appear like this:
@@ -410,9 +378,8 @@
           On each line, the original language phrase (as used in your project) appears first, then a single semicolon (:), followed by the translation.
 
           Also, notice that if a language phrase contains a semicolon, then the entire phrase must be enclosed in quotation marks.  The same rule applies to its corresponding translation.
-        <% end %>
 
-        <% section "Extracting language phrases" do %>
+        %|section "Extracting language phrases"
           <pre>
           # rake lang:dump
           <%= verbatim `rake lang:dump` %>
@@ -420,7 +387,7 @@
 
           The above command exercises your project's code and extracts all *utilized* language phrases into the <%= phrases_file %> file.  Continue reading to learn how this is accomplished.
 
-          <% paragraph "Dynamic analysis" do %>
+          %|paragraph "Dynamic analysis"
             Because Ruby is a dynamically interpreted language, the easiest way to extract language phrases is to evaluate the code that defines them and keep track of which phrases are defined.
 
             But how can **<%= $project %>** exercise all Ruby code in your project?  The answer is through *unit tests*.  Because unit tests already exercise your project's code, **<%= $project %>** can use them to reach and extract all language phrases from your project.
@@ -428,16 +395,13 @@
             However, note that if your unit tests *do not* exercise a part of your project that defines language phrases, then those phrases *will not* be extracted by **<%= $project %>**.
 
             This gives you extra motivation to improve the coverage of your test suite---at least to the point where all code that defines language phrases is covered.
-          <% end %>
 
-          <% paragraph "Static analysis" do %>
+          %|paragraph "Static analysis"
             In a future release, I plan to extract language phrases through static analysis of Ruby code.  This approach will supplement the current practice of reaching language phrases through unit tests.
 
             Patches are welcome! :-)
-          <% end %>
-        <% end %>
 
-        <% section "Translating language phrases" do %>
+        %|section "Translating language phrases"
           After you have extracted all language phrases from your project (either manually or via <%= xref "Extracting language phrases" %>) into the <%= phrases_file %> file, **<%= $project %>** can automatically translate them into various languages using the [Yahoo! BabelFish translation service](http://babelfish.yahoo.com):
 
           <pre>
@@ -446,17 +410,15 @@
           </pre>
 
           Notice that you must specify the language in which your phrases are written, via the <tt>from=</tt> parameter.  **<%= $project %>** cannot determine this automatically.
-        <% end %>
-      <% end %>
 
-      <% section "Publish your project" do %>
+      %|section "Publish your project"
         <pre>
         # rake pub
         </pre>
 
         The above command performs all automated steps described in the following sections.
 
-        <% section "Build a RubyGem" do %>
+        %|section "Build a RubyGem"
           Build a RubyGem by running:
 
           <pre>
@@ -470,19 +432,17 @@
           # gem spec pkg/*.gem
           <code lang="yaml"><%= `gem spec pkg/*.gem`.rstrip %></code>
           </pre>
-        <% end %>
 
-        <% section "Publish a RubyGem" do %>
+        %|section "Publish a RubyGem"
           You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)).
 
           Publish a RubyGem by running:
 
           <pre>
-          # rake pub:pak
+          # rake pub:gem
           </pre>
-        <% end %>
 
-        <% section "Announce a release" do %>
+        %|section "Announce a release"
           You must first provide your <%= xref "Login information" %> to **<%= $project %>**.  If you do not want to do this, then see <%= xref "Manual release announcement" %>.
 
           Announce a release by running:
@@ -491,7 +451,7 @@
           # rake pub:ann
           </pre>
 
-          <% paragraph "Login information" do %>
+          %|paragraph "Login information"
             In order to automate the announcement of releases, **<%= $project %>** needs to know your login information for the [RAA (Ruby Application Archive)](http://raa.ruby-lang.org) and [RubyForum](http://www.ruby-forum.com/forum/4), which serves as a gateway to the [ruby-talk mailing list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/).
 
             <% logins_file = "~/.config/inochi/logins.yaml" %>
@@ -511,9 +471,7 @@
 
                 # chmod 0600 <%= logins_file %>
 
-          <% end %>
-
-          <% section "Manual release announcement" do %>
+          %|section "Manual release announcement"
             Build release announcements by running:
 
             <pre>
@@ -522,15 +480,12 @@
             </pre>
 
             This produces the following files in your project directory:
-            <% Dir['ANN*'].each do |f| %>
-            * <tt><%= f %></tt>
-            <% end %>
+            %|Dir['ANN*'].each |f|
+              * <tt><%= f %></tt>
 
             Now you can manually announce your release using these files.
-          <% end %>
-        <% end %>
 
-        <% section "Publish the documentation" do %>
+        %|section "Publish the documentation"
           Publish the user manual and API documentation by running:
 
           <pre>
@@ -538,13 +493,3 @@
           </pre>
 
           If your documentation website (see the `:docsite` option for the [`Inochi.init()` method](api/Inochi.html#init-class_method)) is hosted on RubyForge, then the above command will automatically upload your project's documentation to the correct place.
-        <% end %>
-      <% end %>
-    <%
-      ensure
-        cd old
-        rm_rf tmp
-      end
-    %>
-  <% end %>
-<% end %>

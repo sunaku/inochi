@@ -209,22 +209,24 @@
   }
 
   create "#{program_name}/doc/index.erb", %{
-    <% Inochi.book #{project_symbol.inspect}, self %>
+    % Inochi.book #{project_symbol.inspect}, self
 
-    <%# include intro.erb #%>
-    <%# include setup.erb #%>
-    <%# include theory.erb #%>
-    <%# include usage.erb #%>
-    <%# include history.erb #%>
+    %+ "intro.erb"
+    %+ "setup.erb"
+    %+ "theory.erb"
+    %+ "usage.erb"
+    %+ "history.erb"
   }
 
   create "#{program_name}/doc/intro.erb", %{
-    <% chapter "Introduction" do %>
-      <% project_summary do %>
+    % api_url = 'api/index.html'
+    % src_url = 'http://github.com/#{ENV['USER']}/' + $program
+
+    %|chapter "Introduction"
+      %|project_summary
         > TODO: explain the purpose of your project
 
         **<%= $project %>** is a __________ that __________.
-      <% end %>
 
       > TODO: explain why your project is important
 
@@ -240,19 +242,18 @@
       * [competitor 2](http://)
       * [competitor 3](http://)
 
-      <% paragraph "Etymology" do %>
+      %|paragraph "Etymology"
         > TODO: explain the meaning of the name of your project
-      <% end %>
 
-      <% section "Logistics" do %>
+      %|section "Logistics"
         * <%= xref "History", "Release notes" %> --- history of project releases.
-        * [Source code](http://github.com/#{ENV['USER']}/<%= $program %>) --- obtain via [Git](http://git.or.cz) or browse online.
-        * [API reference](api/index.html) --- documentation for source code.
+        * [Source code](<%= src_url %>) --- obtain via [Git](http://git.or.cz) or browse online.
+        * [API reference](<%= api_url %>) --- documentation for source code.
 
         To get help or provide feedback, simply
         <%= xref "License", "contact the author(s)" %>.
 
-        <% paragraph "Version numbers" do %>
+        %|paragraph "Version numbers"
           **<%= $project %>** releases are numbered in *major.minor.patch*
           form according to the [RubyGems rational versioning
           policy](http://www.rubygems.org/read/chapter/7), which
@@ -291,14 +292,11 @@
               </tr>
             </tbody>
           </table>
-        <% end %>
-      <% end %>
 
-      <% section "License" do %>
-        <%# include ../LICENSE #%>
-      <% end %>
+      %|section "License"
+        %< "../LICENSE"
 
-      <% section "Credits" do %>
+      %|section "Credits"
         > TODO: give attribution to your predecessors and contributors
 
         **<%= $project %>** is made possible by
@@ -308,25 +306,22 @@
         * __________ (contributor name)
         * __________ (contributor name)
         * __________ (contributor name)
-      <% end %>
-    <% end %>
   }
 
   create "#{program_name}/doc/setup.erb", %{
-    <% chapter "Setup" do %>
-      <% section "Requirements" do %>
+    %|chapter "Setup"
+      %|section "Requirements"
         Your system needs the following software to run **<%= $project %>**.
 
         | Software                        | Description               | Notes                                        |
         | --------                        | -----------               | -----                                        |
         | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required.         |
         | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} is required. |
-      <% end %>
 
-      <% section "Installation" do %>
+      %|section "Installation"
         You can install **<%= $project %>** by running this command:
 
-            gem install -f <%= $program %>
+            gem install <%= $program %>
 
         To check whether the installation was sucessful, run this command:
 
@@ -338,9 +333,8 @@
 
         If you do not see such output, you may
         <%= xref "License", "ask the author(s)" %> for help.
-      <% end %>
 
-      <% section "Manifest" do %>
+      %|section "Manifest"
         You will see the following items inside **<%= $project %>**'s installation
         directory, whose path you can determine by running this command:
 
@@ -369,59 +363,52 @@
         * <tt>lang/</tt> --- translations of language phrases.
 
         * <tt>LICENSE</tt> --- copyright notice and legal conditions.
-      <% end %>
-    <% end %>
   }
 
   create "#{program_name}/doc/theory.erb", %{
-    <% chapter "Theory of operation" do %>
+    %|chapter "Theory of operation"
       > TODO: explain how your project does what it does
-    <% end %>
   }
 
   create "#{program_name}/doc/usage.erb", %{
-    <% chapter "Usage" do %>
-      <% section "Command-line interface" do %>
+    %|chapter "Usage"
+      %|section "Command-line interface"
         When you run this command:
 
             <%= $program %> --help
 
         You will see this output:
 
-        <pre><%= verbatim `ruby bin/\#{$program_name} --help` %></pre>
+        <pre><%= verbatim `ruby bin/\#{$program} --help` %></pre>
 
         > TODO: explain the command-line arguments
-      <% end %>
 
-      <% section "Ruby library interface" do %>
+      %|section "Ruby library interface"
         > TODO: explain how to use your project's Ruby library
         >       from inside another Ruby program or library
-      <% end %>
 
-      <% section "Tutorial" do %>
+      %|section "Tutorial"
         This tutorial shows how **<%= $project %>** is used to __________.
 
         > TODO: give examples for doing common tasks
-      <% end %>
 
       > TODO: explain how to do more (advanced) things
-    <% end %>
   }
 
   create "#{program_name}/doc/history.erb", %{
-    <% chapter "History" do %>
+    %|chapter "History"
       > TODO: put a brief history about your project here
 
-      <% project_history do %>
+      %|project_history
         > TODO: put release notes for your project
         >       here -- newest first, oldest last.
 
-        <% section "Version #{project_version} (#{project_release})" do %>
+        %|section "Version #{project_version} (#{project_release})"
           > TODO: write a short summary of the changes in this release
 
           This release changes __________, adds __________, and fixes __________.
 
-          <% paragraph "Incompatible changes" do %>
+          %|paragraph "Incompatible changes"
             > TODO: list all backward-incompatible changes in this release
 
             * __________ has been __________ to __________. (contributor name)
@@ -429,9 +416,8 @@
             * __________. (contributor name)
 
             * __________. (contributor name)
-          <% end %>
 
-          <% paragraph "New features" do %>
+          %|paragraph "New features"
             > TODO: list new features added in this release
 
             * __________. (contributor name)
@@ -439,9 +425,8 @@
             * __________. (contributor name)
 
             * __________. (contributor name)
-          <% end %>
 
-          <% paragraph "Bug fixes" do %>
+          %|paragraph "Bug fixes"
             > TODO: describe all bugs that are fixed in this release
 
             * __________ was __________. (contributor name)
@@ -449,9 +434,8 @@
             * __________ were __________. (contributor name)
 
             * __________ did __________. (contributor name)
-          <% end %>
 
-          <% paragraph "Housekeeping" do %>
+          %|paragraph "Housekeeping"
             > TODO: list the refactorings, clean ups, and other
             >       improvements that were done for this release
 
@@ -460,8 +444,4 @@
             * __________. (contributor name)
 
             * __________. (contributor name)
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
   }
