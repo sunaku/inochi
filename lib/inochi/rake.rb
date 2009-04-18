@@ -551,8 +551,11 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         gem.description = gem.summary
         gem.homepage    = project_module::WEBSITE
         gem.files       = FileList['**/*'].exclude('_darcs') - CLEAN
-        gem.executables = project_module::PROGRAM
         gem.has_rdoc    = true
+
+        executable      = project_module::PROGRAM
+        executable_path = File.join(gem.bindir, executable)
+        gem.executables = executable if File.exist? executable_path
 
         unless project_module == Inochi
           gem.add_dependency 'inochi', Inochi::VERSION.requirement
