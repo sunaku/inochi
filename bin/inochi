@@ -117,7 +117,7 @@
     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   }
 
-  create "#{program_name}/Rakefile", %{
+  create "#{program_name}/rakefile", %{
     #{inochi_preamble}
 
     Inochi.rake #{project_symbol.inspect} do |gem|
