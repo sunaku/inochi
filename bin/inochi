@@ -1,4 +1,8 @@
 #!/usr/bin/ruby -w
+#--
+# Copyright 2009 Suraj N. Kurapati
+# See the LICENSE file for details.
+#++
 #
 # Generates a project scaffold using the given information.
 #

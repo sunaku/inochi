@@ -1,3 +1,8 @@
+#--
+# Copyright 2008 Suraj N. Kurapati
+# See the LICENSE file for details.
+#++
+
 class << Inochi
   ##
   # Provides a common configuration for the project's user manual:

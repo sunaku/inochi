@@ -1,3 +1,8 @@
+#--
+# Copyright 2009 Suraj N. Kurapati
+# See the LICENSE file for details.
+#++
+
 describe 'Inochi.calc_program_name' do
   it 'converts input into lower-case' do
     c('foo').must_equal('foo')

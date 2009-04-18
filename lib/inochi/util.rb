@@ -1,3 +1,8 @@
+#--
+# Copyright 2008 Suraj N. Kurapati
+# See the LICENSE file for details.
+#++
+
 class << Inochi
   ##
   # Returns the name of the main program executable, which
