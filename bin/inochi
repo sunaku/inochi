@@ -99,6 +99,13 @@
     require '#{Inochi::PROGRAM}'
   }.strip
 
+  create "#{program_name}/CREDITS", %{
+    * Contributor name
+    * [Contributor name with hyperlink](http://the.contributor's.url)
+    * Another contributor
+    * Yet another contributor
+  }
+
   create "#{program_name}/LICENSE", %{
     (the ISC license)
 
@@ -303,9 +310,7 @@
         <%= xref "History", "contributions" %>
         from users like you:
 
-        * __________ (contributor name)
-        * __________ (contributor name)
-        * __________ (contributor name)
+        %< "../CREDITS"
   }
 
   create "#{program_name}/doc/setup.erb", %{
