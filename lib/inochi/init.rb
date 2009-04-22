@@ -74,8 +74,19 @@ class << Inochi
   #     directory of the file from which this method was called.
   #
   #   [:require]
-  #     Hash containing the names and version constraints of ruby gems required
-  #     by this project.  This information must be expressed as follows:
+  #     Hash containing the names and version constraints of RubyGems required
+  #     to run this project.  This information must be expressed as follows:
+  #
+  #     * Each hash key must be the name of a ruby gem.
+  #
+  #     * Each hash value must be either +nil+, a single version number
+  #       requirement string (see Gem::Requirement) or an Array thereof.
+  #
+  #     The default value is an empty Hash.
+  #
+  #   [:develop]
+  #     Hash containing the names and version constraints of RubyGems required
+  #     to build this project.  This information must be expressed as follows:
   #
   #     * Each hash key must be the name of a ruby gem.
   #
@@ -112,6 +123,7 @@ class << Inochi
       project_config[:program] ||= calc_program_name(project_symbol)
       project_config[:install] ||= File.dirname(project_libs)
       project_config[:require] ||= {}
+      project_config[:develop] ||= {}
 
     # establish gem version dependencies and
     # sanitize the values while we're at it
@@ -120,10 +132,15 @@ class << Inochi
 
       src.each_pair do |gem_name, version_reqs|
         gem_name     = gem_name.to_s
-        version_reqs = [version_reqs].flatten.compact
+        version_reqs = Array(version_reqs).compact
+
+        begin
+          gem gem_name, *version_reqs
+        rescue Gem::Exception => e
+          warn e.inspect
+        end
 
         dst[gem_name] = version_reqs
-        gem gem_name, *version_reqs
       end
 
     # make configuration parameters available as constants

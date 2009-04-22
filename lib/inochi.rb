@@ -16,6 +16,15 @@ Inochi.init :Inochi,
   :website => 'http://snk.tuxfamily.org/lib/inochi',
   :tagline => 'Gives life to RubyGems-based software',
   :require => {
-    'trollop' => '~> 1',     # for parsing command-line options
-    'launchy' => '>= 0.3.3', # for launching a web browser
+    'trollop'     => '~> 1',     # for parsing command-line options
+    'launchy'     => '>= 0.3.3', # for launching a web browser
+  },
+  :develop => {
+    'rake'        => ['>= 0.8.4', '< 0.9'],
+    'rubyforge'   => '~> 1',                # for publishing gems to RubyForge
+    'mechanize'   => '~> 0',                # for automating web browsing
+    'voloko-sdoc' => ['>= 0.2.10', '< 1'],  # for generating API documentation
+    'addressable' => '~> 2',                # for parsing URIs properly
+    'erbook'      => ['>= 6.1.1',  '< 7'],  # for processing the user manual
+    'babelfish'   => '~> 0',                # for human language translation
   }

@@ -134,6 +134,20 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     project_module.const_set :AUTHORS, copyright_holders
 
+  # establish development gem dependencies
+    [Inochi, project_module].uniq.each do |mod|
+      mod::DEVELOP.each_pair do |gem_name, version_reqs|
+        gem_name     = gem_name.to_s
+        version_reqs = Array(version_reqs).compact
+
+        begin
+          gem gem_name, *version_reqs
+        rescue Gem::Exception => e
+          warn e.inspect
+        end
+      end
+    end
+
   require 'rake/clean'
 
   hide_rake_task = lambda do |name|
@@ -564,12 +578,22 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         executable_path = File.join(gem.bindir, executable)
         gem.executables = executable if File.exist? executable_path
 
+        project_module::DEVELOP.each_pair do |gem_name, version_reqs|
+          version_reqs = Array(version_reqs).compact
+          gem.add_development_dependency gem_name, *version_reqs
+        end
+
         project_module::REQUIRE.each_pair do |gem_name, version_reqs|
+          version_reqs = Array(version_reqs).compact
           gem.add_dependency gem_name, *version_reqs
         end
 
-        if options[:inochi_consumer] && project_module != Inochi
-          gem.add_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
+        unless project_module == Inochi
+          gem.add_development_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
+
+          if options[:inochi_consumer]
+            gem.add_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
+          end
         end
 
         # additional configuration is done by user

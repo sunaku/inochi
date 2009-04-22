@@ -4,18 +4,4 @@ Inochi.rake :Inochi,
   :rubyforge_project => 'sunaku',
   :upload_target     => File.expand_path('~/www/lib/inochi/'),
   :upload_delete     => true,
-  :test_with         => :minitest\
-\
-do |gem|
-  {
-    'rake'        => ['>= 0.8.4', '< 0.9'],
-    'rubyforge'   => '~> 1',                # for publishing gems to RubyForge
-    'mechanize'   => '~> 0',                # for automating web browsing
-    'voloko-sdoc' => ['>= 0.2.10', '< 1'],  # for generating API documentation
-    'addressable' => '~> 2',                # for parsing URIs properly
-    'erbook'      => ['>= 6.1.1',  '< 7'],  # for processing the user manual
-    'babelfish'   => '~> 0',                # for human language translation
-  }.each_pair do |dep, ver|
-    gem.add_development_dependency dep, ver
-  end
-end
+  :test_with         => :minitest
