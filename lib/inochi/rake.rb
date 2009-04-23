@@ -290,6 +290,10 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       end
 
       command << script
+
+      require 'shellwords'
+      command.concat Shellwords.shellwords(ENV['opts'].to_s)
+
       sh(*command)
     end
 
