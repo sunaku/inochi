@@ -270,6 +270,26 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       ruby(*args)
     end
 
+    desc 'Report code quality statistics.'
+    task 'lint' do
+      separator = '-' * 80
+
+      linter = lambda do |*command|
+        name = command.first
+
+        puts "\n\n", separator, name, separator
+        system(*command)
+      end
+
+      ruby_files = Dir['**/*.rb']
+
+      linter.call 'sloccount', '.'
+      linter.call 'flay' # operates on all .rb & .erb files by default
+      linter.call 'reek', *ruby_files
+      linter.call 'roodi', *ruby_files
+      linter.call 'ruby_diff', *ruby_files
+    end
+
   # documentation
     desc 'Build all documentation.'
     task :doc => %w[ doc:api doc:man ]

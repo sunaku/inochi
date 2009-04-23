@@ -27,4 +27,8 @@ Inochi.init :Inochi,
     'addressable' => '~> 2',                # for parsing URIs properly
     'erbook'      => ['>= 6.1.1',  '< 7'],  # for processing the user manual
     'babelfish'   => '~> 0',                # for human language translation
+    'flay'        => nil,                   # for code quality analysis
+    'reek'        => nil,                   # for code quality analysis
+    'roodi'       => nil,                   # for code quality analysis
+    'ruby_diff'   => nil,                   # for code quality analysis
   }
