@@ -305,6 +305,11 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     CLEAN.include 'coverage'
 
+    desc 'Run tests with multiple Ruby versions.'
+    task 'test:ruby' do
+      test_runner.call :multiruby
+    end
+
     desc 'Report code quality statistics.'
     task 'lint' do
       separator = '-' * 80

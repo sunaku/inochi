@@ -32,4 +32,5 @@ Inochi.init :Inochi,
     'reek'           => nil,                 # for code quality analysis
     'roodi'          => nil,                 # for code quality analysis
     'ruby_diff'      => nil,                 # for code quality analysis
+    'ZenTest'        => ['>= 4.0.0', '< 5'], # for the `multiruby` tool
   }
