@@ -234,24 +234,24 @@
     % src_url = 'http://github.com/#{ENV['USER']}/' + $program
 
     %|chapter "Introduction"
-      %|project_summary
+      %|project
         > TODO: explain the purpose of your project
 
         **<%= $project %>** is a __________ that __________.
 
-      > TODO: explain why your project is important
+        > TODO: explain why your project is important
 
-      **<%= $project %>** is exciting because:
-      * It lets you __________.
-      * Its core contains less than __________ lines of code.
-      * It __________.
+        **<%= $project %>** is exciting because:
+        * It lets you __________.
+        * Its core contains less than __________ lines of code.
+        * It __________.
 
-      > TODO: explain why your project is better than its competitors
+        > TODO: explain why your project is better than its competitors
 
-      These features distinguish **<%= $project %>** from the competition:
-      * [competitor 1](http://)
-      * [competitor 2](http://)
-      * [competitor 3](http://)
+        These features distinguish <%= $project %> from the competition:
+        * [competitor 1](http://)
+        * [competitor 2](http://)
+        * [competitor 3](http://)
 
       %|paragraph "Etymology"
         > TODO: explain the meaning of the name of your project
@@ -408,7 +408,7 @@
     %|chapter "History"
       > TODO: put a brief history about your project here
 
-      %|project_history
+      %|history
         > TODO: put release notes for your project
         >       here -- newest first, oldest last.
 

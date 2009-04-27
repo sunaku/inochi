@@ -67,7 +67,7 @@ class << Inochi
     ##
     # Defines a brief summary of this project.
     #
-    def project_summary
+    def project
       raise ArgumentError, 'block must be given' unless block_given?
 
       node do
@@ -79,7 +79,7 @@ class << Inochi
     ##
     # Contains release notes for all project releases.
     #
-    def project_history
+    def history
       raise ArgumentError, 'block must be given' unless block_given?
 
       node do
