@@ -821,7 +821,9 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             form['post[subject]'] = ann_subject
             form['post[text]'] = ann_text
 
-            form.checkboxes.first.check # enable email notification
+            # enable email notification
+            form.field_with(:name => 'post[subscribed_by_author]').value = '1'
+
             page = form.submit
 
             errors = [page/'//div[@class="error"]/text()'].flatten
