@@ -40,7 +40,7 @@
 
       3.  Place the file in a directory that is listed in your `PATH` environment variable.
 
-      4.  Run **<%= $project %>** like this:
+      4.  Run <%= $project %> like this:
 
               <%= $program %> -m merge2
 
@@ -54,7 +54,7 @@
     * Your project's user manual invokes the [`Inochi.book()` method](api/Inochi.html#book-class_method).
 
   %|section "Tutorial"
-    This tutorial shows how **<%= $project %>** is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
+    This tutorial shows how <%= $project %> is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
 
     %|section "Have a brilliant idea"
       It is 4am on Sunday morning.  Unwilling to sleep, you have spent the past few hours programming obsessively..  Though your eyes grow heavy and your stomach churns from hunger, your mind charges forth with haste.
@@ -95,7 +95,7 @@
 
       You awaken that evening relaxed and refreshed.  A brilliant idea for a new project enters your mind:  the project will be a tool that counts the number of words in text file.  And, the project can be accessed from Ruby via the `WordCount` module.
 
-      *However*, you must go to work the next morning, so there isn't much time.  What can you do?  Let's see how **<%= $project %>** can help us meet this challenge.
+      *However*, you must go to work the next morning, so there isn't much time.  What can you do?  Let's see how <%= $project %> can help us meet this challenge.
 
     %|cd TempDir.new.path
       % main_executable = 'bin/word_count'
@@ -167,7 +167,7 @@
           The manual will now appear in your default web browser.
 
       %|section "Configure your project"
-        <%= xref "Ruby library interface" %> lists and documents the interactions between your project and **<%= $project %>**.  These points of interaction are illustrated in the following sections.
+        <%= xref "Ruby library interface" %> lists and documents the interactions between your project and <%= $project %>.  These points of interaction are illustrated in the following sections.
 
         %|section "Project information"
           <% license_file = 'LICENSE' %>
@@ -274,9 +274,9 @@
         </code>
 
         %|paragraph "Goodbye `$LOAD_PATH`, hello `require()`"
-          Notice that, in the Ruby files that you modified so far, there were no `$LOAD_PATH` manipulations and no explicit `require()` statements to pull in the various parts of your project.  That is because **<%= $project %>** does this for you automatically.
+          Notice that, in the Ruby files that you modified so far, there were no `$LOAD_PATH` manipulations and no explicit `require()` statements to pull in the various parts of your project.  That is because <%= $project %> does this for you automatically.
 
-          Furthermore, you can always `require()` a sub-library anywhere in your project using its canonical path because **<%= $project %>** puts your main project libraries on the Ruby load path.
+          Furthermore, you can always `require()` a sub-library anywhere in your project using its canonical path because <%= $project %> puts your main project libraries on the Ruby load path.
 
           <% sub_library = 'word_count/odf/text' %>
 
@@ -289,7 +289,7 @@
           Regardless of whether a sub-library is used within your project itself or from within an external application, we always `require()` the sub-library using the same canonical path.
 
       %|section "Test your project"
-        To reduce the amount of code you have to write, **<%= $project %>** defines the following convention for unit tests.
+        To reduce the amount of code you have to write, <%= $project %> defines the following convention for unit tests.
 
         %|paragraph "Units and tests"
           Every Ruby source file in your project's <tt>lib/</tt> directory is considered to be a **unit**.  Likewise, every Ruby source file in your project's <tt>test/</tt> is considered to be a **test**.
@@ -325,10 +325,10 @@
       %|section "Translate your project"
         <% phrases_file = "<tt>lang/phrases.yaml</tt>" %>
 
-        Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  **<%= $project %>** makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
+        Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  <%= $project %> makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
 
         %|section "Language phrases"
-          **<%= $project %>** equips your project module with a `PHRASES` constant (see the [`Inochi::Phrases` class](api/Inochi/Phrases.html)) which provides access to translations of language phrases used in your project.
+          <%= $project %> equips your project module with a `PHRASES` constant (see the [`Inochi::Phrases` class](api/Inochi/Phrases.html)) which provides access to translations of language phrases used in your project.
 
           The [`Inochi::Phrases#[]` method](api/Inochi/Phrases.html#[]-instance_method) translates a given language phrase into the user's preferred language, which is automatically inferred from their environment, but may be explictly overridden by the user via the <tt>--locale</tt> option of <%= xref "Run project executable", "your project's main executable" %>:
 
@@ -395,9 +395,9 @@
           %|paragraph "Dynamic analysis"
             Because Ruby is a dynamically interpreted language, the easiest way to extract language phrases is to evaluate the code that defines them and keep track of which phrases are defined.
 
-            But how can **<%= $project %>** exercise all Ruby code in your project?  The answer is through *unit tests*.  Because unit tests already exercise your project's code, **<%= $project %>** can use them to reach and extract all language phrases from your project.
+            But how can <%= $project %> exercise all Ruby code in your project?  The answer is through *unit tests*.  Because unit tests already exercise your project's code, <%= $project %> can use them to reach and extract all language phrases from your project.
 
-            However, note that if your unit tests *do not* exercise a part of your project that defines language phrases, then those phrases *will not* be extracted by **<%= $project %>**.
+            However, note that if your unit tests *do not* exercise a part of your project that defines language phrases, then those phrases *will not* be extracted by <%= $project %>.
 
             This gives you extra motivation to improve the coverage of your test suite---at least to the point where all code that defines language phrases is covered.
 
@@ -407,14 +407,14 @@
             Patches are welcome! :-)
 
         %|section "Translating language phrases"
-          After you have extracted all language phrases from your project (either manually or via <%= xref "Extracting language phrases" %>) into the <%= phrases_file %> file, **<%= $project %>** can automatically translate them into various languages using the [Yahoo! BabelFish translation service](http://babelfish.yahoo.com):
+          After you have extracted all language phrases from your project (either manually or via <%= xref "Extracting language phrases" %>) into the <%= phrases_file %> file, <%= $project %> can automatically translate them into various languages using the [Yahoo! BabelFish translation service](http://babelfish.yahoo.com):
 
           <pre>
           # rake lang:conv from=LANGUAGE_CODE
           <%= verbatim `rake lang:conv from=LANGUAGE_CODE 2>&1` %>
           </pre>
 
-          Notice that you must specify the language in which your phrases are written, via the <tt>from=</tt> parameter.  **<%= $project %>** cannot determine this automatically.
+          Notice that you must specify the language in which your phrases are written, via the <tt>from=</tt> parameter.  <%= $project %> cannot determine this automatically.
 
       %|section "Publish your project"
         <pre>
@@ -439,7 +439,7 @@
           </pre>
 
         %|section "Publish a RubyGem"
-          You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)).
+          You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
 
           Publish a RubyGem by running:
 
@@ -448,7 +448,7 @@
           </pre>
 
         %|section "Announce a release"
-          You must first provide your <%= xref "Login information" %> to **<%= $project %>**.  If you do not want to do this, then see <%= xref "Manual release announcement" %>.
+          You must first provide your <%= xref "Login information" %> to <%= $project %>.  If you do not want to do this, then see <%= xref "Manual release announcement" %>.
 
           Announce a release by running:
 
@@ -457,7 +457,7 @@
           </pre>
 
           %|paragraph "Login information"
-            In order to automate the announcement of releases, **<%= $project %>** needs to know your login information for the [RAA (Ruby Application Archive)](http://raa.ruby-lang.org) and [RubyForum](http://www.ruby-forum.com/forum/4), which serves as a gateway to the [ruby-talk mailing list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/).
+            In order to automate the announcement of releases, <%= $project %> needs to know your login information for the [RAA (Ruby Application Archive)](http://raa.ruby-lang.org) and [RubyForum](http://www.ruby-forum.com/forum/4), which serves as a gateway to the [ruby-talk mailing list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/).
 
             <% logins_file = "~/.config/inochi/logins.yaml" %>
 
@@ -485,6 +485,7 @@
             </pre>
 
             This produces the following files in your project directory:
+
             %|Dir['ANN*'].each |f|
               * <tt><%= f %></tt>
 

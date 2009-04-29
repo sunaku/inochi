@@ -1,8 +1,4 @@
 #!/usr/bin/ruby -w
-#--
-# Copyright 2009 Suraj N. Kurapati
-# See the LICENSE file for details.
-#++
 #
 # Generates a project scaffold using the given information.
 #
@@ -28,7 +24,7 @@
 #
 #
 #   ProjectName:  Name of your project, which will be normalized
-#                 into the naame of a Ruby module that will serve
+#                 into the name of a Ruby module that will serve
 #                 as a namespace for all code in your project.
 #
 #   ProgramName:  (Optional) Name of the main project executable,
@@ -38,6 +34,11 @@
 #
 # Options:
 #
+
+#--
+# Copyright 2009 Suraj N. Kurapati
+# See the LICENSE file for details.
+#++
 
 # command line
   require File.join(File.dirname(__FILE__), '..', 'lib', 'inochi')
@@ -230,18 +231,19 @@
   }
 
   create "#{program_name}/doc/intro.erb", %{
-    % api_url = 'api/index.html'
-    % src_url = 'http://github.com/#{ENV['USER']}/' + $program
+    % api_url = './api/index.html'
+    % repo_url = 'http://github.com/__________/' + $program
+    % repo_scm = '[Git](http://git-scm.com)'
 
     %|chapter "Introduction"
       %|project
         > TODO: explain the purpose of your project
 
-        **<%= $project %>** is a __________ that __________.
+        <%= $project %> is a __________ that __________.
 
         > TODO: explain why your project is important
 
-        **<%= $project %>** is exciting because:
+        <%= $project %> is exciting because:
         * It lets you __________.
         * Its core contains less than __________ lines of code.
         * It __________.
@@ -258,14 +260,15 @@
 
       %|section "Logistics"
         * <%= xref "History", "Release notes" %> --- history of project releases.
-        * [Source code](<%= src_url %>) --- obtain via [Git](http://git.or.cz) or browse online.
+        * [Source code](<%= repo_url %>) --- obtain via <%= repo_scm %> or browse online.
         * [API reference](<%= api_url %>) --- documentation for source code.
+        * [Project home](<%= $website %>) --- the <%= $project %> project home page.
 
         To get help or provide feedback, simply
         <%= xref "License", "contact the author(s)" %>.
 
         %|paragraph "Version numbers"
-          **<%= $project %>** releases are numbered in *major.minor.patch*
+          <%= $project %> releases are numbered in *major.minor.patch*
           form according to the [RubyGems rational versioning
           policy](http://www.rubygems.org/read/chapter/7), which
           can be summarized thus:
@@ -304,13 +307,13 @@
             </tbody>
           </table>
 
-      %|section "License"
-        %< "../LICENSE"
+        %|paragraph "License"
+          %< "../LICENSE"
 
       %|section "Credits"
         > TODO: give attribution to your predecessors and contributors
 
-        **<%= $project %>** is made possible by
+        <%= $project %> is made possible by
         <%= xref "History", "contributions" %>
         from users like you:
 
@@ -320,15 +323,15 @@
   create "#{program_name}/doc/setup.erb", %{
     %|chapter "Setup"
       %|section "Requirements"
-        Your system needs the following software to run **<%= $project %>**.
+        Your system needs the following software to run <%= $project %>.
 
         | Software                        | Description               | Notes                                        |
         | --------                        | -----------               | -----                                        |
-        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} is required.         |
-        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} is required. |
+        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} has been tested successfully. |
+        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} or newer is required. |
 
       %|section "Installation"
-        You can install **<%= $project %>** by running this command:
+        You can install <%= $project %> by running this command:
 
             gem install <%= $program %>
 
@@ -344,7 +347,7 @@
         <%= xref "License", "ask the author(s)" %> for help.
 
       %|section "Manifest"
-        You will see the following items inside **<%= $project %>**'s installation
+        You will see the following items inside <%= $project %>'s installation
         directory, whose path you can determine by running this command:
 
             <%= $program %> --version
@@ -353,11 +356,11 @@
 
         * <tt>bin/</tt>
 
-          * <tt><%= $program %></tt> --- the main **<%= $project %>** executable.
+          * <tt><%= $program %></tt> --- the main <%= $project %> executable.
 
         * <tt>lib/</tt>
 
-          * <tt><%= $program %>.rb</tt> --- the main **<%= $project %>** library.
+          * <tt><%= $program %>.rb</tt> --- the main <%= $project %> library.
 
           * <tt><%= $program %>/</tt>
 
@@ -372,6 +375,8 @@
         * <tt>lang/</tt> --- translations of language phrases.
 
         * <tt>LICENSE</tt> --- copyright notice and legal conditions.
+
+        * <tt>CREDITS</tt> --- attribution of project contributors.
   }
 
   create "#{program_name}/doc/theory.erb", %{
@@ -397,7 +402,7 @@
         >       from inside another Ruby program or library
 
       %|section "Tutorial"
-        This tutorial shows how **<%= $project %>** is used to __________.
+        This tutorial shows how <%= $project %> is used to __________.
 
         > TODO: give examples for doing common tasks
 
@@ -417,40 +422,49 @@
 
           This release changes __________, adds __________, and fixes __________.
 
+          %|paragraph "Thank you"
+            > TODO: list everyone who contributed to this release
+
+            * __________ contributed __________
+
+            * __________ suggested __________
+
+            * __________ helped to __________
+
           %|paragraph "Incompatible changes"
             > TODO: list all backward-incompatible changes in this release
 
-            * __________ has been __________ to __________. (contributor name)
+            * __________ has been __________ to __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
           %|paragraph "New features"
             > TODO: list new features added in this release
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
           %|paragraph "Bug fixes"
             > TODO: describe all bugs that are fixed in this release
 
-            * __________ was __________. (contributor name)
+            * __________ was __________ ---contributor name
 
-            * __________ were __________. (contributor name)
+            * __________ were __________ ---contributor name
 
-            * __________ did __________. (contributor name)
+            * __________ did __________ ---contributor name
 
           %|paragraph "Housekeeping"
             > TODO: list the refactorings, clean ups, and other
             >       improvements that were done for this release
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
 
-            * __________. (contributor name)
+            * __________ ---contributor name
   }

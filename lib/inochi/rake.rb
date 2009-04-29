@@ -126,7 +126,6 @@ def Inochi.rake project_symbol, options = {}, &gem_config
                                       '.config', 'inochi', 'logins.yaml'
                                     )
 
-    options[:upload_delete]     ||= false
     options[:upload_options]    ||= []
 
     options[:inochi_consumer]   = true unless options.key? :inochi_consumer
@@ -826,8 +825,8 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             form.field_with(:name => 'post[subscribed_by_author]').value = '1'
 
             page = form.submit
+            errors = Array(page/'//div[@class="error"]/text()')
 
-            errors = [page/'//div[@class="error"]/text()'].flatten
             if errors.empty?
               puts 'Successfully announced to ruby-talk mailing list:', page.uri
             else
