@@ -338,7 +338,6 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       linter.call 'flay' # operates on all .rb & .erb files by default
       linter.call 'reek', *ruby_files
       linter.call 'roodi', *ruby_files
-      linter.call 'ruby_diff', *ruby_files
     end
 
   # documentation
