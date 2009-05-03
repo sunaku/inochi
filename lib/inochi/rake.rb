@@ -279,6 +279,8 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       command = [interpreter.to_s]
 
       if interpreter == :rcov
+        command.push '--output', 'cov'
+
         # omit internals from coverage analysis
         command.push '--exclude-only', script
         command.push '--exclude', Inochi::INSTALL
@@ -312,7 +314,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       test_runner.call :rcov
     end
 
-    CLEAN.include 'coverage'
+    CLEAN.include 'cov'
 
     desc 'Run tests with multiple Ruby versions.'
     task 'test:ruby' do
