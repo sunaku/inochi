@@ -37,6 +37,23 @@ class << Inochi
     input
   end
 
+  ##
+  # Establishes version requirements for the given gem.
+  #
+  # Returns the sanitized Gem version requirements.
+  #
+  def require_gem_version gem_name, version_reqs
+    version_reqs = Array(version_reqs).compact
+
+    begin
+      gem gem_name.to_s, *version_reqs
+    rescue Gem::Exception, Gem::LoadError => e
+      warn e.inspect
+    end
+
+    version_reqs
+  end
+
   private
 
   INOCHI_LIBRARY_PATH = File.dirname(__FILE__)

@@ -136,16 +136,7 @@ module Inochi
       dst = project_config[:require].clear
 
       src.each_pair do |gem_name, version_reqs|
-        gem_name     = gem_name.to_s
-        version_reqs = Array(version_reqs).compact
-
-        begin
-          gem gem_name, *version_reqs
-        rescue Gem::Exception => e
-          warn e.inspect
-        end
-
-        dst[gem_name] = version_reqs
+        dst[gem_name] = require_gem_version(gem_name, version_reqs)
       end
 
     # make configuration parameters available as constants

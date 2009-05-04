@@ -139,16 +139,9 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     project_module.const_set :AUTHORS, copyright_holders
 
   # establish development gem dependencies
-    [Inochi, project_module].uniq.each do |mod|
+    [project_module, Inochi].uniq.each do |mod|
       mod::DEVELOP.each_pair do |gem_name, version_reqs|
-        gem_name     = gem_name.to_s
-        version_reqs = Array(version_reqs).compact
-
-        begin
-          gem gem_name, *version_reqs
-        rescue Gem::Exception => e
-          warn e.inspect
-        end
+        require_gem_version gem_name, version_reqs
       end
     end
 
