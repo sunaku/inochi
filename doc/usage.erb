@@ -305,13 +305,11 @@
 
           * Before a test is executed, its corresponding unit is automatically loaded into the Ruby environment using `require()`.
 
-          As for the details of test execution:
+          The details of test execution are left to the integration libraries specified by the `:test_with` parameter of the `Inochi.rake()` method.  Possible values for this parameter are:
 
-          * Tests are executed by the [minitest] library, which allows you to write unit tests in a combination of styles: traditional xUnit TDD, alternative rSpec BDD, and mock-based validation styles.
-
-          * Within each test, test cases are executed in random order.  This is the default behavior of the [minitest] library.
-
-          [minitest]: http://rubyforge.org/projects/bfts/
+          % Dir[Inochi::INSTALL + '/lib/inochi/test/*.rb'].sort.each do |f|
+            * <tt><%= File.basename(f, '.rb') %></tt> ---
+              <%= File.read(f).scan(/^#(.*)/).join %>
 
         %|paragraph "Helper libraries"
           Your project's main directory is added to Ruby's load path.  So if your tests have helper libraries stored in your project's <tt>test/</tt> directory, you can load them into your tests by adding a "test/" prefix.

@@ -1,5 +1,3 @@
-# Integration for the rSpec library.
-#
-# http://rspec.info
+# Integration for the [RSpec library](http://rspec.info).
 
 require 'spec'
