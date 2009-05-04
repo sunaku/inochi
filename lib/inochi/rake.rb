@@ -93,7 +93,12 @@
 #     The default value is an empty array.
 #
 #   [:inochi_consumer]
-#     Add Inochi as a dependency to the created gem?
+#     Add Inochi as a runtime dependency to the created gem?
+#
+#     The default value is true.
+#
+#   [:inochi_producer]
+#     Add Inochi as a development dependency to the created gem?
 #
 #     The default value is true.
 #
@@ -129,6 +134,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     options[:upload_options]    ||= []
 
     options[:inochi_consumer]   = true unless options.key? :inochi_consumer
+    options[:inochi_producer]   = true unless options.key? :inochi_producer
 
   # add AUTHORS constant to the project module
     copyright_holders = options[:authors] ||
@@ -651,7 +657,9 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         end
 
         unless project_module == Inochi
-          gem.add_development_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
+          if options[:inochi_producer]
+            gem.add_development_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
+          end
 
           if options[:inochi_consumer]
             gem.add_dependency Inochi::PROGRAM, Inochi::VERSION.requirement
