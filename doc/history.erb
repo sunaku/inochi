@@ -5,6 +5,59 @@
 
 %|chapter "History"
   %|history
+    %|section "Version 1.0.0 (2009-05-03)"
+      This release allows your gems to not depend on <%= $project %>, lets you choose which unit testing library to use, adds new utility libraries and rake tasks, and fixes some bugs.
+
+      %|paragraph "Incompatible changes"
+        * Your program is no longer halted by `Inochi.init()` and `Inochi.rake()` if gem dependencies are not satified.  A warning is issued instead.
+
+        * The `project_summary` and `project_history` nodes, which are provided by `Inochi.book()` to the user manual, have been renamed to `project` and "history" respectively.
+
+        * <%= ERBook::DISPLAY %> is now used for generating the user manual.  This is a major step up from the previous version, and so it has incompatible changes.  See its release notes for details.
+
+        * [SDoc](http://github.com/voloko/sdoc/tree/master) is now used to generate API documentation instead of [YARD](http://yard.rubyforge.org).  If you link to particular classes or methods in the generated API documentation, be sure to update your link addresses!
+
+        * Minitest is no longer the default testing library.  You must specify which testing library you want to use via the `:test_with` option of the `Inochi.rake()` method.  See <%= xref "Test execution" %> for details.
+
+        * The "pak" rake task, which is provided by `Inochi.rake()`, has been renamed to "gem".
+
+      %|paragraph "New features"
+        * Add `:inochi_consumer` and `:inochi_producer` options to `Inochi.rake()` which allows you to *avoid* having Inochi as a runtime and development dependency, respectively, for your project's gem.
+
+          This is useful if you just want to use Inochi facilities for building a gem for a pure Ruby library that does not have any need for Inochi's runtime convenience facilities.
+
+        * Add `:develop` option for `Inochi.init()` which lets you specify RubyGems as development dependencies in the same way as the `:require` option.
+
+        * Add "lint" rake task which reports [code quality statistics](http://www.infoq.com/news/2008/11/static-analysis-tool-roundup).
+
+        * Add "test:cov" rake task which reports code coverage statistics.
+
+        * Add "test:ruby" task which runs all tests with [multiruby](http://www.infoq.com/news/2008/02/multiruby-testing).
+
+        * Add 'rake opts=' environment variable, which lets you specify command-line arguments directly to the Ruby interpreter, for all test* rake tasks.
+
+        * Add <tt>inochi/util/combo</tt> combinatorics library for enumerations, permutations, and combinations which are all useful in exhaustive brute-force unit testing.
+
+        * Add <tt>inochi/util/tempdir</tt> library which really should be in the Ruby standard library.
+
+      %|paragraph "Bug fixes"
+        * The "enable email notification" checkbox was not activated properly when posting announcement to ruby-talk mailing list via Ruby-Forum.
+
+        * Mark gems needed by `Inochi.rake()` as *development* dependencies.
+
+          A user would now have to install Inochi using <pre>gem install --development</pre> to install all these gems.  This also solves the recursive dependency problem between Inochi and ERBook.
+
+        * Set executable in gem specification only if it exists.
+
+        * Fix parsing of stack trace in Ruby 1.9.
+
+      %|paragraph "Housekeeping"
+        * Write contributor names in <tt>CREDITS</tt> file instead of in the user manual.
+
+        * Use completely lowercase name for <tt>Rakefile</tt>.
+
+        * Add copyright statement at the top of every source file.
+
     %|section "Version 0.3.0 (2009-02-12)"
       This release adds support for <%= xref "Translate your project", "language translations / internationalization / multilingualization" %>, improves the user interface, and fixes a show-stopper bug for Windows users.
 
