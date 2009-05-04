@@ -5,7 +5,7 @@
 
 require 'yaml'
 
-class << Inochi
+module Inochi
   ##
   # Establishes your project in Ruby's runtime environment by defining
   # the project module (which serves as a namespace for all code in the
@@ -104,7 +104,7 @@ class << Inochi
   #
   # The newly configured project module.
   #
-  def init project_symbol, project_config = {}
+  def Inochi.init project_symbol, project_config = {}
     project_module = fetch_project_module(project_symbol)
 
     # this method is not re-entrant

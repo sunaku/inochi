@@ -3,7 +3,7 @@
 # See the LICENSE file for details.
 #++
 
-class << Inochi
+module Inochi
   ##
   # Provides a common configuration for the project's user manual:
   #
@@ -39,7 +39,7 @@ class << Inochi
   # [book_template]
   #   The eRuby template which serves as the documentation for the project.
   #
-  def book project_symbol, book_template
+  def Inochi.book project_symbol, book_template
     project_module = fetch_project_module(project_symbol)
 
     # provide project constants as global variables to the user manual

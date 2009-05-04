@@ -47,11 +47,11 @@
           Now **kdiff3** will be invoked to help you transfer your changes.  When you are finished transferring changes, save the file and quit **kdiff3**.  If you do not want to transfer any changes, simply quit **kdiff3** _without_ saving the file.
 
   %|section "Ruby library interface"
-    The [`Inochi` module](api/Inochi.html) has several class methods which provide a common configuration for various aspects of your project.  These aspects, and their interactions with the `Inochi` module, are as follows:
-    * Your project's main library invokes the [`Inochi.init()` method](api/Inochi.html#init-class_method).
-    * Your project's main executable invokes the [`Inochi.main()` method](api/Inochi.html#main-class_method).
-    * Your project's <tt>rakefile</tt> invokes the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
-    * Your project's user manual invokes the [`Inochi.book()` method](api/Inochi.html#book-class_method).
+    The `Inochi` module has several class methods which provide a common configuration for various aspects of your project.  These aspects, and their interactions with the `Inochi` module, are as follows:
+    * Your project's main library invokes the `Inochi.init()` method.
+    * Your project's main executable invokes the `Inochi.main()` method.
+    * Your project's <tt>rakefile</tt> invokes the `Inochi.rake()` method.
+    * Your project's user manual invokes the `Inochi.book()` method.
 
   %|section "Tutorial"
     This tutorial shows how <%= $project %> is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
@@ -326,9 +326,9 @@
         Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  <%= $project %> makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
 
         %|section "Language phrases"
-          <%= $project %> equips your project module with a `PHRASES` constant (see the [`Inochi::Phrases` class](api/Inochi/Phrases.html)) which provides access to translations of language phrases used in your project.
+          <%= $project %> equips your project module with a `PHRASES` constant (see the `Inochi::Phrases` class) which provides access to translations of language phrases used in your project.
 
-          The [`Inochi::Phrases#[]` method](api/Inochi/Phrases.html#[]-instance_method) translates a given language phrase into the user's preferred language, which is automatically inferred from their environment, but may be explictly overridden by the user via the <tt>--locale</tt> option of <%= xref "Run project executable", "your project's main executable" %>:
+          The `Inochi::Phrases#[]` method translates a given language phrase into the user's preferred language, which is automatically inferred from their environment, but may be explictly overridden by the user via the <tt>--locale</tt> option of <%= xref "Run project executable", "your project's main executable" %>:
 
           <code>
           your_project::PHRASES['Have a nice day!']
@@ -437,7 +437,7 @@
           </pre>
 
         %|section "Publish a RubyGem"
-          You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method).
+          You must first register your project on [RubyForge](http://rubyforge.org) before you can publish a RubyGem.  If your RubyForge project name is different from your actual project name, then you should pass the `:rubyforge_project` and `:rubyforge_section` options to the `Inochi.rake()` method.
 
           Publish a RubyGem by running:
 
@@ -459,7 +459,7 @@
 
             <% logins_file = "~/.config/inochi/logins.yaml" %>
 
-            This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the [`Inochi.rake()` method](api/Inochi.html#rake-class_method)), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML document](<%= yaml_addr %>) containing the following parameters:
+            This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the `Inochi.rake()` method), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML document](<%= yaml_addr %>) containing the following parameters:
 
             <code lang="yaml">
             www.ruby-forum.com:
@@ -496,4 +496,4 @@
           # rake pub:doc
           </pre>
 
-          If your documentation website (see the `:docsite` option for the [`Inochi.init()` method](api/Inochi.html#init-class_method)) is hosted on RubyForge, then the above command will automatically upload your project's documentation to the correct place.
+          If your documentation website (see the `:docsite` option for the `Inochi.init()` method) is hosted on RubyForge, then the above command will automatically upload your project's documentation to the correct place.
