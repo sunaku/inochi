@@ -375,13 +375,12 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       namespace :doc do
         namespace :api do
-          require 'sdoc'
           require 'rake/rdoctask'
 
           Rake::RDocTask.new do |t|
             t.rdoc_dir = doc_api_dst
             t.template = 'direct' # lighter template used on railsapi.com
-            t.options.push '--fmt', 'shtml' # explictly set shtml generator
+            t.options.push '--fmt', 'shtml' # explictly set SDoc generator
             t.rdoc_files.include '[A-Z]*', 'lib/**/*.rb', 'ext/**/*.{rb,c*}'
 
             # regen when sources change
