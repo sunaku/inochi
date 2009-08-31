@@ -231,6 +231,7 @@
   }
 
   create "#{program_name}/doc/index.erb", %{
+
     % Inochi.book #{project_symbol.inspect}, self
 
     %+ "intro.erb"
@@ -238,18 +239,36 @@
     %+ "theory.erb"
     %+ "usage.erb"
     %+ "history.erb"
+
   }
 
   create "#{program_name}/doc/intro.erb", %{
+
     % api_url = './api/index.html'
-    % repo_url = 'http://github.com/__________/' + $program
-    % repo_scm = '[Git](http://git-scm.com)'
+    % src_url = "http://github.com/__________/\#{$program}"
+    % src_scm = '[Git](http://git-scm.com)'
+
 
     %|chapter "Introduction"
+
+
       %|project
+
         > TODO: explain the purpose of your project
 
         <%= $project %> is a __________ that __________.
+
+
+      * <%= xref "History", "What's new?" %> --- history of project releases.
+      * [Source code](<%= src_url %>) --- obtain via <%= src_scm %> or browse online.
+      * [API reference](<%= api_url %>) --- documentation for source code.
+      * [Project home](<%= $website %>) --- the <%= $project %> project home page.
+
+      To get help or provide feedback, simply
+      %= xref "License", "contact the author(s)."
+
+
+      %|section "Features"
 
         > TODO: explain why your project is important
 
@@ -265,74 +284,37 @@
         * [competitor 2](http://)
         * [competitor 3](http://)
 
-      %|paragraph "Etymology"
+
+      %|section "Etymology"
+
         > TODO: explain the meaning of the name of your project
 
-      %|section "Logistics"
-        * <%= xref "History", "Release notes" %> --- history of project releases.
-        * [Source code](<%= repo_url %>) --- obtain via <%= repo_scm %> or browse online.
-        * [API reference](<%= api_url %>) --- documentation for source code.
-        * [Project home](<%= $website %>) --- the <%= $project %> project home page.
 
-        To get help or provide feedback, simply
-        <%= xref "License", "contact the author(s)" %>.
+      %|section "License"
 
-        %|paragraph "Version numbers"
-          <%= $project %> releases are numbered in *major.minor.patch*
-          form according to the [RubyGems rational versioning
-          policy](http://www.rubygems.org/read/chapter/7), which
-          can be summarized thus:
+        %< "../LICENSE"
 
-          <table markdown="1">
-            <thead>
-              <tr>
-                <td rowspan="2">What increased in the version number?</td>
-                <td colspan="3">The increase indicates that the release:</td>
-              </tr>
-              <tr>
-                <th>Is backward compatible?</th>
-                <th>Has new features?</th>
-                <th>Has bug fixes?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>major</th>
-                <td style="background-color: #FFE4E1;">No</td>
-                <td>Yes</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <th>minor</th>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <th>patch</th>
-                <td>Yes</td>
-                <td style="background-color: #FFE4E1;">No</td>
-                <td>Yes</td>
-              </tr>
-            </tbody>
-          </table>
-
-        %|paragraph "License"
-          %< "../LICENSE"
 
       %|section "Credits"
+
         > TODO: give attribution to your predecessors and contributors
 
-        <%= $project %> is made possible by
-        <%= xref "History", "contributions" %>
+        %= $project
+        is made possible by
+        %= xref "History", "contributions"
         from users like you:
 
         %< "../CREDITS"
+
   }
 
   create "#{program_name}/doc/setup.erb", %{
+
     %|chapter "Setup"
+
+
       %|section "Requirements"
+
         Your system needs the following software to run <%= $project %>.
 
         | Software                        | Description               | Notes                                        |
@@ -340,7 +322,9 @@
         | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} has been tested successfully. |
         | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} or newer is required. |
 
+
       %|section "Installation"
+
         You can install <%= $project %> by running this command:
 
             gem install <%= $program %>
@@ -354,9 +338,12 @@
         <pre><%= verbatim `ruby bin/\#{$program} --version` %></pre>
 
         If you do not see such output, you may
-        <%= xref "License", "ask the author(s)" %> for help.
+        %= xref "License", "ask the author(s)"
+        for help.
 
-      %|section "Manifest"
+
+      %|section "Package contents"
+
         You will see the following items inside <%= $project %>'s installation
         directory, whose path you can determine by running this command:
 
@@ -387,16 +374,65 @@
         * <tt>LICENSE</tt> --- copyright notice and legal conditions.
 
         * <tt>CREDITS</tt> --- attribution of project contributors.
+
+
+      %|section "Version numbers"
+
+        <%= $project %> releases are numbered in *major.minor.patch*
+        form according to the [RubyGems rational versioning
+        policy](http://www.rubygems.org/read/chapter/7), which
+        can be summarized as follows:
+
+        <table markdown="1">
+          <thead>
+            <tr>
+              <td rowspan="2">What increased in the version number?</td>
+              <td colspan="3">The increase indicates that the release:</td>
+            </tr>
+            <tr>
+              <th>Is backward compatible?</th>
+              <th>Has new features?</th>
+              <th>Has bug fixes?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>major</th>
+              <td style="background-color: #FFE4E1;">No</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <th>minor</th>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <th>patch</th>
+              <td>Yes</td>
+              <td style="background-color: #FFE4E1;">No</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+
   }
 
   create "#{program_name}/doc/theory.erb", %{
+
     %|chapter "Theory of operation"
+
       > TODO: explain how your project does what it does
   }
 
   create "#{program_name}/doc/usage.erb", %{
+
     %|chapter "Usage"
+
+
       %|section "Command-line interface"
+
         When you run this command:
 
             <%= $program %> --help
@@ -407,11 +443,15 @@
 
         > TODO: explain the command-line arguments
 
+
       %|section "Ruby library interface"
+
         > TODO: explain how to use your project's Ruby library
         >       from inside another Ruby program or library
 
+
       %|section "Tutorial"
+
         This tutorial shows how <%= $project %> is used to __________.
 
         > TODO: give examples for doing common tasks
@@ -420,19 +460,27 @@
   }
 
   create "#{program_name}/doc/history.erb", %{
+
     %|chapter "History"
+
       > TODO: put a brief history about your project here
 
+
       %|history
+
         > TODO: put release notes for your project
         >       here -- newest first, oldest last.
 
+
         %|section "Version #{project_version} (#{project_release})"
+
           > TODO: write a short summary of the changes in this release
 
           This release changes __________, adds __________, and fixes __________.
 
+
           %|paragraph "Thank you"
+
             > TODO: list everyone who contributed to this release
 
             * __________ contributed __________
@@ -441,7 +489,9 @@
 
             * __________ helped to __________
 
+
           %|paragraph "Incompatible changes"
+
             > TODO: list all backward-incompatible changes in this release
 
             * __________ has been __________ to __________ ---contributor name
@@ -450,7 +500,9 @@
 
             * __________ ---contributor name
 
+
           %|paragraph "New features"
+
             > TODO: list new features added in this release
 
             * __________ ---contributor name
@@ -459,7 +511,9 @@
 
             * __________ ---contributor name
 
+
           %|paragraph "Bug fixes"
+
             > TODO: describe all bugs that are fixed in this release
 
             * __________ was __________ ---contributor name
@@ -468,7 +522,9 @@
 
             * __________ did __________ ---contributor name
 
+
           %|paragraph "Housekeeping"
+
             > TODO: list the refactorings, clean ups, and other
             >       improvements that were done for this release
 
@@ -477,4 +533,5 @@
             * __________ ---contributor name
 
             * __________ ---contributor name
+
   }

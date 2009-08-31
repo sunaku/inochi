@@ -7,97 +7,68 @@
 % repo_url = 'http://github.com/sunaku/' + $program
 % repo_scm = '[Git](http://git-scm.com)'
 
+
 %|chapter "Introduction"
+
+
   %|project
+
     <%= $project %> is an infrastructure for [RubyGems](http://www.rubygems.org)-based software projects that encourages good documentation and reduces programming effort by automating common tasks.
 
-  <%= $project %> is exciting because:
 
-  * It encourages good documentation:
+  * <%= xref "History", "What's new?" %> --- history of project releases.
+  * [Source code](<%= repo_url %>) --- obtain via <%= repo_scm %> or browse online.
+  * [API reference](<%= api_url %>) --- documentation for source code.
+  * [Project home](<%= $website %>) --- the <%= $project %> project home page.
 
-    * Provides a comprehensive user manual that integrates release notes, setup and usage instructions, and more.
+  To get help or provide feedback, simply
+  <%= xref "License", "contact the author(s)" %>.
 
-    * Automates the display of help, version, and usage information for your project's main executable.
 
-  * It reduces programming effort:
-    * Makes it easy to <%= xref "Translate your project", "translate your project" %> into many languages.
-    * Provides a single point of entry to your project's libraries.
-    * Keeps your project's configuration in one place.
-    * Parses command-line options using [the Trollop library](http://trollop.rubyforge.org).
+  %|section "Features"
 
-  * It automates common tasks:
-    * Generates project scaffolds while merging changes from previous ones.
-    * Provides Rake tasks for packaging, publishing, and announcing your project.
+    <%= $project %> is exciting because:
 
-  These features distinguish <%= $project %> from the competition:
-  * [hoe](http://seattlerb.rubyforge.org/hoe/)
-  * [newgem](http://newgem.rubyforge.org)
-  * [Mr Bones](http://codeforpeople.rubyforge.org/bones/)
-  * [Gemify](http://gitorious.org/projects/gemify/)
-  * [Jeweler](http://technicalpickles.github.com/jeweler/)
-  * [GemMake](https://simonmenke.github.com/gm/)
-  * [SimpleGem](http://github.com/reagent/simple-gem/tree/master)
+    * It encourages good documentation:
+      * Provides a comprehensive user manual that integrates release notes, setup and usage instructions, and more.
+      * Automates the display of help, version, and usage information for your project's main executable.
 
-  %|paragraph "Etymology"
+    * It reduces programming effort:
+      * Makes it easy to <%= xref "Translate your project", "translate your project" %> into many languages.
+      * Provides a single point of entry to your project's libraries.
+      * Keeps your project's configuration in one place.
+      * Parses command-line options using [the Trollop library](http://trollop.rubyforge.org).
+
+    * It automates common tasks:
+      * Generates project scaffolds while merging changes from previous ones.
+      * Provides Rake tasks for packaging, publishing, and announcing your project.
+
+    These features distinguish <%= $project %> from the competition:
+    * [hoe](http://seattlerb.rubyforge.org/hoe/)
+    * [newgem](http://newgem.rubyforge.org)
+    * [Mr Bones](http://codeforpeople.rubyforge.org/bones/)
+    * [Gemify](http://gitorious.org/projects/gemify/)
+    * [Jeweler](http://technicalpickles.github.com/jeweler/)
+    * [GemMake](https://simonmenke.github.com/gm/)
+    * [SimpleGem](http://github.com/reagent/simple-gem/tree/master)
+
+
+  %|section "Etymology"
+
     In the past, software development was thought to be like mathematical modeling or building construction:  the assembly of inanimate objects.  Nowadays, it is thought to be more like gardening: the cultivation of life!
 
     In this manner, I consider this project not as a generator of skeletons or as a builder of scaffolds, but as a *giver of life*.  That is why I named this project "inochi", the Japanese word for *life*.
 
     Happy cultivation!
 
-  %|section "Logistics"
-    * <%= xref "History", "Release notes" %> --- history of project releases.
-    * [Source code](<%= repo_url %>) --- obtain via <%= repo_scm %> or browse online.
-    * [API reference](<%= api_url %>) --- documentation for source code.
-    * [Project home](<%= $website %>) --- the <%= $project %> project home page.
-
-    To get help or provide feedback, simply
-    <%= xref "License", "contact the author(s)" %>.
-
-    %|paragraph "Version numbers"
-      <%= $project %> releases are numbered in *major.minor.patch*
-      form according to the [RubyGems rational versioning
-      policy](http://www.rubygems.org/read/chapter/7), which
-      can be summarized thus:
-
-      <table markdown="1">
-        <thead>
-          <tr>
-            <td rowspan="2">What increased in the version number?</td>
-            <td colspan="3">The increase indicates that the release:</td>
-          </tr>
-          <tr>
-            <th>Is backward compatible?</th>
-            <th>Has new features?</th>
-            <th>Has bug fixes?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>major</th>
-            <td style="background-color: #FFE4E1;">No</td>
-            <td>Yes</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <th>minor</th>
-            <td>Yes</td>
-            <td>Yes</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <th>patch</th>
-            <td>Yes</td>
-            <td style="background-color: #FFE4E1;">No</td>
-            <td>Yes</td>
-          </tr>
-        </tbody>
-      </table>
 
   %|section "License"
+
     %< "../LICENSE"
 
+
   %|section "Credits"  |n|
+
     %= $logo = n.xref_link("![#{$project} logo](#{$program}.png)".to_inline_xhtml)
 
     %< "README"
@@ -107,3 +78,4 @@
     from users like you:
 
     %< "../CREDITS"
+
