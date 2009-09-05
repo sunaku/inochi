@@ -189,7 +189,17 @@
       :website => 'http://#{program_name}.rubyforge.org',
       :tagline => 'put a single line description of your project here',
       :require => {
-        # TODO: list gems required by your project here.
+        # TODO: list gems required by your project during runtime here.
+        # NOTE: this is completely optional!
+        #
+        # example: if your project needs version 9.9.9 of the 'foo' gem:
+        # 'foo' => '9.9.9',
+        #
+        # example: if any version of a gem is acceptable then:
+        # 'foo' => nil,
+      },
+      :develop => {
+        # TODO: list gems required by your project during development here.
         # NOTE: this is completely optional!
         #
         # example: if your project needs version 9.9.9 of the 'foo' gem:
