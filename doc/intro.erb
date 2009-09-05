@@ -4,8 +4,8 @@
 %#++
 
 % api_url = './api/index.html'
-% repo_url = 'http://github.com/sunaku/' + $program
-% repo_scm = '[Git](http://git-scm.com)'
+% src_url = 'http://github.com/sunaku/' + $program
+% src_scm = '[Git](http://git-scm.com)'
 % test_libs = Dir[Inochi::INSTALL + '/lib/inochi/test/*.rb']
 
 
@@ -18,7 +18,7 @@
 
 
   * <%= xref "History", "What's new?" %> --- history of project releases.
-  * [Source code](<%= repo_url %>) --- obtain via <%= repo_scm %> or browse online.
+  * [Source code](<%= src_url %>) --- obtain via <%= src_scm %> or browse online.
   * [API reference](<%= api_url %>) --- documentation for source code.
   * [Project home](<%= $website %>) --- the <%= $project %> project home page.
 
@@ -60,7 +60,7 @@
     %< "../LICENSE"
 
 
-  %|section "Credits"  |n|
+  %|section "Credits" |n|
 
     %= $logo = n.xref_link("![#{$project} logo](#{$program}.png)".to_inline_xhtml)
 

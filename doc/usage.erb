@@ -121,14 +121,14 @@
 
         <pre>
         # inochi WordCount
-        <%= verbatim `ruby #{$install}/bin/inochi WordCount` %>
+        %= verbatim `ruby #{$install}/bin/inochi WordCount`
         </pre>
 
         Enter the <tt>word_count</tt> directory:
 
         <pre>
         # cd word_count
-        <% cd "word_count" %>
+        % cd "word_count"
         </pre>
 
 
@@ -136,7 +136,7 @@
 
           <pre>
           # rake -T
-          <%= verbatim `rake -T` %>
+          %= verbatim `rake -T`
           </pre>
 
 
@@ -144,32 +144,32 @@
 
           <pre>
           # rake test
-          <%= verbatim `rake test` %>
+          %= verbatim `rake test`
           </pre>
 
 
         %|paragraph "Run project executable"
 
           <pre>
-          <% command = main_executable %>
+          % command = main_executable
           # ruby <%= command %>
-          <%= verbatim `ruby #{command}` %>
+          %= verbatim `ruby #{command}`
           </pre>
 
           See usage information:
 
           <pre>
-          <% command = "#{main_executable} --help" %>
+          % command = "#{main_executable} --help"
           # ruby <%= command %>
-          <%= verbatim `ruby #{command}` %>
+          %= verbatim `ruby #{command}`
           </pre>
 
           See project & version information:
 
           <pre>
-          <% command = "#{main_executable} --version" %>
+          % command = "#{main_executable} --version"
           # ruby <%= command %>
-          <%= verbatim `ruby #{command}` %>
+          %= verbatim `ruby #{command}`
           </pre>
 
 
@@ -184,7 +184,7 @@
           Launch the user manual:
 
           <pre>
-          <% command = "#{main_executable} --manual" %>
+          % command = "#{main_executable} --manual"
           # ruby <%= command %>
           </pre>
 
@@ -198,20 +198,20 @@
 
         %|section "Project information"
 
-          <% license_file = 'LICENSE' %>
+          % license_file = 'LICENSE'
 
           Open the <tt><%= license_file %></tt> file, which contains the open source [ISC license](http://www.opensource.org/licenses/isc-license.txt) by default, and add a copyright notice with your name and (optional) email address:
 
           <pre>
-          <%= verbatim File.read(license_file) %>
+          %= verbatim File.read(license_file)
           </pre>
 
-          <% main_library = 'lib/word_count.rb' %>
+          % main_library = 'lib/word_count.rb'
 
           Open the main project library file <tt><%= main_library %></tt> and fill in the blanks:
 
           <code>
-          <%= verbatim File.read(main_library) %>
+          %= verbatim File.read(main_library)
           </code>
 
 
@@ -220,18 +220,18 @@
           Open the <tt><%= main_executable %></tt> file and fill in the blanks:
 
           <code>
-          <%= verbatim File.read(main_executable) %>
+          %= verbatim File.read(main_executable)
           </code>
 
 
         %|section "Rake tasks"
 
-          <% rake_file = 'rakefile' %>
+          % rake_file = 'rakefile'
 
           Open the <tt><%= rake_file %></tt> and fill in the blanks:
 
           <code>
-          <%= verbatim File.read(rake_file) %>
+          %= verbatim File.read(rake_file)
           </code>
 
 
@@ -252,10 +252,7 @@
 
 
           %|files.each |f|
-
-
             %|paragraph "<tt>#{f}</tt>"
-
               <code lang="rhtml"><%= verbatim File.read(f) %></code>
 
 
@@ -320,7 +317,7 @@
 
           Furthermore, you can always `require()` a sub-library anywhere in your project using its canonical path because <%= $project %> puts your main project libraries on the Ruby load path.
 
-          <% sub_library = 'word_count/odf/text' %>
+          % sub_library = 'word_count/odf/text'
 
           For example, if your project has a sub-library, say, <tt>lib/<%= sub_library %>.rb</tt> that counts the number of words in an [OpenDocument Text](http://en.wikipedia.org/wiki/OpenDocument) document, then it would be loaded into the main project executable like this:
 
@@ -357,7 +354,7 @@
 
           % test_libs.sort.each do |f|
             * <tt><%= File.basename(f, '.rb') %></tt> ---
-              <%= File.read(f).scan(/^#(.*)/).join %>
+              %= File.read(f).scan(/^#(.*)/).join
 
 
         %|paragraph "Helper libraries"
@@ -373,7 +370,7 @@
 
       %|section "Translate your project"
 
-        <% phrases_file = "<tt>lang/phrases.yaml</tt>" %>
+        % phrases_file = "<tt>lang/phrases.yaml</tt>"
 
         Although English is the *lingua franca* of today, your project's users may prefer to interact with it in their native language.  <%= $project %> makes it easy to translate your project and also makes it easy for users to correct and contribute translations to your project.
 
@@ -447,7 +444,7 @@
 
           <pre>
           # rake lang:dump
-          <%= verbatim `rake lang:dump` %>
+          %= verbatim `rake lang:dump`
           </pre>
 
           The above command exercises your project's code and extracts all *utilized* language phrases into the <%= phrases_file %> file.  Continue reading to learn how this is accomplished.
@@ -477,7 +474,7 @@
 
           <pre>
           # rake lang:conv from=LANGUAGE_CODE
-          <%= verbatim `rake lang:conv from=LANGUAGE_CODE 2>&1` %>
+          %= verbatim `rake lang:conv from=LANGUAGE_CODE 2>&1`
           </pre>
 
           Notice that you must specify the language in which your phrases are written, via the <tt>from=</tt> parameter.  <%= $project %> cannot determine this automatically.
@@ -540,7 +537,7 @@
 
           <code lang="yaml">
           # gem spec pkg/*.gem
-          <%= `gem spec pkg/*.gem`.rstrip %>
+          %= `gem spec pkg/*.gem`.rstrip
           </code>
 
 
@@ -570,7 +567,7 @@
 
             In order to automate the announcement of releases, <%= $project %> needs to know your login information for the [RAA (Ruby Application Archive)](http://raa.ruby-lang.org) and [RubyForum](http://www.ruby-forum.com/forum/4), which serves as a gateway to the [ruby-talk mailing list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/).
 
-            <% logins_file = "~/.config/inochi/logins.yaml" %>
+            % logins_file = "~/.config/inochi/logins.yaml"
 
             This information is expected to be stored in a <tt><%= logins_file %></tt> file (this location can be overridden by passing the `:logins_file` option to the `Inochi.rake()` method), where <tt>~</tt> denotes the path to your home directory.  This file is a [YAML document](<%= yaml_addr %>) containing the following parameters:
 
@@ -594,14 +591,12 @@
 
             <pre>
             # rake ann
-            <%= `rake ann` %>
+            %= `rake ann`
             </pre>
 
             This produces the following files in your project directory:
 
-
             %|Dir['ANN*'].each |f|
-
               * <tt><%= f %></tt>
 
             Now you can manually announce your release using these files.

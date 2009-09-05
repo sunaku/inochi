@@ -379,9 +379,9 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             t.rdoc_dir = doc_api_dst
             t.template = 'direct' # lighter template used on railsapi.com
             t.options.push '--fmt', 'shtml' # explictly set SDoc generator
-            t.rdoc_files.include '[A-Z]*', 'lib/**/*.rb', 'ext/**/*.{rb,c*}'
+            t.rdoc_files.include '[A-Z]*', '{lib,ext}/**/*.{rb,c}'
 
-            # regen when sources change
+            # regenerate API reference when sources change
             task t.name => t.rdoc_files
 
             t.main = options[:license_file]
@@ -502,9 +502,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       ann_text = nil
       task :ann_text => :ann_html do
-        unless ann_text
-          ann_text = convert_html_to_text[ann_html]
-        end
+        ann_text ||= convert_html_to_text[ann_html]
       end
 
       ann_nfo_text = nil
@@ -734,7 +732,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       desc 'Announce to RubyForge news.'
       task 'pub:ann:forge' => :pub_forge do
-        puts 'Announcing to RubyForge news...'
+        puts '', 'Announcing to RubyForge news...'
 
         project = options[:rubyforge_project]
 
@@ -764,7 +762,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       desc 'Announce to ruby-talk mailing list.'
       task 'pub:ann:talk' => :ann_logins do
-        puts 'Announcing to ruby-talk mailing list...'
+        puts '', 'Announcing to ruby-talk mailing list...'
 
         host = 'http://ruby-forum.com'
         ruby_talk = 4 # ruby-talk forum ID
@@ -826,7 +824,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       desc 'Announce to RAA (Ruby Application Archive).'
       task 'pub:ann:raa' => :ann_logins do
-        puts 'Announcing to RAA (Ruby Application Archive)...'
+        puts '', 'Announcing to RAA (Ruby Application Archive)...'
 
         show_page_error = lambda do |page, message|
           warn "#{message}, so I can NOT announce this release to RAA:"
