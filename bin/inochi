@@ -1,4 +1,4 @@
-#!/usr/bin/ruby -w
+#!/usr/bin/env ruby
 #
 # Generates a project scaffold using the given information.
 #
@@ -143,7 +143,7 @@
 
   bin_file = "#{program_name}/bin/#{program_name}"
   create bin_file, %{
-    #!/usr/bin/ruby -w
+    #!/usr/bin/env ruby
     #
     # TODO: Explain the command-line usage of this program here.
     #
