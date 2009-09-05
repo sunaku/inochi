@@ -487,7 +487,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
               <p>#{project_module::WEBSITE}</p>
             </center>
             #{ann_nfo_doc}
-            #{ann_rel_doc}
+            #{ann_rel_doc.to_s.sub ann_rel_doc.parent_tabs_begin, '<div>'}
           }
 
           # remove heading navigation menus
