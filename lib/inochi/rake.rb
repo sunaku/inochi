@@ -631,10 +631,12 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         #      For example, consider the "RedCloth" gem.
         #
         gem.name        = project_module::PROGRAM
-
         gem.version     = project_module::VERSION
         gem.summary     = project_module::TAGLINE
-        gem.description = gem.summary
+
+        Rake::Task[:ann_text].invoke
+        gem.description = ann_text
+
         gem.homepage    = project_module::WEBSITE
         gem.files       = FileList['**/*'].exclude('_darcs') - CLEAN
         gem.has_rdoc    = true
