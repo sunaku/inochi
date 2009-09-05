@@ -164,9 +164,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     lang_dump_file = 'lang/phrases.yaml'
 
     desc 'Extract language phrases for translation.'
-    task 'lang:dump' => lang_dump_file
-
-    file lang_dump_file => lang_dump_deps do
+    task 'lang:dump' => lang_dump_deps do
       ENV['dump_lang_phrases'] = '1'
       Rake::Task[:test].invoke
     end
