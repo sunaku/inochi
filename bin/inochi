@@ -452,14 +452,17 @@
         >       from inside another Ruby program or library
 
 
-      %|section "Tutorial"
+      %|section "General walkthrough"
 
-        This tutorial shows how <%= $project %> is used to __________.
+        This tutorial walks you through the typical usage of <%= $project %>.
 
         > TODO: give examples for doing common tasks
 
 
-      > TODO: explain how to do more (advanced) things
+      %|section "Specific topics"
+
+        > TODO: explain how to do more advanced / specific things
+
   }
 
   create "#{program_name}/doc/history.erb", %{
