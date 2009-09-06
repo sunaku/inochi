@@ -598,7 +598,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     CLOBBER.include 'pkg'
 
     desc 'Build a release.'
-    task :gem => [:clobber, :doc, :ann_text, 'pkg'] do
+    task :gem => [:doc, :ann_text, 'pkg'] do
       gem_spec = Gem::Specification.new do |gem|
         authors = project_module::AUTHORS
 
