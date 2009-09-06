@@ -498,15 +498,50 @@
 
           <pre>
           # rake gem
-          <%= `rake gem` %>
+          <%=
+            # prevent Maruku errors about blanks (__________) in the
+            # scaffold-generated documentation for this dummy project
+            Dir['doc/*.erb'].each do |doc|
+              File.open(doc, 'r+') do |f|
+                old = f.read
+                new = old.gsub('__________', '')
+
+                f.rewind
+                f.write new
+              end
+            end
+
+            # remove TODO and FIXME words (which come
+            # from the scaffold-generated output for
+            # this dummy project)from the gem spec
+            # that RubyGems does not reject it
+            File.open('rakefile', 'r+') do |f|
+              old = f.read
+              new = old.sub(/^Inochi.rake.*$/) do |header|
+                header + %q{
+                  [:summary, :description].each do |field|
+                    old = gem.send(field)
+                    new = old.gsub(/\b(TODO|FIXME)\b/o, '')
+
+                    gem.send("#{field}=", new)
+                  end
+                }
+              end
+
+              f.rewind
+              f.write new
+            end
+
+            `rake gem`
+          %>
           </pre>
 
           See the RubyGem contents:
 
-          <pre>
+          <code lang="yaml">
           # gem spec pkg/*.gem
-          <code lang="yaml"><%= `gem spec pkg/*.gem`.rstrip %></code>
-          </pre>
+          <%= `gem spec pkg/*.gem`.rstrip %>
+          </code>
 
 
         %|section "Publish a RubyGem"
