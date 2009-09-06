@@ -342,7 +342,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     # user manual
       doc_man_src = 'doc/index.erb'
-      doc_man_dst = 'doc/index.xhtml'
+      doc_man_dst = 'doc/index.html'
       doc_man_deps = FileList['doc/*.erb']
 
       doc_man_doc = nil
