@@ -277,13 +277,6 @@
         * Its core contains less than __________ lines of code.
         * It __________.
 
-        > TODO: explain why your project is better than its competitors
-
-        These features distinguish <%= $project %> from the competition:
-        * [competitor 1](http://)
-        * [competitor 2](http://)
-        * [competitor 3](http://)
-
 
       %|section "Etymology"
 
@@ -305,6 +298,15 @@
         from users like you:
 
         %< "../CREDITS"
+
+
+      %|section "Related works"
+
+        > TODO: list other projects which are similar to yours
+
+        * [project 1](http://)
+        * [project 2](http://)
+        * [project 3](http://)
 
   }
 
