@@ -594,15 +594,11 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       CLEAN.include ann_mail_dst
 
   # packaging
+    directory 'pkg'
+    CLOBBER.include 'pkg'
+
     desc 'Build a release.'
-    task :gem => [:clobber, :doc] do
-      sh $0, 'gem:package'
-    end
-    CLEAN.include 'pkg'
-
-    # ruby gem
-      require 'rake/gempackagetask'
-
+    task :gem => [:clobber, :doc, :ann_text, 'pkg'] do
       gem_spec = Gem::Specification.new do |gem|
         authors = project_module::AUTHORS
 
@@ -634,10 +630,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         gem.date        = project_module::RELEASE
         gem.version     = project_module::VERSION
         gem.summary     = project_module::TAGLINE
-
-        Rake::Task[:ann_text].invoke
         gem.description = ann_text
-
         gem.homepage    = project_module::WEBSITE
         gem.files       = FileList['**/*'].exclude('_darcs') - CLEAN
         gem.has_rdoc    = true
@@ -667,18 +660,11 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         end
 
         # additional configuration is done by user
-        yield gem if gem_config
+        gem_config.call(gem) if gem_config
       end
 
-      namespace :gem do
-        Rake::GemPackageTask.new(gem_spec).define
-
-        %w[gem package repackage clobber_package].each do |t|
-          hide_rake_task.call "gem:#{t}"
-        end
-      end
-
-      task :clobber => "gem:clobber_package"
+      mv Gem::Builder.new(gem_spec).build, 'pkg'
+    end
 
   # releasing
     desc 'Publish a release.'
