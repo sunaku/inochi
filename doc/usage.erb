@@ -62,7 +62,7 @@
     * Your project's user manual invokes the `Inochi.book()` method.
 
 
-  %|section "Tutorial"
+  %|section "General walkthrough", "Tutorial"
 
     This tutorial shows how <%= $project %> is used to manage a hypothetical `WordCount` project throughout the various stages of its life.
 
@@ -611,4 +611,31 @@
           </pre>
 
           If your documentation website (see the `:docsite` option for the `Inochi.init()` method) is hosted on RubyForge, then the above command will automatically upload your project's documentation to the correct place.
+
+
+  %|section "Specific topics"
+
+
+    %|section "Build a RubyGem without #{$project} as runtime dependency"
+
+      <%= $project %> adds itself as a runtime dependency to your project's gem, by default, because it assumes that you want to use its runtime convenience facilities in your project.
+
+      However, if you only wish to use <%= $project %>'s gem building facilities and your project has no use for its runtime convenience facilities, then you can build your project's gem without <%= $project %> as a runtime dependency as follows.
+
+      1.  Create your project's <tt>rakefile</tt> with the following structure and fill in the blanks:
+
+          <code>
+      require 'rubygems'
+      require 'inochi'
+
+      Inochi.init __________
+
+      Inochi.rake __________, :inochi_consumer => false
+      </code>
+
+          Notice the `:inochi_consumer => false` parameter being passed to  `Inochi.rake()`.  This is what tells <%= $project %> not to add itself as a runtime dependency to your project's gem.
+
+      2.  Build your project's gem <%= xref "Build a RubyGem", "as you normally would" %>.
+
+      Now your project uses <%= $project %> *only* when building its gem and contains <%= $project %>-related code *only* in its <tt>rakefile</tt>.  The remainder of your project is isolated from, and has no knowledge of, <%= $project %>.
 
