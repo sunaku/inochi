@@ -631,6 +631,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         #      For example, consider the "RedCloth" gem.
         #
         gem.name        = project_module::PROGRAM
+        gem.date        = project_module::RELEASE
         gem.version     = project_module::VERSION
         gem.summary     = project_module::TAGLINE
 
