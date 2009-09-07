@@ -10,6 +10,46 @@
   %|history
 
 
+    %|section "Version 1.1.0 (2009-09-06)"
+
+      This release improves the user manual and scaffold generator output, injects more metadata into gems, adds support for Microsoft web browsers, and fixes some bugs.
+
+
+      %|paragraph "New features"
+
+        * Add <%= xref "Build a RubyGem without #{$project} as runtime dependency", "instructions for building gems without Inochi" %> as a runtime dependency.
+
+        * Put release notes in "description" field of gemspec, as [suggested by Eric Hodel](http://www.ruby-forum.com/topic/190220#830072), so that subscribers of [the RubyForge gems feed](http://gems.rubyforge.org/index.rss) are aware of the changes in a published gem.
+
+        * Set the "date" field in gemspec to project release date.
+
+        * Change file extension of generated user manuals from <tt>.xhtml</tt> to <tt>.html</tt> to accomodate Microsoft web browsers' inability to process the <tt>application/xhtml+xml</tt> mime type.
+
+
+      %|paragraph "Bug fixes"
+
+        * The sdoc library was necessary to run 'rake test'.
+
+        * Forgot to add `:develop` option to scaffold generator output.
+
+        * Make "rake lang:dump" unconditionally overwrite the dump file.
+
+        * Fix gem not being built and prevent Maruku errors for the dummy "WordCount" project in the user manual.
+
+        * Use <tt>/usr/bin/env</tt> instead of <tt>/usr/bin/ruby</tt> to launch Ruby for better portability.
+
+
+      %|paragraph "Housekeeping"
+
+        * Use simpler Copyright reminder at the top of every file.
+
+        * Open source is for fun, so [be nice](http://loiclemeur.com/english/2009/03/never-criticize-your-competitors.html): speak of "related works" instead of "competitors".
+
+        * Rename "Tutorial" to "General walkthrough" in user manual and add a "Specific topics" section for housing uncommon use cases.
+
+        * Remove "logistics" section and redistribute its contents in more suitable locations in the user manual.
+
+
     %|section "Version 1.0.0 (2009-05-03)"
 
       This release <%= xref "Build a RubyGem without #{$project} as runtime dependency", "allows your gems to not depend on #{$project}" %>, lets you choose which unit testing library to use, adds new utility libraries and rake tasks, and fixes some bugs.
