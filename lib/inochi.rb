@@ -33,7 +33,7 @@ Inochi.init :Inochi,
     'addressable'    => '~> 2',      # for parsing URIs properly
     'erbook'         => '~> 7',      # for processing the user manual
     'babelfish'      => '~> 0',      # for human language translation
-    'spicycode-rcov' => nil,         # for code coverage statistics
+    'relevance-rcov' => nil,         # for code coverage statistics
     'flay'           => nil,         # for code quality analysis
     'reek'           => nil,         # for code quality analysis
     'roodi'          => nil,         # for code quality analysis
