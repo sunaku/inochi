@@ -536,7 +536,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         require 'time'
         require 'rss/maker'
 
-        feed = RSS::Maker.make('2.0') do |feed|
+        rss = RSS::Maker.make('2.0') do |feed|
           feed.channel.title       = ann_project
           feed.channel.link        = project_module::WEBSITE
           feed.channel.description = project_module::TAGLINE
@@ -551,7 +551,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
           item.description = ann_html
         end
 
-        File.write ann_feed_dst, feed
+        File.write ann_feed_dst, rss
       end
 
       CLOBBER.include ann_feed_dst
