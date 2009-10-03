@@ -27,7 +27,7 @@ Inochi.init :Inochi,
   },
   :develop => {
     'rake'           => '>= 0.8.4',
-    'rubyforge'      => '~> 1',      # for publishing gems to RubyForge
+    'rubyforge'      => '~> 2',      # for publishing gems to RubyForge
     'mechanize'      => '~> 0',      # for automating web browsing
     'voloko-sdoc'    => '>= 0.2.10', # for generating API documentation
     'addressable'    => '~> 2',      # for parsing URIs properly
