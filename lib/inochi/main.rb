@@ -54,7 +54,7 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
       # show program description
       text File.read(program_file)[/\A.*?^$\n/m]. # grab the header
            gsub(/^# ?/, ''). # strip the comment markers
-           sub(/\A!.*?\n/, '').lstrip # omit the shebang line
+           sub(/\A!.*?\n/, '').lstrip # omit the hashbang line
       text ''
 
       instance_eval(&trollop_config) if trollop_config
