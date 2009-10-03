@@ -113,7 +113,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
   # load the project module
     program_name = File.basename(program_home)
-    project_libs = File.join('lib', program_name)
+    project_libs = File.join(program_home, 'lib', program_name)
 
     require project_libs
     project_module = fetch_project_module(project_symbol)
