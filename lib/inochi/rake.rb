@@ -742,7 +742,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
             www = WWW::Mechanize.new
             page = www.get "http://rubyforge.org/news/?group_id=#{group_id}"
 
-            posts = (page/'//a[starts-with(./@href, "/forum/forum.php?forum_id=")]/text()').map {|e| e.to_s.gsub("\302\240", '').strip }
+            posts = (page/'//a[starts-with(./@href, "/forum/forum.php?forum_id=")]/text()').map {|e| e.to_s.strip }
 
             already_announced = posts.include? ann_subject
 
