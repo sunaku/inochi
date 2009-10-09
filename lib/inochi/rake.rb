@@ -338,7 +338,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
   # documentation
     desc 'Build all documentation.'
-    task :doc => %w[ doc:api doc:man ]
+    task :doc => %w[ doc:man doc:api ]
 
     # user manual
       doc_man_src = 'doc/index.erb'
