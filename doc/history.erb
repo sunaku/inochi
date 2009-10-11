@@ -118,7 +118,11 @@
 
         * Mark gems needed by `Inochi.rake()` as *development* dependencies.
 
-          A user would now have to install Inochi using <pre>gem install --development</pre> to install all these gems.  This also solves the recursive dependency problem between Inochi and ERBook.
+          Users must now run
+
+              gem install --development
+
+          to install these dependencies.  This also solves the recursive dependency problem between Inochi and ERBook.
 
         * Set executable in gem specification only if it exists.
 
