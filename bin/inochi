@@ -291,6 +291,7 @@
         > TODO: explain why your project is important
 
         <%= $project %> is exciting because:
+
         * It lets you __________.
         * Its core contains less than __________ lines of code.
         * It __________.
@@ -337,10 +338,30 @@
 
         Your system needs the following software to run <%= $project %>.
 
-        | Software                        | Description               | Notes                                        |
-        | --------                        | -----------               | -----                                        |
-        | [Ruby](http://ruby-lang.org)    | Ruby language interpreter | Version #{RUBY_VERSION} has been tested successfully. |
-        | [RubyGems](http://rubygems.org) | Ruby packaging system     | Version #{Gem::RubyGemsVersion} or newer is required. |
+        %|table
+          %|thead
+            %|tr
+              %|th
+                Software
+              %|th
+                Description
+              %|th
+                Notes
+          %|tbody
+            %|tr
+              %|td
+                [Ruby](http://ruby-lang.org)
+              %|td
+                Ruby language interpreter
+              %|td
+                Version #{RUBY_VERSION} has been tested successfully.
+            %|tr
+              %|td
+                [RubyGems](http://rubygems.org)
+              %|td
+                Ruby packaging system
+              %|td
+                Version #{Gem::RubyGemsVersion} or newer is required.
 
 
       %|section "Installation"
@@ -355,7 +376,8 @@
 
         If the installation was successful, you will see output like this:
 
-        <pre><%= verbatim `ruby bin/\#{$program} --version` %></pre>
+        %|text
+          %= verbatim `ruby bin/\#{$program} --version`
 
         If you do not see such output, you may
         %= xref "License", "ask the author(s)"
@@ -403,39 +425,48 @@
         policy](http://www.rubygems.org/read/chapter/7), which
         can be summarized as follows:
 
-        <table markdown="1">
-          <thead>
-            <tr>
-              <td rowspan="2">What increased in the version number?</td>
-              <td colspan="3">The increase indicates that the release:</td>
-            </tr>
-            <tr>
-              <th>Is backward compatible?</th>
-              <th>Has new features?</th>
-              <th>Has bug fixes?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>major</th>
-              <td style="background-color: #FFE4E1;">No</td>
-              <td>Yes</td>
-              <td>Yes</td>
-            </tr>
-            <tr>
-              <th>minor</th>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>Yes</td>
-            </tr>
-            <tr>
-              <th>patch</th>
-              <td>Yes</td>
-              <td style="background-color: #FFE4E1;">No</td>
-              <td>Yes</td>
-            </tr>
-          </tbody>
-        </table>
+        %|table
+          %|thead
+            %|tr
+              %|td :rowspan => 2
+                What increased in the version number?
+              %|td :colspan => 3
+                The increase indicates that the release:
+            %|tr
+              %|th
+                Is backward compatible?
+              %|th
+                Has new features?
+              %|th
+                Has bug fixes?
+          %|tbody
+            %|tr
+              %|th
+                major
+              %|td :style => "background-color: #FFE4E1;"
+                No
+              %|td
+                Yes
+              %|td
+                Yes
+            %|tr
+              %|th
+                minor
+              %|td
+                Yes
+              %|td
+                Yes
+              %|td
+                Yes
+            %|tr
+              %|th
+                patch
+              %|td
+                Yes
+              %|td :style => "background-color: #FFE4E1;"
+                No
+              %|td
+                Yes
   }
 
   create "#{program_name}/doc/theory.erb", %{
@@ -460,7 +491,8 @@
 
         You will see this output:
 
-        <pre><%= verbatim `ruby bin/\#{$program} --help` %></pre>
+        %|text
+          %= verbatim `ruby bin/\#{$program} --help`
 
         > TODO: explain the command-line arguments
 
