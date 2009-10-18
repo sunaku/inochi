@@ -98,6 +98,15 @@
   project_version = '0.0.0'
   project_release = Time.now.strftime('%F')
 
+  copyright_notice = %{
+    #--
+    # Copyright protects this work.
+    # See LICENSE file for details.
+    #++
+  }.strip
+
+  copyright_notice_erb = copyright_notice.gsub('#', '%#')
+
   inochi_preamble = %{
     require 'rubygems'
     gem '#{Inochi::PROGRAM}', '#{Inochi::VERSION.requirement}'
@@ -130,6 +139,8 @@
   }
 
   create "#{program_name}/rakefile", %{
+    #{copyright_notice}
+
     #{inochi_preamble}
 
     Inochi.rake #{project_symbol.inspect} do |gem|
@@ -163,6 +174,8 @@
     # Options:
     #
 
+    #{copyright_notice}
+
     #{inochi_preamble}
 
     options = Inochi.main #{project_symbol.inspect} do
@@ -180,6 +193,8 @@
   FileUtils.chmod 0755, bin_file
 
   create "#{program_name}/lib/#{program_name}.rb", %{
+    #{copyright_notice}
+
     #{inochi_preamble}
 
     Inochi.init #{project_symbol.inspect},
@@ -211,6 +226,8 @@
   }
 
   create "#{program_name}/test/#{program_name}.rb", %{
+    #{copyright_notice}
+
     unless #{project_symbol}.const_defined? :INOCHI
       fail "#{project_symbol} must be established by Inochi"
     end
@@ -231,6 +248,7 @@
   }
 
   create "#{program_name}/doc/index.erb", %{
+    #{copyright_notice_erb}
 
     % Inochi.book #{project_symbol.inspect}, self
 
@@ -239,10 +257,10 @@
     %+ "theory.erb"
     %+ "usage.erb"
     %+ "history.erb"
-
   }
 
   create "#{program_name}/doc/intro.erb", %{
+    #{copyright_notice_erb}
 
     % api_url = './api/index.html'
     % src_url = "http://github.com/__________/\#{$program}"
@@ -307,10 +325,10 @@
         * [project 1](http://)
         * [project 2](http://)
         * [project 3](http://)
-
   }
 
   create "#{program_name}/doc/setup.erb", %{
+    #{copyright_notice_erb}
 
     %|chapter "Setup"
 
@@ -418,10 +436,10 @@
             </tr>
           </tbody>
         </table>
-
   }
 
   create "#{program_name}/doc/theory.erb", %{
+    #{copyright_notice_erb}
 
     %|chapter "Theory of operation"
 
@@ -429,6 +447,7 @@
   }
 
   create "#{program_name}/doc/usage.erb", %{
+    #{copyright_notice_erb}
 
     %|chapter "Usage"
 
@@ -462,10 +481,10 @@
       %|section "Specific topics"
 
         > TODO: explain how to do more advanced / specific things
-
   }
 
   create "#{program_name}/doc/history.erb", %{
+    #{copyright_notice_erb}
 
     %|chapter "History"
 
@@ -539,5 +558,4 @@
             * __________ ---contributor name
 
             * __________ ---contributor name
-
   }
