@@ -494,7 +494,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
           ann_html.gsub! %r{<div class="nav"[^>]*>(.*?)</div>}, ''
 
           # remove latex-style heading numbers
-          ann_html.gsub! %r"(<(h\d)[^>]*>).+?(?:&nbsp;){2}(.+?)(</\2>)"m, '\1\3\4'
+          ann_html.gsub! %r"(<(h\d)[^>]*>)\s*(?:\d|\.)+(?:&nbsp;){2}(.+?)(</\2>)"m, '\1\3\4'
 
           ann_html = resolve_html_links[ann_html]
         end
