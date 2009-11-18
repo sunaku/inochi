@@ -712,7 +712,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
     # announcement
       desc 'Publish all announcements.'
-      task 'pub:ann' => %w[ pub:ann:forge pub:ann:raa pub:ann:talk ]
+      task 'pub:ann' => %w[ ann pub:ann:forge pub:ann:raa pub:ann:talk ]
 
       # login information
         ann_logins_file = options[:logins_file]
