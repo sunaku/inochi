@@ -63,7 +63,7 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
       instance_eval(&trollop_config) if trollop_config
 
       # show version information
-      version %w[PROJECT VERSION RELEASE WEBSITE INSTALL].map {|c|
+      version %w[PROJECT TAGLINE VERSION RELEASE WEBSITE INSTALL].map {|c|
         "#{c.downcase}: #{project_module.const_get c}"
       }.join("\n")
 
