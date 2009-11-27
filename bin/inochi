@@ -20,7 +20,7 @@
 #
 # Usage:
 #
-#   inochi [Options] ProjectName [ProgramName]
+#   #{PROGRAM} [Options] ProjectName [ProgramName]
 #
 #
 #   ProjectName:  Name of your project, which will be normalized
