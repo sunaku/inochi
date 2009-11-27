@@ -34,7 +34,8 @@
 # Returns the result of Trollop::options().
 #
 def Inochi.main project_symbol, *trollop_args, &trollop_config
-  program_file = first_caller_file
+  require 'pathname'
+  program_file = Pathname.new(first_caller_file).realpath
   program_name = File.basename(program_file)
   program_home = File.dirname(File.dirname(program_file))
 
