@@ -49,6 +49,7 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
 
       # show project description
       text "#{project_module::PROJECT} - #{project_module::TAGLINE}"
+      text project_module::WEBSITE
       text ''
 
       # show program description
