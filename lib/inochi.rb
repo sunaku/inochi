@@ -24,6 +24,7 @@ Inochi.init :Inochi,
   :require => {
     'trollop'        => '~> 1',                 # for parsing command-line
     'launchy'        => ['~> 0', '>= 0.3.3'],   # for launching a browser
+    'locale'         => '~> 2',                 # for detecting language
   },
   :develop => {
     'rake'           => ['~> 0', '>= 0.8.4'],

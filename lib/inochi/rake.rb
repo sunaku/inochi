@@ -244,7 +244,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
         at_exit do
           if ENV['dump_lang_phrases'] == '1'
             file = #{File.expand_path(lang_dump_file).inspect}
-            list = eval(#{project_symbol.to_s.inspect})::PHRASES.phrases
+            list = eval(#{project_symbol.to_s.inspect})::PHRASES.attempted
             data = list.map {|s| s + ':' }.join("\n")
 
             File.write file, data

@@ -3,7 +3,7 @@
 # See LICENSE file for details.
 #++
 
-require 'yaml'
+require 'inochi/phrases'
 
 module Inochi
   ##
@@ -141,7 +141,9 @@ module Inochi
 
     # make configuration parameters available as constants
       project_config[:inochi]  = project_config
-      project_config[:phrases] = Phrases.new project_config[:install]
+      project_config[:phrases] = Phrases.new(
+        File.join(project_config[:install], 'lang')
+      )
       project_config[:version].extend Version
 
       project_config.each_pair do |param, value|
@@ -165,92 +167,6 @@ module Inochi
     # Returns a Gem::Requirement expression.
     def requirement
       "~> #{major}"
-    end
-  end
-
-  ##
-  # Interface to translations of human text used in a project.
-  #
-  class Phrases
-    def initialize project_install_dir
-      # load language translations dynamically
-        lang_dir = File.join(project_install_dir, 'lang')
-
-        @phrases_by_language = Hash.new do |cache, language|
-          # store the phrase upon failure so that
-          # the phrases() method will know about it
-          phrases = Hash.new {|h,k| h[k] = nil }
-
-          lang_file = File.join(lang_dir, "#{language}.yaml")
-          lang_data = YAML.load_file(lang_file) rescue nil
-          phrases.merge! lang_data if lang_data
-
-          cache[language] = phrases
-        end
-
-      # detect user's preferred locale
-      self.locale = ENV['LC_ALL'] || ENV['LC_MESSAGES'] || ENV['LANG']
-    end
-
-    # The locale into which the #[] method will translate phrases.
-    attr_reader :locale
-
-    def locale= locale
-      @locale = locale.to_s
-
-      # extract the language portion of the locale
-      language  = @locale[/^[[:alpha:]]+/].to_s
-      @language = language =~ /^(C|POSIX)?$/i ? :en : language.downcase.to_sym
-    end
-
-    ##
-    # Returns all phrases that underwent (or
-    # attempted) translation via this object.
-    #
-    def phrases
-      @phrases_by_language.values.map {|h| h.keys }.flatten.uniq.sort
-    end
-
-    ##
-    # Translates the given phrase into the target
-    # locale (see #locale and #locale=) and then
-    # substitutes the given placeholder arguments
-    # into the translation (see Kernel#sprintf).
-    #
-    # If a translation is not available for the given phrase,
-    # then the given phrase will be used as-is, untranslated.
-    #
-    def [] phrase, *words
-      translate @language, phrase, *words
-    end
-
-    ##
-    # Provides access to translations in any language, regardless
-    # of the target locale (see #locale and #locale=).
-    #
-    # For example, you can access Japanese translations via
-    # the #jp method even if the target locale is French.
-    #
-    def method_missing meth, *args
-      # ISO 639 language codes come in alpha-2 and alpha-3 forms
-      if meth.to_s =~ /^[a-z]{2,3}$/
-        translate meth, *args
-      else
-        super
-      end
-    end
-
-    private
-
-    ##
-    # Translates the given phrase into the given language and then substitutes
-    # the given placeholder arguments into the translation (see Kernel#sprintf).
-    #
-    # If the translation is not available, then
-    # the given string will be used instead.
-    #
-    def translate language, phrase, *words
-      (@phrases_by_language[language][phrase.to_s] || phrase).to_s % words
     end
   end
 end
