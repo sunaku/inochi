@@ -69,7 +69,8 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
       }.join("\n")
 
       opt :manual, 'Show the user manual'
-      opt :locale, 'Set preferred language', :type => :string
+      opt :locale, "Set preferred locale, into which to translate this program's output.", :short => 'l', :type => :string
+      opt :locale_directory, "Set directory which contains translations for this program's output.", :short => 'L', :type => :string
     end
 
     if options[:manual]
@@ -79,6 +80,10 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
       Launchy::Browser.run manual
 
       exit
+    end
+
+    if locale_directory = options[:locale_directory]
+      project_module::PHRASES.locale_directory = locale_directory
     end
 
     if locale = options[:locale]

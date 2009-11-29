@@ -14,17 +14,21 @@ module Inochi
       :system_preferred_locales,
       :user_preferred_locales
 
+    attr_accessor :locale_directory
+
     ##
-    # [directory]
+    # [locale_directory]
     #   Path to the directory that contains translation bundles (YAML files).
     #
-    def initialize directory
+    def initialize locale_directory
+      self.locale_directory = locale_directory
+
       require 'set'
       @attempted = Set.new
 
       # load language translations dynamically
       @phrases_by_bundle = Hash.new do |cache, bundle|
-        bundle_file = File.join(directory, "#{bundle}.yaml")
+        bundle_file = File.join(@locale_directory, "#{bundle}.yaml")
         if File.exist? bundle_file
           begin
             require 'yaml'
