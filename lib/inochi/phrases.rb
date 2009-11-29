@@ -2,24 +2,59 @@ module Inochi
   ##
   # Interface to translations of human text used in a project.
   #
+  # Translation bundles are YAML files (which must have
+  # a ".yaml" file extension) which represent a single
+  # Hash which maps input phrases to translated output.
+  #
+  # Input phrases may contain special placeholders (see Kernel#sprintf) which
+  # are later substituted for actual values by the caller of the #[] method.
+  #
+  # ==== Examples
+  #
+  # A translation bundle file would look like this:
+  #
+  #   # this is a comment, ignored by the YAML parser
+  #   input: output
+  #   "foo: bar": "moz: qux"
+  #   hello %s: %s ni'hau
+  #
   class Phrases
     ##
-    # Returns all phrases that underwent (or
-    # attempted) translation via this object.
+    # All input phrases that were attempted to be translated.
     #
     attr_reader :attempted
 
-    attr_reader :locale,
-      :environment_preferred_locales,
-      :system_preferred_locales,
-      :user_preferred_locales
+    ##
+    # The locale into which the #[] method will translate.
+    #
+    # The value of this attribute will be +nil+ if no
+    # translation bundle has been loaded successfully.
+    #
+    attr_reader :locale
 
+    ##
+    # The directory which contains translation bundles used by the #[] method to
+    # translate input phrases into the target locale (see #locale and #locale=).
+    #
     attr_accessor :locale_directory
 
     ##
-    # [locale_directory]
-    #   Path to the directory that contains translation bundles (YAML files).
+    # Locales marked as being preferred by environment variables.
     #
+    # See http://www.linux.com/archive/feature/53781 for details.
+    #
+    attr_reader :environment_preferred_locales
+
+    ##
+    # Locales marked as being preferred by the Operating System.
+    #
+    attr_reader :system_preferred_locales
+
+    ##
+    # Locales given to #locale= by the user of this class.
+    #
+    attr_reader :user_preferred_locales
+
     def initialize locale_directory
       self.locale_directory = locale_directory
 
