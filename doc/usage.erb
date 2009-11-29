@@ -396,9 +396,9 @@
 
         %|section "Translation files"
 
-          Translation files are [YAML documents](<%= yaml_addr %>) that reside in your project's <tt>lang/</tt> directory.  They provide translations for <%= xref "Language phrases", "language phrases" %> used in your project.
+          Translation files are Ruby files that reside in your project's <tt>loc/</tt> directory.  They provide translations for <%= xref "Language phrases", "language phrases" %> used in your project.
 
-          For example, suppose that your language phrases are written in English, the <tt>lang/es.yaml</tt> (Spanish) translation file would appear like this:
+          For example, suppose that your language phrases are written in English, the <tt>loc/es.yaml</tt> (Spanish) translation file would appear like this:
 
               #
               # (this is a comment)
@@ -418,7 +418,7 @@
 
         %|section "Extracting language phrases"
 
-          %|command! "rake lang:dump" do |node|
+          %|command! "rake loc:ex" do |node|
             %|text
               %= verbatim `#{node.title}`
 
@@ -447,7 +447,7 @@
 
           After you have extracted all language phrases from your project (either manually or via <%= xref "Extracting language phrases" %>) into the <%= phrases_file %> file, <%= $project %> can automatically translate them into various languages using the [Yahoo! BabelFish translation service](http://babelfish.yahoo.com):
 
-          %|command! "rake lang:conv from=LANGUAGE_CODE" do |node|
+          %|command! "rake loc:tr from=LANGUAGE_CODE" do |node|
             %|text
               %= verbatim `#{node.title} 2>&1`
 

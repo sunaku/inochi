@@ -158,13 +158,13 @@ def Inochi.rake project_symbol, options = {}, &gem_config
   end
 
   # translation
-    directory 'lang'
+    directory 'loc'
 
-    lang_dump_deps = 'lang'
+    lang_dump_deps = 'loc'
     lang_dump_file = 'lang/phrases.yaml'
 
     desc 'Extract language phrases for translation.'
-    task 'lang:dump' => lang_dump_deps do
+    task 'loc:ex' => lang_dump_deps do
       ENV['dump_lang_phrases'] = '1'
       Rake::Task[:test].invoke
     end
@@ -172,7 +172,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
     lang_conv_delim = "\n" * 5
 
     desc 'Translate extracted language phrases (from=LANGUAGE_CODE).'
-    task 'lang:conv' => lang_dump_file do |t|
+    task 'loc:tr' => lang_dump_file do |t|
       require 'babelfish'
 
       unless
@@ -200,7 +200,7 @@ def Inochi.rake project_symbol, options = {}, &gem_config
       src_lang_name = BabelFish::LANGUAGE_NAMES[src_lang]
 
       BabelFish::LANGUAGE_PAIRS[src_lang].each do |dst_lang|
-        dst_file      = "lang/#{dst_lang}.yaml"
+        dst_file      = "loc/#{dst_lang}.yaml"
         dst_encoding  = 'utf-8'
         dst_lang_name = BabelFish::LANGUAGE_NAMES[dst_lang]
 

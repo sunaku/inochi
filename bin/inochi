@@ -387,7 +387,7 @@
 
           * <tt>index.erb</tt> --- source of this user manual.
 
-        * <tt>lang/</tt> --- translations of language phrases.
+        * <tt>loc/</tt> --- translations of language phrases.
 
         * <tt>LICENSE</tt> --- copyright notice and legal conditions.
 

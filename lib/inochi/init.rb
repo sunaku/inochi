@@ -142,7 +142,7 @@ module Inochi
     # make configuration parameters available as constants
       project_config[:inochi]  = project_config
       project_config[:phrases] = Phrases.new(
-        File.join(project_config[:install], 'lang')
+        File.join(project_config[:install], 'loc')
       )
       project_config[:version].extend Version
 
