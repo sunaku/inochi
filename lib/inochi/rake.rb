@@ -201,18 +201,23 @@ def Inochi.rake project_symbol, options = {}, &gem_config
 
       BabelFish::LANGUAGE_PAIRS[src_lang].each do |dst_lang|
         dst_file      = "lang/#{dst_lang}.yaml"
+        dst_encoding  = 'utf-8'
         dst_lang_name = BabelFish::LANGUAGE_NAMES[dst_lang]
 
         puts "Translating phrases from #{src_lang_name} into #{dst_lang_name} as #{dst_file.inspect}"
 
         translations = BabelFish.translate(
-          phrases.join(lang_conv_delim), src_lang, dst_lang
+          phrases.join(lang_conv_delim), src_lang, dst_lang, dst_encoding
         ).split(lang_conv_delim)
 
         File.open(dst_file, 'w') do |f|
           f.puts "# #{dst_lang} (#{dst_lang_name})"
 
           phrases.zip(translations).each do |a, b|
+            if b.respond_to? :force_encoding # for Ruby 1.9
+              b.force_encoding dst_encoding
+            end
+
             f.puts "#{a}: #{b}"
           end
         end
