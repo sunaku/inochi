@@ -68,9 +68,9 @@ def Inochi.main project_symbol, *trollop_args, &trollop_config
         "#{c.downcase}: #{project_module.const_get c}"
       }.join("\n")
 
-      opt :manual, 'Show the user manual'
-      opt :locale, "Set preferred locale, into which to translate this program's output.", :short => 'l', :type => :string
-      opt :locale_directory, "Set directory which contains translations for this program's output.", :short => 'L', :type => :string
+      opt :manual, Inochi::PHRASES['Display the user manual.']
+      opt :locale, Inochi::PHRASES["Set preferred locale, into which to translate this program's output."], :short => 'l', :type => :string
+      opt :locale_directory, Inochi::PHRASES["Set directory which contains translations for this program's output."], :short => 'L', :type => :string
     end
 
     if options[:manual]

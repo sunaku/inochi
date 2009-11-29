@@ -44,7 +44,7 @@
   require File.join(File.dirname(__FILE__), '..', 'lib', 'inochi')
 
   @options = Inochi.main :Inochi do
-    opt :merger, 'A command that invokes a text merging tool with three arguments: (1) old file, (2) new file, (3) output file.  The command should direct the result of merging the old file and the new file to the output file.  In addition, the command *must not* modify the old file or the new file.', :type => :string
+    opt :merger, Inochi::PHRASES['A command that invokes a text merging tool with three arguments: (1) old file, (2) new file, (3) output file.  The command should direct the result of merging the old file and the new file to the output file.  In addition, the command must not modify the old file or the new file.'], :type => :string
   end
 
 # utility logic
