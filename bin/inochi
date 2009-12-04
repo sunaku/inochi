@@ -85,12 +85,6 @@
 
   copyright_notice_erb = copyright_notice.gsub('#', '%#')
 
-  inochi_preamble = %{
-    require 'rubygems'
-    gem '#{Inochi::PROGRAM}', '#{Inochi::VERSION.requirement}'
-    require '#{Inochi::PROGRAM}'
-  }.strip
-
   create "#{program_name}/CREDITS", %{
     * Contributor name
     * [Contributor name with hyperlink](http://the.contributor's.url)
@@ -119,7 +113,7 @@
   create "#{program_name}/rakefile", %{
     #{copyright_notice}
 
-    #{inochi_preamble}
+    require Dir[File.dirname(__FILE__) + '/lib/*.rb'].first
 
     Inochi.rake #{project_symbol.inspect} do |gem|
       # TODO: additional gem configuration.
@@ -154,7 +148,7 @@
 
     #{copyright_notice}
 
-    #{inochi_preamble}
+    require Dir[File.dirname(__FILE__) + '/../lib/*.rb'].first
 
     options = Inochi.main #{project_symbol.inspect} do
       # TODO: define command-line options here.
@@ -173,7 +167,11 @@
   create "#{program_name}/lib/#{program_name}.rb", %{
     #{copyright_notice}
 
-    #{inochi_preamble}
+    $LOAD_PATH << File.dirname(__FILE__)
+
+    require 'rubygems'
+    gem '#{Inochi::PROGRAM}', '#{Inochi::VERSION.requirement}'
+    require '#{Inochi::PROGRAM}'
 
     Inochi.init #{project_symbol.inspect},
       :project => '#{project_name}',
