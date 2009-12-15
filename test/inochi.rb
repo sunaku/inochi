@@ -3,111 +3,103 @@
 # See LICENSE file for details.
 #++
 
-require 'dfect/mini'
-
-class << Object.new
-  describe 'Inochi.calc_program_name' do
-    it 'converts input into lower-case' do
-      c('foo').must_equal('foo')
-      c('foO').must_equal('foo')
-      c('Foo').must_equal('foo')
-      c('FoO').must_equal('foo')
-    end
-
-    it 'converts camel case into snake case' do
-      c('FooBar').must_equal('foo_bar')
-      c('AnXMLParser').must_equal('an_xml_parser')
-      c('fOo').must_equal('f_oo')
-      c('FOo').must_equal('f_oo')
-    end
-  end
-
-  def self.c *args
+D 'Inochi.calc_program_name' do
+  def c(*args)
     Inochi.calc_program_name(*args)
   end
-end
 
-class << Object.new
-  describe 'Inochi.calc_project_symbol' do
-    it 'capitalizes first letter like a ruby constant' do
-      c('foo').must_equal('Foo')
-    end
-
-    it 'preserves exisitng capitalization' do
-      c('FoO').must_equal('FoO')
-      c('fooBaR').must_equal('FooBaR')
-    end
-
-    it 'converts non-word characters into underscores' do
-      c('a!b#c').must_equal('A_b_c')
-    end
-
-    it 'squeezes mulitple underscores' do
-      c('foo!!bar$$qux').must_equal('Foo_bar_qux')
-    end
-
-    it 'ignores surrounding whitespace' do
-      c('  a  ').must_equal('A')
-    end
-
-    it 'ignores surrounding underscores' do
-      c('_a').must_equal('A')
-      c('a_').must_equal('A')
-      c('_a_').must_equal('A')
-      c('__a__').must_equal('A')
-    end
-
-    it 'ignores surrounding non-word characters' do
-      c('!a').must_equal('A')
-      c('a!').must_equal('A')
-      c('!a!').must_equal('A')
-      c('!!a!!').must_equal('A')
-      c('!@a#$').must_equal('A')
-    end
+  D 'converts input into lower-case' do
+    T c('foo') == 'foo'
+    T c('foO') == 'foo'
+    T c('Foo') == 'foo'
+    T c('FoO') == 'foo'
   end
 
-  def self.c *args
+  D 'converts camel case into snake case' do
+    T c('FooBar') == 'foo_bar'
+    T c('AnXMLParser') == 'an_xml_parser'
+    T c('fOo') == 'f_oo'
+    T c('FOo') == 'f_oo'
+  end
+end
+
+D 'Inochi.calc_project_symbol' do
+  def c(*args)
     Inochi.calc_project_symbol(*args).to_s
   end
-end
 
-class << Object.new
-  describe 'Inochi.camel_to_snake_case' do
-    it 'supports empty input' do
-      c('').must_equal('')
-    end
-
-    it 'supports normal camel case' do
-      c('fooBar').must_equal('foo_Bar')
-      c('FooBar').must_equal('Foo_Bar')
-      c('Foobar').must_equal('Foobar')
-    end
-
-    it 'supports nested abbreviations' do
-      c('AnXMLParser').must_equal('An_XML_Parser')
-      c('ANXMLParser').must_equal('ANXML_Parser')
-      c('AnXmLPaRsEr').must_equal('An_Xm_L_Pa_Rs_Er')
-    end
-
-    it 'preserves non-word characters' do
-      c(' a!!b#c').must_equal(' a!!b#c')
-    end
-
-    it 'preserves exsiting underscores' do
-      c('foo_bar').must_equal('foo_bar')
-      c('foo_Bar').must_equal('foo_Bar')
-      c('Foo_Bar').must_equal('Foo_Bar')
-      c('Foo_bar').must_equal('Foo_bar')
-
-      c('Foo___b_a__r').must_equal('Foo___b_a__r')
-      c('_').must_equal('_')
-      c('_a').must_equal('_a')
-      c('a_').must_equal('a_')
-      c('_a_').must_equal('_a_')
-    end
+  D 'capitalizes first letter like a ruby constant' do
+    T c('foo') == 'Foo'
   end
 
-  def self.c *args
+  D 'preserves exisitng capitalization' do
+    T c('FoO') == 'FoO'
+    T c('fooBaR') == 'FooBaR'
+  end
+
+  D 'converts non-word characters into underscores' do
+    T c('a!b#c') == 'A_b_c'
+  end
+
+  D 'squeezes mulitple underscores' do
+    T c('foo!!bar$$qux') == 'Foo_bar_qux'
+  end
+
+  D 'ignores surrounding whitespace' do
+    T c('  a  ') == 'A'
+  end
+
+  D 'ignores surrounding underscores' do
+    T c('_a') == 'A'
+    T c('a_') == 'A'
+    T c('_a_') == 'A'
+    T c('__a__') == 'A'
+  end
+
+  D 'ignores surrounding non-word characters' do
+    T c('!a') == 'A'
+    T c('a!') == 'A'
+    T c('!a!') == 'A'
+    T c('!!a!!') == 'A'
+    T c('!@a#$') == 'A'
+  end
+end
+
+D 'Inochi.camel_to_snake_case' do
+  def c(*args)
     Inochi.camel_to_snake_case(*args)
+  end
+
+  D 'supports empty input' do
+    T c('') == ''
+  end
+
+  D 'supports normal camel case' do
+    T c('fooBar') == 'foo_Bar'
+    T c('FooBar') == 'Foo_Bar'
+    T c('Foobar') == 'Foobar'
+  end
+
+  D 'supports nested abbreviations' do
+    T c('AnXMLParser') == 'An_XML_Parser'
+    T c('ANXMLParser') == 'ANXML_Parser'
+    T c('AnXmLPaRsEr') == 'An_Xm_L_Pa_Rs_Er'
+  end
+
+  D 'preserves non-word characters' do
+    T c(' a!!b#c') == ' a!!b#c'
+  end
+
+  D 'preserves exsiting underscores' do
+    T c('foo_bar') == 'foo_bar'
+    T c('foo_Bar') == 'foo_Bar'
+    T c('Foo_Bar') == 'Foo_Bar'
+    T c('Foo_bar') == 'Foo_bar'
+
+    T c('Foo___b_a__r') == 'Foo___b_a__r'
+    T c('_') == '_'
+    T c('_a') == '_a'
+    T c('a_') == 'a_'
+    T c('_a_') == '_a_'
   end
 end
