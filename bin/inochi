@@ -201,8 +201,15 @@
       }
   }
 
-  create "#{program_name}/test/#{program_name}.rb", %{
-    #{copyright_notice}
+  create "#{program_name}/test/helper.rb", %{
+    require Dir[File.dirname(__FILE__) + '/../lib/*.rb'].first
+
+    # activate the testing framework of your choice
+    require 'test/unit'
+  }
+
+  create "#{program_name}/test/#{program_name}/inochi_test.rb", %{
+    require File.dirname(__FILE__) + '/../helper.rb'
 
     unless #{project_symbol}.const_defined? :INOCHI
       fail "#{project_symbol} must be established by Inochi"
