@@ -1,0 +1,7 @@
+require '#{package_name}/inochi'
+
+module #{library_name}
+  # TODO: add your project functionality here
+  # autoload :SubLibrary, '#{package_name}/sub_library'
+  # autoload :AnotherSubLibrary, '#{package_name}/another_sub_library'
+end

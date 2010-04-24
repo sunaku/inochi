@@ -1,0 +1,29 @@
+%#----------------------------------------------------------------------------
+## SEE ALSO
+%#----------------------------------------------------------------------------
+
+rake(1),
+rsync(1),
+[Ronn],
+[Ember]
+
+%#----------------------------------------------------------------------------
+%# Markdown link references
+%#----------------------------------------------------------------------------
+
+[Ember]: <%= Ember::WEBSITE %>
+[ERBook]: http://snk.tuxfamily.org/lib/erbook/
+[eRuby]: http://en.wikipedia.org/wiki/ERuby
+[Inochi]: <%= Inochi::WEBSITE %>
+[kdiff3]: http://kdiff3.sourceforge.net
+[Lynx]: http://lynx.isc.org
+[Markdown]: http://daringfireball.net/projects/markdown
+[meld]: http://meld.sourceforge.net
+[RAA]: http://raa.ruby-lang.org
+[Ronn]: http://github.com/rtomayko/ronn
+[RubyGems]: http://rubygems.org
+[Ruby]: http://ruby-lang.org
+[ruby-talk]: http://www.ruby-lang.org/en/community/mailing-lists/
+[tkdiff]: http://tkdiff.sourceforge.net
+[YAML]: http://www.yaml.org/YAML_for_ruby.html
+[YARD]: http://yardoc.org/more

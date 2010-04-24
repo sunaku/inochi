@@ -1,0 +1,379 @@
+%#----------------------------------------------------------------------------
+## SYNOPSIS
+%#----------------------------------------------------------------------------
+
+`inochi` [<OPTIONS>] <TASK> [<RAKE_OPTIONS>]
+
+%#----------------------------------------------------------------------------
+## DESCRIPTION
+%#----------------------------------------------------------------------------
+
+Runs <TASK> using rake(1), to which <RAKE_OPTIONS> (see `rake --help` output)
+are passed.  The following tasks are available for running:
+
+<%
+  task_listing = `ruby -Ilib bin/inochi --tasks`
+
+  desc_by_task = task_listing.split(/$/).inject({}) do |hash, line|
+    task, desc = line.split(/\s+#\s+/, 2)
+    if task = task.split.last
+      hash[task] = desc
+    end
+    hash
+  end
+%>
+
+%|desc_by_task.each do |task, desc|
+  * **<%= task %>**:
+    <%= desc %>
+
+%#----------------------------------------------------------------------------
+## OPTIONS
+%#----------------------------------------------------------------------------
+
+* `-h`, `--help`:
+  Display this manual and exit.
+
+* `-v`, `--version`:
+  Print version number and exit.
+
+%#----------------------------------------------------------------------------
+## inochi init
+%#----------------------------------------------------------------------------
+
+%= desc_by_task['init']
+
+### SYNOPSIS
+
+`inochi` init `project`=<PROJECT> [`package`=<PACKAGE>] [`merger`=<MERGER>]
+
+### DESCRIPTION
+
+Installs the Inochi infrastructure for the project (see **PROJECTS** below)
+named <PROJECT> into the current working directory, or upgrades a previous
+installation thereof.
+
+Pre-existing files are not overwritten.  Instead, it is your responsibility to
+merge changes (hopefully with the aid of an automated text merging tool; see
+<MERGER> below) between pre-existing and newly generated files.
+
+### PARAMETERS
+
+* <PROJECT>:
+  Name of the project.  This will be normalized into the name of a Ruby
+  module that will serve as a namespace for all code in the project.
+
+* <PACKAGE>:
+  Name of the project's package directory, shell command, and basename of the
+  project library file.
+
+* <MERGER>:
+  Command that invokes a text merging tool with three arguments: (1) old file,
+  (2) new file, (3) output file.  The command should direct the result of
+  merging the old file and the new file to the output file.  In addition, the
+  command *must not* modify the old file or the new file.
+
+  **TIP**: Instead of merging files by hand, you can transfer wanted changes
+  between files semi-automatically using a text merging tool such as [meld],
+  [kdiff3], or [tkdiff] as follows:
+
+    1.  Create a file named `merge2` containing the following text:
+
+            #!/bin/sh
+            old=$1; new=$2; out=$3;
+            # meld "$new" "$out"                            # use meld
+            # kdiff3 --merge "$old" "$new" --output "$out"  # use kdiff3
+            # tkdiff "$old" "$new" -o "$out"                # use tkdiff
+
+    2.  Uncomment the line corresponding to the tool you wish to use.
+
+    3.  Make the file executable:
+
+            chmod +x merge2
+
+    4.  Pass the file's path as the value of <MERGER>:
+
+            inochi init merger=path/to/merge2
+
+  Now your chosen text merging tool will be launched to help you transfer your
+  changes.  When you are finished, save the merged file and exit the merging
+  tool.  If you do not want to transfer any changes, then simply exit the
+  merging tool *without saving* any changes to the merged file!
+
+### NOTIFICATIONS
+
+* create <FILE>:
+  A file is being created because it does not exist.
+
+* skip <FILE>:
+  A file is being skipped because it is already up to date.
+
+* update <FILE>:
+  A file is being updated because it is out of date.  A text merging tool
+  (see the **merger** parameter above) will be launched to transfer content
+  from the old file (\*.old) and the new file (\*.new) to the out of date
+  file.  If a text merging tool is not specified, then you will have to do
+  the merging by hand.
+
+%#----------------------------------------------------------------------------
+## inochi api
+%#----------------------------------------------------------------------------
+
+Builds API documentation for the project's Ruby library using [YARD].  Ruby
+constructs marked with `@private` are omitted from the API documentation.
+
+%#----------------------------------------------------------------------------
+## inochi man
+%#----------------------------------------------------------------------------
+
+Renders the help manual's source files (see **Help manual** below) into:
+
+* man.ronn:
+  [Ronn] format, rendered by [Ember].
+
+* man.html:
+  HTML (Web page) format, rendered by [Ronn].
+
+* man/man1/<PACKAGE>.1.gz:
+  Roff (UNIX manual page) format, rendered by [Ronn].
+
+%#----------------------------------------------------------------------------
+## inochi gem
+%#----------------------------------------------------------------------------
+
+Builds a release package in RubyGems format (plainly known as a **gem**):
+
+* <PACKAGE>-<VERSION>.gem:
+  The gem itself.
+
+* <PACKAGE>-<VERSION>.gemspec:
+  Ruby representation of the gem's specification.
+
+The gem specification is pre-initialized with information from the project's
+Ruby library and help manual.  In particular:
+
+* gem.description:
+  Plain text version of all content between the **ABOUT** heading and any
+  subsequent heading.
+
+* gem.authors:
+  Plain text version of all content between the **AUTHORS** or **CREDITS**
+  heading (whichever comes first) and any subsequent heading.
+
+* gem.files:
+  Only contains the project's `LICENSE` and `CREDITS` files, rendered help
+  manual, Ruby library, shell command, and C extension.
+
+  All other files (such as the test suite and help manual source files) are
+  omitted (1) to reduce the gem file size and (2) because they are really only
+  needed during development.
+
+The gem specification can be further customized through the `:gem_spec_logic`
+parameter defined in the project's options file (see **Options file** below).
+
+%#----------------------------------------------------------------------------
+## inochi ann
+%#----------------------------------------------------------------------------
+
+Builds release announcements which can be edited by hand before publishing:
+
+* ann.html:
+  Web page version of the release announcement.
+
+* ann.txt:
+  Plain text version of the release announcement; converted from the Web page
+  version by [Lynx].
+
+* ann.xml:
+  RSS feed version of the release announcement.
+
+%#----------------------------------------------------------------------------
+## inochi pub:ann:ruby-talk
+%#----------------------------------------------------------------------------
+
+<%=
+  desc_by_task['pub:ann:ruby-talk'].
+  sub(/^\S+/, '\&s the').
+  sub('ruby-talk', 'the [\&]')
+%>
+
+It is recommended that you build, review, and edit the `ann.txt` file *by
+hand* before running this command because (1) the body of that file is
+published directly as the announcement message and (2) HTML to plain text
+conversion is not perfect.
+
+%#----------------------------------------------------------------------------
+## inochi pub:web
+%#----------------------------------------------------------------------------
+
+<%=
+  desc_by_task['pub:web'].
+  sub(/^\S+/, '\&es the').
+  sub('docs', 'documentation').
+  sub(/\.$/, '')
+%>
+using rsync(1) according to the :pub_web_\* parameters defined in the
+project's options file (see **Options file** below).
+
+%#----------------------------------------------------------------------------
+## PROJECTS
+%#----------------------------------------------------------------------------
+
+A project instilled with Inochi is composed of an options file, a license,
+source code, documentation, and a Web presence; which are all explained below.
+
+%#----------------------------------------------------------------------------
+### Options file
+%#----------------------------------------------------------------------------
+
+A project's options file is a [YAML] document named `inochi.opts` that defines
+the following optional parameters for the various inochi(1) sub-commands:
+
+* :pub_web_target:
+  Location where `inochi pub:web` will upload files.  This value
+  can use any local/remote/protocol syntax supported by rsync(1).
+
+* :pub_web_options:
+  Options for rsync(1), which uploads files for `inochi pub:web`.
+
+* :pub_web_extras:
+  Additional files for `inochi pub:web` to upload.  The values listed
+  here can use any local/remote/protocol syntax supported by rsync(1).
+
+  Example:
+
+      :pub_web_extras:
+        - some/file
+        - some_user@some_host:some/path
+
+* :gem_spec_logic:
+  Arbitrary Ruby code that will configure this project's RubyGem before it
+  is built by `inochi gem`.  This code has access to a local variable named
+  `gem` which holds a Gem::Specification object representing this project.
+
+  Example:
+
+      :gem_spec_logic: |
+        # show the Inochi-provided specification for this project's gem
+        puts gem.to_ruby
+
+        # add files that are outside this project directory to the gem
+        gem.files += ['some', 'files', 'in', 'this', 'directory']
+
+        # omit some added files in this project's directory from the gem
+        gem.files -= ['lib/top_secret.rb', 'bin/more_top_secret_stuff']
+
+        # and so on...  anything is possible!  use your imagination!
+
+%#----------------------------------------------------------------------------
+### License file
+%#----------------------------------------------------------------------------
+
+A project's license defines the legal conditions under which the project is
+developed and distributed.  It is stored in a file named LICENSE at the root
+of the project directory.
+
+%#----------------------------------------------------------------------------
+### Ruby library
+%#----------------------------------------------------------------------------
+
+A project's Ruby library is composed of the following files:
+
+* lib/<PACKAGE>.rb:
+  Defines the project's namespace (Ruby module or class) and registers
+  sub-libraries to be automatically loaded on demand (Kernel#autoload).
+
+* lib/<PACKAGE>/inochi.rb:
+  Defines project information in Ruby constants within the project's namespace
+  (Ruby module or class).  Also defines a `require` class method on the
+  project's namespace that loads the correct version (as defined by the
+  project's dependency information) of a given gem if RubyGems is available.
+
+%#----------------------------------------------------------------------------
+### Test suite
+%#----------------------------------------------------------------------------
+
+A project's test suite is composed of the following files:
+
+* test/runner:
+  Executable Ruby script that hides the details of running the test suite.
+
+* test/test_helper.rb:
+  Ruby source file that prepares the testing environment by loading a testing
+  library and defining common knowledge and utility logic shared by the actual
+  tests.
+
+* test/\*\*/\*_test.rb:
+  Part of the test suite.  Performs the actual testing.
+
+%#----------------------------------------------------------------------------
+### Shell command
+%#----------------------------------------------------------------------------
+
+A project's shell command is an executable Ruby source file that serves as a
+gateway into the project's Ruby library from the command line:
+
+* bin/<PACKAGE>:
+  Expects the project's `lib/` directory to be on Ruby's $LOAD_PATH (see
+  **HACKING** below).  This requirement is automatically met when a user
+  installs the project using RubyGems.
+
+%#----------------------------------------------------------------------------
+### Help manual
+%#----------------------------------------------------------------------------
+
+A project's help manual is a monolithic [eRuby] template that is (1) processed
+by [Ember] with its shorthand notation, hierarchical unindentation, and
+missing `<%% end %>` inference features enabled, and (2) composed of the
+following source files:
+
+* MANUAL:
+  Primary source file of the help manual that (1) defines common knowledge and
+  utility logic and (2) divides its content into the following files for
+  easier editing and maintenance.
+
+* README:
+  Introduces the project, its Web presence, and gives setup instructions.
+
+* USAGE:
+  Explains how to use the project's shell command.
+
+* EXAMPLES:
+  Illustrates how to perform common tasks with the project's shell command and
+  Ruby library, respectively.
+
+* HACKING:
+  Instructs fellow software developers on running, testing, and hacking the
+  project's source code.
+
+* HISTORY:
+  Records notes about current and past releases of the project in terms of
+  incompatible changes, new features, bug fixes, and housekeeping activities.
+
+* CREDITS:
+  Attributes all developers and contributors whose efforts have made the
+  project what it is today.
+
+* FURTHER:
+  Refers to related commands, help manuals, and topics beyond this project.
+
+%#----------------------------------------------------------------------------
+### Web presence
+%#----------------------------------------------------------------------------
+
+A project's a Web presence is composed, at minimum, of the following:
+
+* Code repository:
+  Where fellow software developers can obtain the latest source code.
+
+* Issue tracker:
+  Where users and contributors can submit patches, request features, and get
+  help.
+
+* Official website:
+  Where the help manual, API documentation, and announcements RSS feed can be
+  accessed (hopefully) permanently.
+
+You may choose to omit some or all of these components by simply not
+mentioning them in the **Resources** section of the help manual's README
+source file.

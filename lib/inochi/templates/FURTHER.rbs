@@ -1,17 +1,17 @@
 %#----------------------------------------------------------------------------
-## CREDITS
+## SEE ALSO
 %#----------------------------------------------------------------------------
 
-Suraj N. Kurapati,
-Peileppe Production,
-Florian Gilcher
+> TODO: list related UNIX man pages here
 
-### Logo
-%< "logo/README"
+some_command(1),
+another_command(5),
+yet_another_command(7)
 
 %#----------------------------------------------------------------------------
-## LICENSE
+%# Markdown link references
 %#----------------------------------------------------------------------------
 
-%# See the file named "LICENSE".
-%< "LICENSE"
+[Inochi]: <%= Inochi::WEBSITE %>
+[RubyGems]: http://rubygems.org
+[Ruby]: http://ruby-lang.org

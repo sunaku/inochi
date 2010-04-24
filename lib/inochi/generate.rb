@@ -3,14 +3,14 @@ require 'digest/sha1'
 
 module Inochi
   module Generate
+    extend self
+
     ##
     # Notify the user about some action being performed.
     #
     def notify action, message
       printf "%16s  %s\n", action, message
     end
-
-    module_function :notify
 
     ##
     # Writes the given contents to the file at the given
@@ -39,8 +39,6 @@ module Inochi
         File.write path, content
       end
     end
-
-    module_function :generate
   end
 end
 
@@ -49,6 +47,6 @@ unless File.respond_to? :write
   # Writes the given content to the given file.
   #
   def File.write path, content
-    open(path, 'wb') {|f| f << content }
+    open(path, 'wb') {|f| f.write content }
   end
 end

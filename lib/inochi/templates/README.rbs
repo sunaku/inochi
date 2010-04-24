@@ -1,0 +1,60 @@
+%#----------------------------------------------------------------------------
+## ABOUT
+%#----------------------------------------------------------------------------
+
+#{project_name} is a TODO that TODO.
+
+%#----------------------------------------------------------------------------
+### Features
+%#----------------------------------------------------------------------------
+
+* Does TODO.
+
+* Reduces TODO.
+
+* Lets you TODO.
+
+* Composed of TODO lines of code.
+
+%#----------------------------------------------------------------------------
+### Resources
+%#----------------------------------------------------------------------------
+
+* Issue tracker (report bugs, request features, get help):
+  <http://github.com/TODO/#{package_name}/issues>
+
+* Source code (browse online or obtain with [Git](http://git-scm.com)):
+  <http://github.com/TODO/#{package_name}>
+
+* API documentation:
+  <<%= File.join(#{library_name}::WEBSITE, 'api/') %>>
+
+* Announcements feed:
+  <<%= File.join(#{library_name}::WEBSITE, 'ann.xml') %>>
+
+* Official website:
+  <<%= Ember::WEBSITE %>>
+
+%#----------------------------------------------------------------------------
+### Setup
+%#----------------------------------------------------------------------------
+
+Prerequisites:
+
+  > TODO: list all software necessary to run your project
+
+  * [Ruby] #{RUBY_VERSION} or newer.
+
+  * [RubyGems] #{Gem::RubyGemsVersion} or newer.
+
+Installing:
+
+    gem install #{package_name}
+
+Upgrading:
+
+    gem update #{package_name}
+
+Removing:
+
+    gem uninstall #{package_name}

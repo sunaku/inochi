@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require '#{package_name}'
+
+if ARGV.delete('-h') or ARGV.delete('--help')
+  # try to display UNIX version of help manual
+  man_path = File.join(#{library_name}::INSTDIR, 'man')
+  unless system 'man', '-M', man_path, '-a', '#{package_name}'
+    # try to display HTML version of help manual
+    man_html = man_path + '.html'
+    unless %w[$BROWSER open start].any? {|b| system "\#{b} \#{man_html}" }
+      # no luck; direct user to project website
+      puts "See \#{#{library_name}::WEBSITE}"
+    end
+  end
+  exit
+elsif ARGV.delete('-v') or ARGV.delete('--version')
+  puts #{library_name}::VERSION
+  exit
+end
+
+# TODO: replace the following with the body of your program
+puts "\#{__FILE__} was executed with \#{ARGV.inspect} arguments"
