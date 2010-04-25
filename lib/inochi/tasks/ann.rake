@@ -87,6 +87,7 @@ task :@ann_html do
         <p>#{@project_module::WEBSITE}</p>
       </center>
       #{@ann_nfo_html_nodes.join}
+      #{@ann_rel_html_title_node}
       #{@ann_rel_html_body_nodes.join}
     }.strip
 
