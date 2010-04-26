@@ -18,12 +18,12 @@ module Inochi
   ##
   # Number of this release of this project.
   #
-  VERSION = '2.0.0'
+  VERSION = '2.0.1'
 
   ##
   # Date of this release of this project.
   #
-  RELDATE = '2010-04-24'
+  RELDATE = '2010-04-25'
 
   ##
   # Description of this release of this project.

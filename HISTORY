@@ -5,6 +5,32 @@
 This section contains release notes of current and past releases.
 
 %#----------------------------------------------------------------------------
+### Version 2.0.1 (2010-04-25)
+%#----------------------------------------------------------------------------
+
+This release fixes some bugs and adds a simple tutorial to the help manual.
+
+Bug fixes:
+
+  * Task files were not loaded in correct order.  As a result, certain Inochi
+    tasks would fail (depending on the sorting order of your filesystem) with
+    the following cryptic error:
+
+        inochi aborted!
+        Don't know how to build task ''
+        /usr/lib/ruby/gems/1.9.1/gems/rake-0.8.7/lib/rake.rb:1728:in `[]'
+        (See full trace by running task with --trace)
+
+  * LICENSE file template lacked a "TODO" marker.
+
+  * Forgot version number heading in announcement.
+
+Housekeeping:
+
+  * Restored the simple WordCount tutorial from version 1.1.1.
+    See **TUTORIAL** above.
+
+%#----------------------------------------------------------------------------
 ### Version 2.0.0 (2010-04-24)
 %#----------------------------------------------------------------------------
 
