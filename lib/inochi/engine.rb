@@ -37,7 +37,7 @@ module Inochi
     end
 
     def register_rake_tasks
-      Dir[File.dirname(__FILE__) + '/tasks/*.rake'].each do |file|
+      Dir[File.dirname(__FILE__) + '/tasks/*.rake'].sort.each do |file|
         instance_eval File.read(file), file
       end
     end
