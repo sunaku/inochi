@@ -1,8 +1,4 @@
-![Inochi Logo](logo/inochi.png)
-
-%#----------------------------------------------------------------------------
-## ABOUT
-%#----------------------------------------------------------------------------
+![](logo/inochi.png)
 
 Inochi is an infrastructure for Ruby projects that helps you test, document,
 package, publish, and announce your projects.  It encourages *great*
