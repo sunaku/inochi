@@ -55,6 +55,7 @@ module Inochi
   #   }
   #
   RUNTIME = {
+    'ember'       => [ '>= 0.3.0' , '< 1' ], # for eRuby templates
     'highline'    => [ '>= 1.5'   , '< 2' ], # for echoless password entry
     'mechanize'   => [ '~> 1'             ], # for publishing announcements
     'nokogiri'    => [ '>= 1.4'   , '< 2' ], # for parsing HTML and XML
