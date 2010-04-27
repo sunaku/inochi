@@ -1,1 +1,1 @@
-Inochi.require 'dfect/auto'
+require 'dfect/auto'

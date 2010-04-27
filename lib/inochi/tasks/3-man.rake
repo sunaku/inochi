@@ -43,7 +43,7 @@ task :@man_doc => @man_src do
       :infer_end => true,
     }
 
-    Inochi.require 'ember'
+    require 'ember'
     ronn_input = Ember::Template.new(ember_input, ember_opts).render
     File.write @man_ronn_dst, ronn_input # for debugging / sanity check
 
@@ -55,7 +55,7 @@ task :@man_doc => @man_src do
     }
     ronn_file = "#{@project_package_name}.1.ronn"
 
-    Inochi.require 'ronn'
+    require 'ronn'
     @man_doc = Ronn::Document.new(ronn_file, ronn_opts) { ronn_input }
   end
 end
@@ -71,7 +71,7 @@ task :@man_html_dom do
   unless @man_html_dom
     Rake::Task[:@man_html].invoke
 
-    Inochi.require 'nokogiri'
+    require 'nokogiri'
     @man_html_dom = Nokogiri::HTML(@man_html)
   end
 end

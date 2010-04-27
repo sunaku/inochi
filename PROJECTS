@@ -68,9 +68,10 @@ A project's Ruby library is composed of the following files:
 
 * lib/<PACKAGE>/inochi.rb:
   Defines project information in Ruby constants within the project's namespace
-  (Ruby module or class).  Also defines a `require` class method on the
-  project's namespace that loads the correct version (as defined by the
-  project's dependency information) of a given gem if RubyGems is available.
+  (Ruby module or class) and establishes version constraints for gems this
+  project depends on if RubyGems is available in the user's environment.
+  Unsatisfied constraints are simply printed to the standard error stream;
+  they do not raise a `Gem::LoadError` exception.
 
 %#----------------------------------------------------------------------------
 ### Test suite

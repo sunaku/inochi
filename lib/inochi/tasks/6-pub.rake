@@ -40,7 +40,7 @@ desc 'Announce release on ruby-talk mailing list.'
 task 'pub:ann:ruby-talk' do
   site = 'http://ruby-forum.com'
 
-  Inochi.require 'mechanize'
+  require 'mechanize'
   browser = Mechanize.new
 
   # fetch login form
@@ -49,7 +49,7 @@ task 'pub:ann:ruby-talk' do
     raise "cannot find login form on Web page: #{page.uri}"
 
   # fill login information
-  Inochi.require 'highline'
+  require 'highline'
   highline = HighLine.new
 
   form['name'] = highline.ask("#{site} username: ")
@@ -92,7 +92,7 @@ task 'pub:ann:raa' do
   Rake::Task[:@project].invoke
   project = @project_package_name
 
-  Inochi.require 'mechanize'
+  require 'mechanize'
   browser = Mechanize.new
 
   # fetch project information form
@@ -111,7 +111,7 @@ task 'pub:ann:raa' do
   form['url']               = @project_module::WEBSITE
 
   # fill login information
-  Inochi.require 'highline'
+  require 'highline'
   highline = HighLine.new
 
   prompt = '%s password for %s project and %s owner: ' %

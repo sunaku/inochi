@@ -7,7 +7,7 @@ task :api => @api_dst
 file @api_dst => FileList['lib/**/*.rb'].include('LICENSE') do
   inner_task_name = 'api:yard'
 
-  Inochi.require 'yard'
+  require 'yard'
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new(inner_task_name) do |yardoc|
     yardoc.options = [
