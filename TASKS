@@ -1,0 +1,174 @@
+%#----------------------------------------------------------------------------
+## TASKS
+%#----------------------------------------------------------------------------
+
+The following tasks are available for running.  Some of them are explained in
+more detail below.
+
+<%
+  task_listing = `ruby -Ilib bin/inochi --tasks`
+
+  desc_by_task = task_listing.split(/$/).inject({}) do |hash, line|
+    task, desc = line.split(/\s+#\s+/, 2)
+    if task = task.split.last
+      hash[task] = desc
+    end
+    hash
+  end
+%>
+
+%|desc_by_task.each do |task, desc|
+  * **<%= task %>**:
+    <%= desc %>
+
+%#----------------------------------------------------------------------------
+### inochi init
+%#----------------------------------------------------------------------------
+
+Installs the Inochi infrastructure for the project (see **PROJECTS** below) in
+the current working directory or upgrades a previous installation thereof.
+
+`inochi` init `project`=<PROJECT> [`package`=<PACKAGE>] [`merger`=<MERGER>]
+
+* <PROJECT>:
+  Name of the project.  This will be normalized into the name of a Ruby
+  module that will serve as a namespace for all code in the project.
+
+* <PACKAGE>:
+  Name of the project's package directory, shell command, and basename of the
+  project library file.
+
+* <MERGER>:
+  Command that invokes a text merging tool with three arguments: (1) old file,
+  (2) new file, (3) output file.  The command should direct the result of
+  merging the old file and the new file to the output file.  In addition, the
+  command *must not* modify the old file or the new file.
+
+Pre-existing files are not overwritten.  Instead, it is your responsibility to
+merge changes between pre-existing and newly generated files.  You can do this
+with the aid of an automated text merging tool such as [meld], [tkdiff], or
+[kdiff3] by following these steps:
+
+  1.  Create a file named `merge2` containing the following text:
+
+          #!/bin/sh
+          old=$1; new=$2; out=$3;
+          # meld "$new" "$out"                            # use meld
+          # tkdiff "$old" "$new" -o "$out"                # use tkdiff
+          # kdiff3 --merge "$old" "$new" --output "$out"  # use kdiff3
+
+  2.  Uncomment the line corresponding to the tool you wish to use.
+
+  3.  Make the file executable:
+
+          chmod +x merge2
+
+  4.  Pass the file's path as the value of <MERGER>:
+
+          inochi init merger=path/to/merge2
+
+Now your chosen text merging tool will be launched to help you transfer your
+changes.  When you are finished, save the merged file and exit the merging
+tool.  If you do not want to transfer any changes, then simply exit the
+merging tool *without saving* any changes to the merged file!
+
+%#----------------------------------------------------------------------------
+### inochi api
+%#----------------------------------------------------------------------------
+
+Builds API documentation for the project's Ruby library using [YARD].  Ruby
+constructs marked with `@private` are omitted from the API documentation.
+
+%#----------------------------------------------------------------------------
+### inochi man
+%#----------------------------------------------------------------------------
+
+Renders the help manual's source files (see **Help manual** below) into:
+
+* man.ronn:
+  [Ronn] format, rendered by [Ember].
+
+* man.html:
+  HTML (Web page) format, rendered by [Ronn].
+
+* man/man1/<PACKAGE>.1.gz:
+  Roff (UNIX manual page) format, rendered by [Ronn].
+
+%#----------------------------------------------------------------------------
+### inochi gem
+%#----------------------------------------------------------------------------
+
+Builds a release package in RubyGems format (plainly known as a **gem**):
+
+* <PACKAGE>-<VERSION>.gem:
+  The gem itself.
+
+* <PACKAGE>-<VERSION>.gemspec:
+  Ruby representation of the gem's specification.
+
+The gem specification is pre-initialized with information from the project's
+Ruby library and help manual.  In particular:
+
+* gem.description:
+  Plain text version of all content between the **ABOUT** heading and any
+  subsequent heading.
+
+* gem.authors:
+  Plain text version of all content between the **AUTHORS** or **CREDITS**
+  heading (whichever comes first) and any subsequent heading.
+
+* gem.files:
+  Only contains the project's `LICENSE` and `CREDITS` files, rendered help
+  manual, Ruby library, shell command, and C extension.
+
+  All other files (such as the test suite and help manual source files) are
+  omitted (1) to reduce the gem file size and (2) because they are really only
+  needed during development.
+
+The gem specification can be further customized through the `:gem_spec_logic`
+parameter defined in the project's options file (see **Options file** below).
+
+%#----------------------------------------------------------------------------
+### inochi ann
+%#----------------------------------------------------------------------------
+
+Builds release announcements which can be edited by hand before publishing:
+
+* ann.html:
+  Web page version of the release announcement.
+
+* ann.txt:
+  Plain text version of the release announcement; converted from the Web page
+  version by [Lynx].
+
+* ann.xml:
+  RSS feed version of the release announcement.
+
+%#----------------------------------------------------------------------------
+### inochi pub:ann:ruby-talk
+%#----------------------------------------------------------------------------
+
+<%=
+  desc_by_task['pub:ann:ruby-talk'].
+  sub(/^\S+/, '\&s the').
+  sub('ruby-talk', 'the [\&]')
+%>
+
+It is recommended that you build, review, and edit the `ann.txt` file *by
+hand* before running this command because (1) the body of that file is
+published directly as the announcement message and (2) HTML to plain text
+conversion is not perfect.
+
+%#----------------------------------------------------------------------------
+### inochi pub:web
+%#----------------------------------------------------------------------------
+
+<%=
+  desc_by_task['pub:web'].
+  sub(/^\S+/, '\&es the').
+  sub('docs', 'documentation').
+  sub(/\.$/, '')
+%>
+using rsync(1) according to the :pub_web_\* parameters defined in the
+project's options file (see **Options file** below).
+

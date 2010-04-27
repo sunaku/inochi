@@ -1,0 +1,162 @@
+%#----------------------------------------------------------------------------
+## PROJECTS
+%#----------------------------------------------------------------------------
+
+A project instilled with Inochi is composed of an options file, a license,
+source code, documentation, and a Web presence; which are all explained below.
+
+%#----------------------------------------------------------------------------
+### Options file
+%#----------------------------------------------------------------------------
+
+A project's options file is a [YAML] document named `inochi.opts` that defines
+the following optional parameters for the various inochi(1) sub-commands:
+
+* :pub_web_target:
+  Location where `inochi pub:web` will upload files.  This value
+  can use any local/remote/protocol syntax supported by rsync(1).
+
+* :pub_web_options:
+  Options for rsync(1), which uploads files for `inochi pub:web`.
+
+* :pub_web_extras:
+  Additional files for `inochi pub:web` to upload.  The values listed
+  here can use any local/remote/protocol syntax supported by rsync(1).
+
+  Example:
+
+      :pub_web_extras:
+        - some/file
+        - some_user@some_host:some/path
+
+* :gem_spec_logic:
+  Arbitrary Ruby code that will configure this project's RubyGem before it
+  is built by `inochi gem`.  This code has access to a local variable named
+  `gem` which holds a Gem::Specification object representing this project.
+
+  Example:
+
+      :gem_spec_logic: |
+        # show the Inochi-provided specification for this project's gem
+        puts gem.to_ruby
+
+        # add files that are outside this project directory to the gem
+        gem.files += ['some', 'files', 'in', 'this', 'directory']
+
+        # omit some added files in this project's directory from the gem
+        gem.files -= ['lib/top_secret.rb', 'bin/more_top_secret_stuff']
+
+        # and so on...  anything is possible!  use your imagination!
+
+%#----------------------------------------------------------------------------
+### License file
+%#----------------------------------------------------------------------------
+
+A project's license defines the legal conditions under which the project is
+developed and distributed.  It is stored in a file named LICENSE at the root
+of the project directory.
+
+%#----------------------------------------------------------------------------
+### Ruby library
+%#----------------------------------------------------------------------------
+
+A project's Ruby library is composed of the following files:
+
+* lib/<PACKAGE>.rb:
+  Defines the project's namespace (Ruby module or class) and registers
+  sub-libraries to be automatically loaded on demand (Kernel#autoload).
+
+* lib/<PACKAGE>/inochi.rb:
+  Defines project information in Ruby constants within the project's namespace
+  (Ruby module or class).  Also defines a `require` class method on the
+  project's namespace that loads the correct version (as defined by the
+  project's dependency information) of a given gem if RubyGems is available.
+
+%#----------------------------------------------------------------------------
+### Test suite
+%#----------------------------------------------------------------------------
+
+A project's test suite is composed of the following files:
+
+* test/runner:
+  Executable Ruby script that hides the details of running the test suite.
+
+* test/test_helper.rb:
+  Ruby source file that prepares the testing environment by loading a testing
+  library and defining common knowledge and utility logic shared by the actual
+  tests.
+
+* test/\*\*/\*_test.rb:
+  Part of the test suite.  Performs the actual testing.
+
+%#----------------------------------------------------------------------------
+### Shell command
+%#----------------------------------------------------------------------------
+
+A project's shell command is an executable Ruby source file that serves as a
+gateway into the project's Ruby library from the command line:
+
+* bin/<PACKAGE>:
+  Expects the project's `lib/` directory to be on Ruby's $LOAD_PATH (see
+  **HACKING** below).  This requirement is automatically met when a user
+  installs the project using RubyGems.
+
+%#----------------------------------------------------------------------------
+### Help manual
+%#----------------------------------------------------------------------------
+
+A project's help manual is a monolithic [eRuby] template that is (1) processed
+by [Ember] with its shorthand notation, hierarchical unindentation, and
+missing `<%% end %>` inference features enabled, and (2) composed of the
+following source files:
+
+* MANUAL:
+  Primary source file of the help manual that (1) defines common knowledge and
+  utility logic and (2) divides its content into the following files for
+  easier editing and maintenance.
+
+* README:
+  Introduces the project, its Web presence, and gives setup instructions.
+
+* USAGE:
+  Explains how to use the project's shell command.
+
+* EXAMPLES:
+  Illustrates how to perform common tasks with the project's shell command and
+  Ruby library, respectively.
+
+* HACKING:
+  Instructs fellow software developers on running, testing, and hacking the
+  project's source code.
+
+* HISTORY:
+  Records notes about current and past releases of the project in terms of
+  incompatible changes, new features, bug fixes, and housekeeping activities.
+
+* CREDITS:
+  Attributes all developers and contributors whose efforts have made the
+  project what it is today.
+
+* FURTHER:
+  Refers to related commands, help manuals, and topics beyond this project.
+
+%#----------------------------------------------------------------------------
+### Web presence
+%#----------------------------------------------------------------------------
+
+A project's a Web presence is composed, at minimum, of the following:
+
+* Code repository:
+  Where fellow software developers can obtain the latest source code.
+
+* Issue tracker:
+  Where users and contributors can submit patches, request features, and get
+  help.
+
+* Official website:
+  Where the help manual, API documentation, and announcements RSS feed can be
+  accessed (hopefully) permanently.
+
+You may choose to omit some or all of these components by simply not
+mentioning them in the **Resources** section of the help manual's README
+source file.
