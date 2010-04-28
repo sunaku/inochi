@@ -2,8 +2,7 @@
 ## TUTORIAL
 %#----------------------------------------------------------------------------
 
-This section shows how Inochi is used to manage a hypothetical
-WordCount project throughout the various stages of its life.
+This section shows Inochi is used to create a simple WordCount project.
 
 %#----------------------------------------------------------------------------
 ### Creating a new project
@@ -13,14 +12,14 @@ Create a directory for the project:
 
     mkdir word_count
 
-Instill Inochi into the project:
+Instill Inochi into the directory:
 
     cd word_count
     inochi init project=WordCount
 
 Review pending work marked as "TODO":
 
-    ack -a TODO || grep TODO -R .
+    grep TODO -R .
 
 %#----------------------------------------------------------------------------
 ### Running the shell command

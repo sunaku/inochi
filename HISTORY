@@ -5,6 +5,32 @@
 This section contains release notes of current and past releases.
 
 %#----------------------------------------------------------------------------
+### Version 3.0.0 (2010-04-27)
+%#----------------------------------------------------------------------------
+
+Incompatible changes:
+
+  * The `require()` class method is no longer emitted on your project's
+    namespace.  Instead, gem version constraints are established up front when
+    your project's Ruby library is first loaded.
+
+  * Author names are now fetched from the AUTHORS section, not CREDITS.
+
+  * Project information is now placed in the NAME section, not ABOUT.
+
+Bug fixes:
+
+  * Reflect current Inochi version in gem constraint.
+
+  * Forgot to list [Ember] as a runtime gem dependency.
+
+Housekeeping:
+
+  * Move all task documentation into new **TASKS** section.
+
+  * Move TASKS & PROJECTS information into separate files.
+
+%#----------------------------------------------------------------------------
 ### Version 2.0.1 (2010-04-25)
 %#----------------------------------------------------------------------------
 
