@@ -55,11 +55,10 @@ end
 task :@project_authors_html_nodes do
   unless @project_authors_html_nodes
     begin
-      head, body = fetch_nodes_between('h2#AUTHORS,h2#CREDITS',
-                                       'h1,h2,h3,h4,h5,h6')
+      head, body = fetch_nodes_between('h2#AUTHORS', 'h1,h2,h3,h4,h5,h6')
     rescue => error
       error.message.insert 0,
-        "The manual lacks content under a <H2> AUTHORS or CREDITS heading.\n"
+        "The manual lacks content under a <H2> AUTHORS heading.\n"
       raise error
     end
 

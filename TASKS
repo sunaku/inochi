@@ -114,8 +114,8 @@ Ruby library and help manual.  In particular:
   subsequent heading.
 
 * gem.authors:
-  Plain text version of all content between the **AUTHORS** or **CREDITS**
-  heading (whichever comes first) and any subsequent heading.
+  Plain text version of all content between the **AUTHORS** heading and any
+  subsequent heading.
 
 * gem.files:
   Only contains the project's `LICENSE` and `CREDITS` files, rendered help
