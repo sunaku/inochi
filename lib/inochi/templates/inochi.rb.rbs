@@ -74,7 +74,7 @@ module #{library_name}
   #   }
   #
   DEVTIME = {
-    "inochi" => [ "~> #{Inochi::VERSION.to_i}" ], # for managing this project
+    "inochi" => [ ">= #{Inochi::VERSION}", "< #{Inochi::VERSION.to_i.next}" ],
   }
 
   # establish gem version dependencies
