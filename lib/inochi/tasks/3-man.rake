@@ -52,6 +52,7 @@ task :@man_doc => @man_src do
     ronn_opts = {
       :date => Date.parse(@project_module::RELDATE),
       :manual => "Version #{@project_module::VERSION}",
+      :styles => %w[ man toc 80c ]
     }
     ronn_file = "#{@project_package_name}.1.ronn"
 
