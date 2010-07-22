@@ -22,7 +22,7 @@ task :init do
 
   create_from_rbs binding, 'test/runner', 'test_runner'
   chmod 0755, 'test/runner'
-  create_from_rbs binding, 'test/test_helper.rb', 'test_helper.rb'
+  create_from_rbs binding, 'test/helper.rb', 'test_helper.rb'
   create_from_rbs binding, "test/#{package_name}_test.rb", 'library_test.rb'
 
   create_from_rbs binding, 'LICENSE'
