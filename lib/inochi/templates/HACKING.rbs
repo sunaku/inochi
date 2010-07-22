@@ -48,7 +48,8 @@ Or by setting the `$RUBYLIB` environment variable:
     ruby bin/#{package_name}
     irb -r #{package_name}
 
-Or by installing the [ruby-wrapper](http://github.com/chneukirchen/rup) tool.
+Or by running Ruby through the [ruby-wrapper](
+http://github.com/chneukirchen/rup/blob/master/ruby-wrapper ) tool.
 
 %#----------------------------------------------------------------------------
 ### RubyGems setup
