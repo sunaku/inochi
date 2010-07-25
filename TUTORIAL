@@ -90,7 +90,7 @@ Append the following code to the `test/word_count_test.rb` file:
 
 Run the test suite and observe that all tests fail:
 
-    test/runner
+    ruby test/runner
 
 Append the following code to the `lib/word_count.rb` file:
 
@@ -103,7 +103,7 @@ Append the following code to the `lib/word_count.rb` file:
 
 Run the test suite again and observe that all tests pass:
 
-    test/runner
+    ruby test/runner
 
 Append the following code to the `bin/word_count` file:
 

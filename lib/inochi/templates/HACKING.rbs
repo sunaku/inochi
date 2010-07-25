@@ -78,7 +78,7 @@ Simply execute the included test runner, which sets up Ruby's `$LOAD_PATH` for
 testing, loads the `test/helper.rb` file, and then evaluates all
 `test/**/*_test.rb` files:
 
-    test/runner
+    ruby test/runner
 
 Its exit status will indicate whether all tests have passed.  It may also
 print additional pass/fail information depending on the testing library used
