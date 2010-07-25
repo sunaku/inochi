@@ -1,7 +1,14 @@
 <%
+  proj_home_url = #{library_name}::WEBSITE
+  api_docs_url  = File.join(proj_home_url, 'api/')
+  ann_feed_url  = File.join(proj_home_url, 'ann.xml')
+
+  code_repo_scm = '[Git](http://git-scm.com)'
+  code_repo_url = 'http://github.com/TODO/#{package_name}'
+  bug_track_url = 'http://github.com/TODO/#{package_name}/issues'
+
   ##
-  # Wraps the given content within <pre>
-  # tags in a way that is Markdown-safe.
+  # Puts the given content inside <pre> tags in a Markdown-safe way.
   #
   def preformatted content
     if content =~ /\\S/
