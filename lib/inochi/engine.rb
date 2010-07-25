@@ -58,7 +58,7 @@ module Inochi
     # path.  If the given path already exists, then a
     # backup is created before invoking the merging tool.
     #
-    def create path, body, merger = ENV[:merger]
+    def create path, body, merger = ENV['merger']
       generate path, body do |*files|
         system "#{merger} #{Shellwords.join files}" if merger
       end

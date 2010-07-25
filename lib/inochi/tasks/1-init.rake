@@ -1,12 +1,12 @@
 desc 'Instill Inochi into current directory.'
 task :init do
 
-  unless project_name = ENV[:project]
+  unless project_name = ENV['project']
     raise ArgumentError, 'project name not specified'
   end
 
   library_name = Engine.calc_library_name(project_name)
-  package_name = ENV[:package] || Engine.calc_package_name(library_name)
+  package_name = ENV['package'] || Engine.calc_package_name(library_name)
 
   project_version = '0.0.0'
   project_release = Time.now.strftime('%F')

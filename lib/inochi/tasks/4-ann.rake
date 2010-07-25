@@ -87,7 +87,7 @@ task :@ann_html do
       </center>
       #{@ann_nfo_html_nodes.join}
       #{@ann_rel_html_title_node}
-      #{@ann_rel_html_body_nodes.join}
+      #{@ann_rel_html_body_nodes.map(&:to_xml).join}
     }.strip
 
     @ann_html = resolve_html_links(@ann_html)
@@ -199,7 +199,7 @@ end
 def convert_html_to_text html
   # lynx's -dump option requires a .html file
   require 'tempfile'
-  tmp_file = Tempfile.new($$).path + '.html'
+  tmp_file = Tempfile.new('inochi').path + '.html'
 
   begin
     File.write tmp_file, html
