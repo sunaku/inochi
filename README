@@ -20,19 +20,19 @@ documentation and reduces project administrivia.
 %#----------------------------------------------------------------------------
 
 * Issue tracker (report bugs, request features, get help):
-  <http://github.com/sunaku/inochi/issues>
+  <<%= bug_track_url %>>
 
-* Source code (browse online or obtain with [Git](http://git-scm.com)):
-  <http://github.com/sunaku/inochi>
+* Source code (browse online or obtain with <%= code_repo_scm %>):
+  <<%= code_repo_url %>>
 
 * API documentation:
-  <<%= File.join(Inochi::WEBSITE, 'api/') %>>
+  <<%= api_docs_url %>>
 
 * Announcements feed:
-  <<%= File.join(Inochi::WEBSITE, 'ann.xml') %>>
+  <<%= ann_feed_url %>>
 
 * Official website:
-  <<%= Ember::WEBSITE %>>
+  <<%= proj_home_url %>>
 
 %#----------------------------------------------------------------------------
 ### Setup
