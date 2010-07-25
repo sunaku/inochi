@@ -29,7 +29,7 @@
   <<%= File.join(#{library_name}::WEBSITE, 'ann.xml') %>>
 
 * Official website:
-  <<%= Ember::WEBSITE %>>
+  <<%= #{library_name}::WEBSITE %>>
 
 %#----------------------------------------------------------------------------
 ### Setup
