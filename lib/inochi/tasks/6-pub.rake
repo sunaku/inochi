@@ -37,51 +37,56 @@ desc 'Announce release on all news outlets.'
 task 'pub:ann' => %w[ pub:ann:raa pub:ann:ruby-talk ]
 
 desc 'Announce release on ruby-talk mailing list.'
-task 'pub:ann:ruby-talk' do
+task 'pub:ann:ruby-talk' => @ann_text_dst do
   site = 'http://ruby-forum.com'
 
-  require 'mechanize'
-  browser = Mechanize.new
+  # let user verify announcement before publishing
+  ann_text = File.read(@ann_text_dst)
+  puts ann_text, nil
 
-  # fetch login form
-  page = browser.get("#{site}/user/login")
-  form = page.forms_with(:action => '/user/login').first or
-    raise "cannot find login form on Web page: #{page.uri}"
-
-  # fill login information
   require 'highline'
   highline = HighLine.new
 
-  form['name'] = highline.ask("#{site} username: ")
-  form['password'] = highline.ask("#{site} password: ") {|q| q.echo = false }
+  if highline.agree "Really publish this announcement to #{site}?"
+    require 'mechanize'
+    browser = Mechanize.new
 
-  # submit login form
-  page = form.click_button
-  page.at('a[href="/user/logout"]') or
-    raise "invalid login for #{site}"
+    # fetch login form
+    page = browser.get("#{site}/user/login")
+    form = page.forms_with(:action => '/user/login').first or
+      raise "cannot find login form on Web page: #{page.uri}"
 
-  # make the announcement
-  page = browser.get("#{site}/topic/new?forum_id=4")
-  form = page.forms_with(:action => '/topic/new#postform').first or
-    raise "cannot find post creation form on Web page: #{page.uri}"
+    # fill login information
+    form['name'] = highline.ask("#{site} username: ")
+    form['password'] = highline.ask("#{site} password: ") {|q| q.echo = false }
 
-  # enable notification by email whenever
-  # someone replies to this announcement
-  form['post[subscribed_by_author]'] = '1'
+    # submit login form
+    page = form.click_button
+    page.at('a[href="/user/logout"]') or
+      raise "invalid login for #{site}"
 
-  Rake::Task[:@ann_subject].invoke
-  form['post[subject]'] = @ann_subject
+    # make the announcement
+    page = browser.get("#{site}/topic/new?forum_id=4")
+    form = page.forms_with(:action => '/topic/new#postform').first or
+      raise "cannot find post creation form on Web page: #{page.uri}"
 
-  Rake::Task[@ann_text_dst].invoke
-  form['post[text]'] = File.read(@ann_text_dst)
+    # enable notification by email whenever
+    # someone replies to this announcement
+    form['post[subscribed_by_author]'] = '1'
 
-  # submit the announcement
-  page = form.submit
+    Rake::Task[:@ann_subject].invoke
+    form['post[subject]'] = @ann_subject
 
-  if error = page.at('.error')
-    raise "Announcement to #{site} failed:\n#{error.text}"
-  else
-    puts "Successfully announced to #{site}:", page.uri
+    form['post[text]'] = ann_text
+
+    # submit the announcement
+    page = form.submit
+
+    if error = page.at('.error')
+      raise "Announcement to #{site} failed:\n#{error.text}"
+    else
+      puts "Successfully announced to #{site}:", page.uri
+    end
   end
 end
 
