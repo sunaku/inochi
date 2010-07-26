@@ -5,6 +5,53 @@
 This section contains release notes of current and past releases.
 
 %#----------------------------------------------------------------------------
+### Version 4.0.0 (2010-07-25)
+%#----------------------------------------------------------------------------
+
+Incompatible changes:
+
+  * Rename the "VERSIONS" section in the HISTORY file to "HISTORY".
+
+Changes you will see in upgraded or newly generated projects:
+
+  * Rename the "FURTHER" file to "BEYOND".
+
+  * Rename `test/test_helper.rb` to just `test/helper.rb`.
+
+  * Store resource URLs in variables in MANUAL for reuse.
+
+  * Provide more precise link to ruby-wrapper tool in HACKING.
+
+New features:
+
+  * Ensure that project version matches release notes before building a gem.
+    This helps to prevent the problem where you sometimes forget to update
+    both the release notes and the project information file simultaneously.
+
+  * Display announcement message to user (and make them confirm it) before
+    publishing to ruby-talk.  This helps to prevent you from appearing inept
+    and having to apologize later for your publishing blunders.
+
+  * Add `-d` (to enable `$DEBUG`) and `-v` (to enable `$VERBOSE`)
+    command-line options to the generated `test/runner` script.
+
+Bug fixes:
+
+  * Various compatibility fixes for Ruby 1.9.2-rc2.
+
+  * Prefix `test/runner` command with "ruby" for Windows users.
+
+  * Ember::WEBSITE was always being emitted in README.
+
+Housekeeping:
+
+  * Add version constraints for YARD and Mechanize dependencies.
+
+  * Upgrade from Dfect 1.1.0 to Detest 3.1.0 for unit testing.
+
+  * Upgrade to Ronn 0.7.0 for generating this user manual.
+
+%#----------------------------------------------------------------------------
 ### Version 3.0.0 (2010-04-27)
 %#----------------------------------------------------------------------------
 
