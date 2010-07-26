@@ -39,10 +39,10 @@ end
 task :@ann_rel_html_body_nodes do
   unless @ann_rel_html_body_nodes
     begin
-      head, body = fetch_nodes_between('h2#VERSIONS ~ h3', 'h1,h2,h3')
+      head, body = fetch_nodes_between('h2#HISTORY ~ h3', 'h1,h2,h3')
     rescue => error
       error.message.insert 0,
-        "The manual lacks a <H3> heading under a <H2> VERSIONS heading.\n"
+        "The manual lacks a <H3> heading under a <H2> HISTORY heading.\n"
       raise error
     end
 
