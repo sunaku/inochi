@@ -82,7 +82,7 @@ module Inochi
   #   }
   #
   DEVTIME = {
-    'dfect' => [ '>= 1.1.0', '< 2' ], # for unit testing
+    'detest' => [ '>= 3.1.0', '< 4' ], # for unit testing
   }
 
   # establish gem version dependencies
