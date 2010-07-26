@@ -33,6 +33,6 @@ task :init do
   create_from_rbs binding, 'HACKING'
   create_from_rbs binding, 'HISTORY'
   create_from_rbs binding, 'CREDITS'
-  create_from_rbs binding, 'FURTHER'
+  create_from_rbs binding, 'BEYOND'
 
 end
