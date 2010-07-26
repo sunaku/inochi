@@ -4,6 +4,18 @@ task :gem do
   Rake::Task[:@ann_nfo_text].invoke
   Rake::Task[:@project_authors_text].invoke
 
+  # ensure that project version matches release notes
+  Rake::Task[:@ann_rel_html_body_nodes].invoke
+
+  version_from_notes = @ann_rel_html_title_node.inner_text
+  version_from_project = "Version #{@project_module::VERSION} (#{@project_module::RELDATE})"
+
+  unless version_from_notes == version_from_project
+    raise "Project version #{version_from_project.inspect} does not match "\
+      "the #{version_from_notes.inspect} version listed in the release notes."
+  end
+
+  # build gemspec
   gem             = Gem::Specification.new
   gem.name        = @project_package_name
   gem.date        = @project_module::RELDATE
