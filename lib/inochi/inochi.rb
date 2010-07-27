@@ -86,7 +86,7 @@ module Inochi
   }
 
   # establish gem version dependencies
-  if respond_to? :gem
+  if respond_to? :gem, true
     [RUNTIME, DEVTIME].each do |deps|
       deps.each do |gem_name, gem_version|
         begin
