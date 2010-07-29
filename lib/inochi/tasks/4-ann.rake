@@ -16,10 +16,12 @@ end
 task :@ann_nfo_html_nodes do
   unless @ann_nfo_html_nodes
     begin
-      head, body = fetch_nodes_between('h2#NAME ~ p', 'h1,h2,h3,h4,h5,h6')
+      head, body = fetch_nodes_between(
+        'h2#_description + div', 'h1,h2,h3,h4,h5,h6'
+      )
     rescue => error
       error.message.insert 0,
-        "The manual lacks a <H2> ABOUT heading.\n"
+        "The manual lacks a <h2> DESCRIPTION heading.\n"
       raise error
     end
 
@@ -38,10 +40,12 @@ end
 task :@ann_rel_html_body_nodes do
   unless @ann_rel_html_body_nodes
     begin
-      head, body = fetch_nodes_between('h2#HISTORY ~ h3', 'h1,h2,h3')
+      head, body = fetch_nodes_between(
+        'h2#_history + div > h3', 'h1,h2,h3'
+      )
     rescue => error
       error.message.insert 0,
-        "The manual lacks a <H3> heading under a <H2> HISTORY heading.\n"
+        "The manual lacks a <h3> heading beneath the <h2> HISTORY heading.\n"
       raise error
     end
 
@@ -54,10 +58,12 @@ end
 task :@project_authors_html_nodes do
   unless @project_authors_html_nodes
     begin
-      head, body = fetch_nodes_between('h2#AUTHORS', 'h1,h2,h3,h4,h5,h6')
+      head, body = fetch_nodes_between(
+        'h2#_authors + div', 'h1,h2,h3,h4,h5,h6'
+      )
     rescue => error
       error.message.insert 0,
-        "The manual lacks content under a <H2> AUTHORS heading.\n"
+        "The manual lacks content under a <h2> AUTHORS heading.\n"
       raise error
     end
 
@@ -87,9 +93,12 @@ task :@ann_html do
       #{@ann_nfo_html_nodes.join}
       #{@ann_rel_html_title_node}
       #{@ann_rel_html_body_nodes.map(&:to_html).join}
-    }.strip
-
-    @ann_html = resolve_html_links(@ann_html)
+    }.
+    strip.
+    #
+    # resolve internal hyperlinks to the project website
+    #
+    gsub(/<a href=['"]?(?=#)/) { $& + @project_module::WEBSITE }
   end
 end
 
@@ -109,7 +118,7 @@ end
 desc 'Build HTML announcement.'
 task 'ann:html' => @ann_html_dst
 
-file @ann_html_dst => @man_src do
+file @ann_html_dst => @man_asciidoc_src do
   Rake::Task[:@ann_html].invoke
   File.write @ann_html_dst, @ann_html
 end
@@ -125,7 +134,7 @@ CLOBBER.include @ann_html_dst
 desc 'Build plain text announcement.'
 task 'ann:text' => @ann_text_dst
 
-file @ann_text_dst => @man_src do
+file @ann_text_dst => @man_asciidoc_src do
   Rake::Task[:@ann_text].invoke
   File.write @ann_text_dst, @ann_text
 end
@@ -141,7 +150,7 @@ CLOBBER.include @ann_text_dst
 desc 'Build RSS feed announcement.'
 task 'ann:feed' => @ann_feed_dst
 
-file @ann_feed_dst => @man_src do
+file @ann_feed_dst => @man_asciidoc_src do
   Rake::Task[:@ann_nfo_html_nodes].invoke
   Rake::Task[:@ann_rel_html_body_nodes].invoke
 
@@ -195,33 +204,19 @@ end
 # in the HTML document and (2) it runs on all major platforms
 #
 def convert_html_to_text html
-  # lynx's -dump option requires a .html file
+  # lynx's -dump option requires a *.html file
   require 'tempfile'
   tmp_file = Tempfile.new('inochi').path + '.html'
 
   begin
-    File.write tmp_file, html
+    File.write tmp_file, html.to_s.
+    #
+    # add space between subsections and list items to improve readability
+    #
+    gsub(/(?=<div class="title">|<li>)/, '<p>&nbsp;</p>')
 
-    `lynx -dump #{tmp_file} -width 70`.
-    #
-    # improve readability of list items
-    # by adding a blank line between them
-    #
-    gsub(/(\r?\n)( +\* \S)/, '\1\1\2')
+    `lynx -dump #{tmp_file} -width 70`
   ensure
     File.delete tmp_file
   end
-end
-
-##
-# Converts relative URLs in the given HTML into
-# absolute URLs bound to the given base URL.
-#
-# http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-#
-def resolve_html_links html, base_url = nil
-  base_url ||= @project_module::WEBSITE
-
-  require 'cgi'
-  "<base href='#{CGI.escapeHTML base_url}'/> #{html}"
 end

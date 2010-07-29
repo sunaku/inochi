@@ -1,17 +1,18 @@
-%#----------------------------------------------------------------------------
-## SEE ALSO
-%#----------------------------------------------------------------------------
+== SEE ALSO
 
-> TODO: list related UNIX man pages here
+// TODO: list related UNIX man pages and links here
 
-some_command(1),
-another_command(5),
-yet_another_command(7)
+some_command(1), another_command(5), yet_another_command(7)
 
-%#----------------------------------------------------------------------------
-%# Markdown link references
-%#----------------------------------------------------------------------------
+[sect2]
+=== References
 
-[Inochi]: <%= Inochi::WEBSITE %>
-[RubyGems]: http://rubygems.org
-[Ruby]: http://ruby-lang.org
+[horizontal]
+
+// NOTE: keep these sorted alphabetically
+
+[[Inochi]] Inochi:: <%= Inochi::WEBSITE %>
+[[RubyGems]] RubyGems:: http://rubygems.org
+[[Ruby]] Ruby:: http://ruby-lang.org
+
+// TODO: list additional links here

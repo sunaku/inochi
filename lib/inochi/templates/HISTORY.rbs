@@ -1,55 +1,48 @@
-%#----------------------------------------------------------------------------
-## HISTORY
-%#----------------------------------------------------------------------------
+== HISTORY
 
-This section contains release notes of current and past releases.
+=== Version #{project_version} (#{project_release})
 
-%#----------------------------------------------------------------------------
-### Version #{project_version} (#{project_release})
-%#----------------------------------------------------------------------------
-
-> TODO: write a short summary of the changes in this release
+// TODO: write a short summary of the changes in this release
 
 This release changes TODO, adds TODO, and fixes TODO.
 
-Incompatible changes:
+.Incompatible changes
 
-  > TODO: list all backward-incompatible changes in this release
+// TODO: list all backward-incompatible changes in this release
 
-  * TODO has been TODO to TODO --- contributor name
+* TODO has been TODO to TODO.  Thanks to TODO for reporting this.
 
-  * TODO --- contributor name
+* TODO was TODO.  Thanks to TODO for fixing this.
 
-  * TODO --- contributor name
+* TODO.  Thanks to TODO for TODO.
 
-New features:
+.New features
 
-  > TODO: list new features added in this release
+// TODO: list new features added in this release
 
-  * TODO --- contributor name
+* TODO has been TODO to TODO.  Thanks to TODO for reporting this.
 
-  * TODO --- contributor name
+* TODO was TODO.  Thanks to TODO for fixing this.
 
-  * TODO --- contributor name
+* TODO.  Thanks to TODO for TODO.
 
-Bug fixes:
+.Bug fixes
 
-  > TODO: describe all bugs that are fixed in this release
+// TODO: describe all bugs that are fixed in this release
 
-  * TODO was TODO --- contributor name
+* TODO has been TODO to TODO.  Thanks to TODO for reporting this.
 
-  * TODO were TODO --- contributor name
+* TODO was TODO.  Thanks to TODO for fixing this.
 
-  * TODO did TODO --- contributor name
+* TODO.  Thanks to TODO for TODO.
 
-Housekeeping:
+.Housekeeping
 
-  > TODO: list the refactorings, clean ups, and other
-  >       improvements that were done for this release
+// TODO: list the refactorings, clean ups, and other
+//       improvements that were done for this release
 
-  * TODO --- contributor name
+* TODO has been TODO to TODO.  Thanks to TODO for reporting this.
 
-  * TODO --- contributor name
+* TODO was TODO.  Thanks to TODO for fixing this.
 
-  * TODO --- contributor name
-
+* TODO.  Thanks to TODO for TODO.

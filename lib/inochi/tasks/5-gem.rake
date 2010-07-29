@@ -31,7 +31,7 @@ task :gem do
     'LICENSE',
     'CREDITS',
     @man_html_dst,
-    @man_roff_dst_glob
+    @man_roff_dst
   ]
 
   @project_module::DEVTIME.each do |gem_name, gem_version|

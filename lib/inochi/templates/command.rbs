@@ -3,11 +3,11 @@
 require '#{package_name}'
 
 if ARGV.delete('-h') or ARGV.delete('--help')
-  # try to display UNIX version of help manual
   man_path = File.join(#{library_name}::INSTDIR, 'man')
+  # try to display UNIX version of help manual
   unless system 'man', '-M', man_path, '-a', '#{package_name}'
     # try to display HTML version of help manual
-    man_html = man_path + '.html'
+    man_html = File.join(man_path, '#{package_name}.html')
     unless %w[$BROWSER open start].any? {|b| system "\#{b} \#{man_html}" }
       # no luck; direct user to project website
       puts "See \#{#{library_name}::WEBSITE}"

@@ -1,0 +1,21 @@
+== SYNOPSIS
+
+*#{package_name}* [_OPTIONS_] _PARAM1_ _PARAM2_ _PARAM3_ ...
+
+=== Command
+
+// TODO: explain the usage and behavior of the above command here
+
+=== Options
+
+// TODO: list command-line options and explain them here
+
+*-h*, *--help*::
+  Display this manual and exit.
+
+*-v*, *--version*::
+  Print version number and exit.
+
+=== Examples
+
+// TODO: add examples of using the above command here

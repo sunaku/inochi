@@ -1,8 +1,8 @@
+== DESCRIPTION
+
 #{project_name} is a TODO that TODO.
 
-%#----------------------------------------------------------------------------
-### Features
-%#----------------------------------------------------------------------------
+=== Features
 
 * Does TODO.
 
@@ -12,45 +12,19 @@
 
 * Composed of TODO lines of code.
 
-%#----------------------------------------------------------------------------
-### Resources
-%#----------------------------------------------------------------------------
+=== Resources
 
-* Issue tracker (report bugs, request features, get help):
-  <<%= bug_track_url %>>
+Project website::
+<%= @proj_home_url = #{library_name}::WEBSITE %>
 
-* Source code (browse online or obtain with <%= code_repo_scm %>):
-  <<%= code_repo_url %>>
+Announcements feed::
+<%= @ann_feed_url = File.join(@proj_home_url, 'ann.xml') %>
 
-* API documentation:
-  <<%= api_docs_url %>>
+API documentation::
+<%= @api_docs_url = File.join(@proj_home_url, 'api/') %>
 
-* Announcements feed:
-  <<%= ann_feed_url %>>
+Source code (browse online, download, or checkout)::
+<%= @code_repo_url = 'http://github.com/TODO/#{package_name}' %>
 
-* Official website:
-  <<%= proj_home_url %>>
-
-%#----------------------------------------------------------------------------
-### Setup
-%#----------------------------------------------------------------------------
-
-Prerequisites:
-
-  > TODO: list all software necessary to run your project
-
-  * [Ruby] #{RUBY_VERSION} or newer.
-
-  * [RubyGems] #{Gem::RubyGemsVersion} or newer.
-
-Installing:
-
-    gem install #{package_name}
-
-Upgrading:
-
-    gem update #{package_name}
-
-Removing:
-
-    gem uninstall #{package_name}
+Issue tracker (report bugs, request features, get help)::
+<%= @bug_track_url = File.join(@code_repo_url, 'issues') %>

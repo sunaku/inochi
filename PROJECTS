@@ -13,6 +13,11 @@ explained below.
 A project's configuration file is a [YAML] document named `inochi.config` that
 defines the following optional parameters for various inochi(1) sub-commands:
 
+* :man_asciidoc_attributes:
+  Attributes to pass to AsciiDoc when rendering the HTML manual page.  See
+  "Backend Attributes" in the AsciiDoc manual for a list of all attributes:
+  <http://www.methods.co.nz/asciidoc/chunked/aph.html>.
+
 * :pub_web_target:
   Location where `inochi pub:web` will upload files.  This value
   can use any local/remote/protocol syntax supported by rsync(1).

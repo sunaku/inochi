@@ -60,7 +60,6 @@ module Inochi
     'mechanize'   => [ '~> 1'     , '< 2' ], # for publishing announcements
     'nokogiri'    => [ '>= 1.4'   , '< 2' ], # for parsing HTML and XML
     'rake'        => [ '>= 0.8.4' , '< 1' ], # for Inochi::Engine
-    'ronn'        => [ '>= 0.7.0' , '< 1' ], # for making UNIX man pages
     'yard'        => [ '>= 0.5.8' , '< 1' ], # for making API documentation
   }
 

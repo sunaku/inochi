@@ -1,27 +1,20 @@
-%#----------------------------------------------------------------------------
-## AUTHORS
-%#----------------------------------------------------------------------------
+== AUTHORS
 
-> TODO: attribute yourself, your predecessors, and substantial contributors
+// TODO: attribute yourself, your predecessors, and substantial contributors
 
 Predecessor name,
 Your name,
 Substantial contributor name
 
-%#----------------------------------------------------------------------------
-## CREDITS
-%#----------------------------------------------------------------------------
+=== Credits
 
-> TODO: attribute everyone else who has contributed to this project
+// TODO: attribute everyone else who has contributed to this project
 
 Contributor name,
-[Contributor name](http://the.contributor.url),
+http://the.contributor.url[Contributor name],
 Another contributor <contributor@email.address>,
 Yet another contributor
 
-%#----------------------------------------------------------------------------
-## LICENSE
-%#----------------------------------------------------------------------------
+=== License
 
-%# See the file named "LICENSE".
-%< "LICENSE"
+%< 'LICENSE'
