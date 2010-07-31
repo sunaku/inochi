@@ -87,7 +87,7 @@ task :@ann_html do
       </center>
       #{@ann_nfo_html_nodes.join}
       #{@ann_rel_html_title_node}
-      #{@ann_rel_html_body_nodes.map(&:to_xml).join}
+      #{@ann_rel_html_body_nodes.map(&:to_html).join}
     }.strip
 
     @ann_html = resolve_html_links(@ann_html)
@@ -158,7 +158,7 @@ file @ann_feed_dst => @man_src do
     require 'time'
     item.date = Time.parse(@project_module::RELDATE)
     item.title = @ann_rel_html_title_node.inner_text
-    item.description = @ann_rel_html_body_nodes.join
+    item.description = @ann_rel_html_body_nodes.map(&:to_html).join
   end
 
   File.write @ann_feed_dst, rss
