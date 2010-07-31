@@ -29,8 +29,6 @@ CLOBBER.include @man_html_dst, @man_ronn_dst, @man_roff_dst_glob
 # loads the manual as a Ronn document
 task :@man_doc => @man_src do
   unless @man_doc
-    Rake::Task[:@project].invoke
-
     # render eRuby template
     ember_input =
       "# #{@project_package_name}(1) - #{@project_module::TAGLINE}\n\n"\

@@ -7,7 +7,6 @@ task :pub => %w[ pub:gem pub:web pub:ann ]
 
 desc 'Publish gem release package to RubyGems.org.'
 task 'pub:gem' do
-  Rake::Task[:@project].invoke
   Rake::Task[:gem].invoke unless File.exist? @project_gem_file
   sh 'gem', 'push', @project_gem_file
 end
@@ -18,8 +17,6 @@ end
 
 desc 'Publish help manual, API docs, and RSS feed to project website.'
 task 'pub:web' => %w[ man api ann:feed ] do |t|
-  Rake::Task[:@project].invoke
-
   if target = @project_options[:pub_web_target]
     options = @project_options[:pub_web_options]
     sources = [@man_html_dst, @api_dir, @ann_feed_dst,
@@ -93,8 +90,6 @@ end
 desc 'Announce release on RAA (Ruby Application Archive).'
 task 'pub:ann:raa' do
   site = 'http://raa.ruby-lang.org'
-
-  Rake::Task[:@project].invoke
   project = @project_package_name
 
   require 'mechanize'
@@ -109,8 +104,6 @@ task 'pub:ann:raa' do
   Rake::Task[:@ann_nfo_text].invoke
   form['description']       = @ann_nfo_text
   form['description_style'] = 'Plain'
-
-  Rake::Task[:@project].invoke
   form['short_description'] = @project_module::TAGLINE
   form['version']           = @project_module::VERSION
   form['url']               = @project_module::WEBSITE

@@ -7,7 +7,6 @@ task :ann => %w[ ann:html ann:text ann:feed ]
 
 task :@ann_subject do
   unless @ann_subject
-    Rake::Task[:@project].invoke
     @ann_subject = @ann_subject_prefix +
       @project_module::PROJECT + ' ' + @project_module::VERSION
   end
@@ -143,7 +142,6 @@ desc 'Build RSS feed announcement.'
 task 'ann:feed' => @ann_feed_dst
 
 file @ann_feed_dst => @man_src do
-  Rake::Task[:@project].invoke
   Rake::Task[:@ann_nfo_html_nodes].invoke
   Rake::Task[:@ann_rel_html_body_nodes].invoke
 
@@ -222,7 +220,6 @@ end
 # http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
 #
 def resolve_html_links html, base_url = nil
-  Rake::Task[:@project].invoke
   base_url ||= @project_module::WEBSITE
 
   require 'cgi'

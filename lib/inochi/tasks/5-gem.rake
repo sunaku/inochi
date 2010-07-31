@@ -1,6 +1,5 @@
 desc 'Build release package for RubyGems.'
 task :gem do
-  Rake::Task[:@project].invoke
   Rake::Task[:@ann_nfo_text].invoke
   Rake::Task[:@project_authors_text].invoke
 
@@ -45,7 +44,7 @@ task :gem do
 
   # allow user to configure the gem before it is built
   if logic = @project_options[:gem_spec_logic] and not logic.empty?
-    eval logic, binding, "#{@project_options_file} in :gem_spec_logic"
+    eval logic, binding, "#{PROJECT_OPTIONS_FILE} in :gem_spec_logic"
   end
 
   # emit gemspec

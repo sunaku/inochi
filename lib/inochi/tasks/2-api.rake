@@ -12,10 +12,7 @@ file @api_dst => FileList['lib/**/*.rb'].include('LICENSE') do
   YARD::Rake::YardocTask.new(inner_task_name) do |yardoc|
     yardoc.options = [
       '--output-dir', @api_dir,
-      '--title', (
-        Rake::Task[:@project].invoke
-        @project_module.inspect
-      ),
+      '--title', @project_module.inspect,
       '--readme', 'LICENSE',
       '--no-private'
     ]

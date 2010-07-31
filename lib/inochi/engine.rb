@@ -11,7 +11,13 @@ module Inochi
     include Inochi::Generate
 
     def run
-      register_rake_tasks
+      register_init_task
+
+      if has_project_config?
+        load_project_config
+        register_rake_tasks
+      end
+
       run_rake_tasks
     end
 
@@ -40,6 +46,74 @@ module Inochi
       Dir[File.dirname(__FILE__) + '/tasks/*.rake'].sort.each do |file|
         instance_eval File.read(file), file
       end
+    end
+
+    def register_init_task
+      desc 'Instill Inochi into current directory.'
+      task :init do
+        unless project_name = ENV['project']
+          raise ArgumentError, 'project name not specified'
+        end
+
+        library_name = Engine.calc_library_name(project_name)
+        package_name = ENV['package'] || Engine.calc_package_name(library_name)
+
+        project_version = '0.0.0'
+        project_release = Time.now.strftime('%F')
+
+        command_file = "bin/#{package_name}"
+        create_from_rbs binding, command_file, 'command'
+        chmod 0755, command_file
+
+        create_from_rbs binding, PROJECT_OPTIONS_FILE
+
+        create_from_rbs binding, "lib/#{package_name}.rb", 'library'
+        create_from_rbs binding, "lib/#{package_name}/inochi.rb"
+
+        create_from_rbs binding, 'test/runner', 'test_runner'
+        chmod 0755, 'test/runner'
+        create_from_rbs binding, 'test/helper.rb', 'test_helper.rb'
+        create_from_rbs binding, "test/#{package_name}_test.rb", 'library_test.rb'
+
+        create_from_rbs binding, 'LICENSE'
+        create_from_rbs binding, 'MANUAL'
+        create_from_rbs binding, 'SYNOPSIS'
+        create_from_rbs binding, 'README'
+        create_from_rbs binding, 'INSTALL'
+        create_from_rbs binding, 'USAGE'
+        create_from_rbs binding, 'HACKING'
+        create_from_rbs binding, 'HISTORY'
+        create_from_rbs binding, 'CREDITS'
+        create_from_rbs binding, 'BEYOND'
+      end
+    end
+
+    PROJECT_OPTIONS_FILE = 'inochi.opts'
+
+    def has_project_config?
+      File.exist? PROJECT_CONFIG_FILE
+    end
+
+    def load_project_config
+      @project_config = YAML.load_file(PROJECT_CONFIG_FILE).to_hash
+
+      # load the project module
+      library_file = Dir['lib/*/inochi.rb'].first
+      package_name = File.basename(File.dirname(library_file))
+      library_name = File.read(library_file)[/\b(module|class)\b\s+(\w+)/, 2]
+
+      $LOAD_PATH.unshift 'lib'
+      require "#{package_name}/inochi"
+
+      @project_module = Object.const_get(library_name)
+      @project_package_name = package_name
+      @project_library_name = library_name
+      @project_gem_file = "#{@project_package_name}-#{@project_module::VERSION}.gem"
+
+    rescue => error
+      error.message.insert 0,
+        "Could not load project configuration file #{PROJECT_CONFIG_FILE.inspect}: "
+      raise error
     end
 
     TEMPLATE_DIR = File.join(File.dirname(__FILE__), 'templates')
