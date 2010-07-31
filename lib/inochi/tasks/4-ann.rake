@@ -180,13 +180,13 @@ end
 def fetch_nodes_between head_selector, tail_selector
   Rake::Task[:@man_html_dom].invoke
 
-  head = @man_html_dom.at(head_selector)
+  head = @man_html_dom.at(head_selector) or raise head_selector
   body = []
 
   tail = head
-  while tail = tail.next_sibling and not tail.matches? tail_selector
-    body << tail
-  end
+  body << tail while
+    tail = tail.next_sibling and
+    not tail.matches? tail_selector
 
   [head, body, tail]
 end
