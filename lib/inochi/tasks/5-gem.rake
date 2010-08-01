@@ -30,7 +30,6 @@ task :gem do
     '{bin,lib,ext}/**/*',
     'LICENSE',
     'CREDITS',
-    @man_html_dst,
     @man_roff_dst
   ]
 
