@@ -1,24 +1,142 @@
-%#----------------------------------------------------------------------------
-## SYNOPSIS
-%#----------------------------------------------------------------------------
+== USAGE
 
-`inochi` [<OPTIONS>] <TASK> [<RAKE_OPTIONS>]
+This tutorial shows how to set up an Inochi project for a "WordCount" tool
+that counts the number of words in the text given to it.
 
-`inochi init` project=<PROJECT> [package=<PACKAGE>] [merger=<MERGER>]
+=== Creating a new project
 
-%#----------------------------------------------------------------------------
-## DESCRIPTION
-%#----------------------------------------------------------------------------
+Create a directory for the project:
 
-Runs the given <TASK> (see **TASKS** below) while passing the given
-<RAKE_OPTIONS> to rake(1).
+------------------------------------------------------------------------------
+mkdir word_count
+------------------------------------------------------------------------------
 
-%#----------------------------------------------------------------------------
-## OPTIONS
-%#----------------------------------------------------------------------------
+Instill Inochi into the directory:
 
-* `-h`, `--help`:
-  Display this manual and exit.
+------------------------------------------------------------------------------
+cd word_count
+inochi init project="WordCount"
+------------------------------------------------------------------------------
 
-* `-v`, `--version`:
-  Print version number and exit.
+Review pending work marked as "TODO":
+
+------------------------------------------------------------------------------
+grep TODO -nR .
+------------------------------------------------------------------------------
+
+=== Running the shell command
+
+Run the project's shell command:
+
+------------------------------------------------------------------------------
+ruby -Ilib bin/word_count
+------------------------------------------------------------------------------
+
+View the project version number:
+
+------------------------------------------------------------------------------
+ruby -Ilib bin/word_count --version
+------------------------------------------------------------------------------
+
+View the project help manual:
+
+------------------------------------------------------------------------------
+ruby -Ilib bin/word_count --help
+------------------------------------------------------------------------------
+
+=== Building the help manual
+
+Build the help manual:
+
+------------------------------------------------------------------------------
+inochi man
+------------------------------------------------------------------------------
+
+View the help manual in a terminal:
+
+------------------------------------------------------------------------------
+man -l man/man1/word_count.1
+------------------------------------------------------------------------------
+
+View the help manual in a Web browser:
+
+------------------------------------------------------------------------------
+firefox man.html
+------------------------------------------------------------------------------
+
+=== Implementing the library
+
+Append the following code to the `test/word_count_test.rb` file:
+
+[source,ruby]
+------------------------------------------------------------------------------
+class TestWordCount < Test::Unit::TestCase
+  def test_handles_empty_input
+    assert_equal(0, WordCount.count(nil))
+    assert_equal(0, WordCount.count(''))
+    assert_equal(0, WordCount.count(' '))
+  end
+
+  def test_handles_single_words
+    assert_equal(1, WordCount.count('a'))
+    assert_equal(1, WordCount.count('foo'))
+    assert_equal(1, WordCount.count('bar'))
+  end
+
+  def test_handles_multiple_words
+    assert_equal(2, WordCount.count('a b'))
+    assert_equal(2, WordCount.count('a-b'))
+    assert_equal(2, WordCount.count('a/b'))
+  end
+
+  def test_ignores_punctuation_and_space
+    assert_equal(0, WordCount.count('!'))
+    assert_equal(0, WordCount.count('! @ # % #!@#'))
+    assert_equal(0, WordCount.count(' !'))
+    assert_equal(0, WordCount.count('! '))
+    assert_equal(0, WordCount.count(' ! '))
+    assert_equal(0, WordCount.count('   !   '))
+  end
+end
+------------------------------------------------------------------------------
+
+Run the test suite and observe that all tests fail:
+
+------------------------------------------------------------------------------
+ruby test/runner
+------------------------------------------------------------------------------
+
+Append the following code to the `lib/word_count.rb` file:
+
+[source,ruby]
+------------------------------------------------------------------------------
+module WordCount
+  # Returns the number of words in the given input.
+  def WordCount.count input
+    input.to_s.split(/\W+/).length
+  end
+end
+------------------------------------------------------------------------------
+
+Run the test suite again and observe that all tests pass:
+
+------------------------------------------------------------------------------
+ruby test/runner
+------------------------------------------------------------------------------
+
+=== Implementing the shell command
+
+Append the following code to the `bin/word_count` file:
+
+[source,ruby]
+------------------------------------------------------------------------------
+input = ARGF.read
+total = WordCount.count(input)
+puts "There are #{total} words in the input."
+------------------------------------------------------------------------------
+
+Run the project's shell command on the `README` file:
+
+------------------------------------------------------------------------------
+ruby -Ilib bin/word_count README
+------------------------------------------------------------------------------

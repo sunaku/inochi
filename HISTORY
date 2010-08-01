@@ -1,483 +1,456 @@
-%#----------------------------------------------------------------------------
-## HISTORY
-%#----------------------------------------------------------------------------
+== HISTORY
 
-This section contains release notes of current and past releases.
-
-%#----------------------------------------------------------------------------
-### Version 4.0.1 (2010-07-28)
-%#----------------------------------------------------------------------------
+=== Version 4.0.1 (2010-07-28)
 
 This release fixes a bug in gem version dependency establishment.
 
-Bug fixes:
+.Bug fixes
 
-  * Gem version dependencies were not being established in Ruby 1.8.7 and
-    1.9.2 because `Kernel#gem` [is a private method](
-    http://redmine.ruby-lang.org/issues/show/3617 ) in those Ruby versions.
+* Gem version dependencies were not being established in Ruby 1.8.7 and 1.9.2
+  because `Kernel#gem` http://redmine.ruby-lang.org/issues/show/3617[is a
+  private method] in those Ruby versions.
++
+To propagate this fix into your projects, please reinitialize them with this
+version of Inochi.
 
-    To propagate this fix into your projects, please reinitialize them with
-    this version of Inochi.
+=== Version 4.0.0 (2010-07-25)
 
-%#----------------------------------------------------------------------------
-### Version 4.0.0 (2010-07-25)
-%#----------------------------------------------------------------------------
+.Incompatible changes
 
-Incompatible changes:
+* Rename the "VERSIONS" section in the `HISTORY` file to "HISTORY".
 
-  * Rename the "VERSIONS" section in the HISTORY file to "HISTORY".
+.Changes you will see in upgraded or newly generated projects
 
-Changes you will see in upgraded or newly generated projects:
+* Rename the `FURTHER` file to `BEYOND`.
 
-  * Rename the "FURTHER" file to "BEYOND".
+* Rename `test/test_helper.rb` to just `test/helper.rb`.
 
-  * Rename `test/test_helper.rb` to just `test/helper.rb`.
+* Store resource URLs in variables in `MANUAL` file for reuse.
 
-  * Store resource URLs in variables in MANUAL for reuse.
+* Provide more precise link to ruby-wrapper tool in `HACKING` file.
 
-  * Provide more precise link to ruby-wrapper tool in HACKING.
+.New features
 
-New features:
+* Ensure that project version matches release notes before building a gem.
+  This helps to prevent the problem where you sometimes forget to update
+  both the release notes and the project information file simultaneously.
 
-  * Ensure that project version matches release notes before building a gem.
-    This helps to prevent the problem where you sometimes forget to update
-    both the release notes and the project information file simultaneously.
+* Display announcement message to user (and make them confirm it) before
+  publishing to ruby-talk.  This helps to prevent you from appearing inept
+  and having to apologize later for your publishing blunders.
 
-  * Display announcement message to user (and make them confirm it) before
-    publishing to ruby-talk.  This helps to prevent you from appearing inept
-    and having to apologize later for your publishing blunders.
+* Add `-d` (to enable `$DEBUG`) and `-v` (to enable `$VERBOSE`)
+  command-line options to the generated `test/runner` script.
 
-  * Add `-d` (to enable `$DEBUG`) and `-v` (to enable `$VERBOSE`)
-    command-line options to the generated `test/runner` script.
+.Bug fixes
 
-Bug fixes:
+* Various compatibility fixes for Ruby 1.9.2-rc2.
 
-  * Various compatibility fixes for Ruby 1.9.2-rc2.
+* Prefix `test/runner` command with "ruby" for Windows users.
 
-  * Prefix `test/runner` command with "ruby" for Windows users.
+* `Ember::WEBSITE` was always being emitted in `README` file.
 
-  * Ember::WEBSITE was always being emitted in README.
+.Housekeeping
 
-Housekeeping:
+* Add version constraints for YARD and Mechanize dependencies.
 
-  * Add version constraints for YARD and Mechanize dependencies.
+* Upgrade from Dfect 1.1.0 to Detest 3.1.0 for unit testing.
 
-  * Upgrade from Dfect 1.1.0 to Detest 3.1.0 for unit testing.
+* Upgrade to Ronn 0.7.0 for generating this user manual.
 
-  * Upgrade to Ronn 0.7.0 for generating this user manual.
+=== Version 3.0.0 (2010-04-27)
 
-%#----------------------------------------------------------------------------
-### Version 3.0.0 (2010-04-27)
-%#----------------------------------------------------------------------------
+.Incompatible changes
 
-Incompatible changes:
+* The `require()` class method is no longer emitted on your project's
+  namespace.  Instead, gem version constraints are established up front when
+  your project's Ruby library is first loaded.
 
-  * The `require()` class method is no longer emitted on your project's
-    namespace.  Instead, gem version constraints are established up front when
-    your project's Ruby library is first loaded.
+* Author names are now fetched from the "AUTHORS" section, not "CREDITS".
 
-  * Author names are now fetched from the AUTHORS section, not CREDITS.
+* Project information is now placed in the "NAME" section, not "ABOUT".
 
-  * Project information is now placed in the NAME section, not ABOUT.
+.Bug fixes
 
-Bug fixes:
+* Reflect current Inochi version in gem constraint.
 
-  * Reflect current Inochi version in gem constraint.
+* Forgot to list <<Ember>> as a runtime gem dependency.
 
-  * Forgot to list [Ember] as a runtime gem dependency.
+.Housekeeping
 
-Housekeeping:
+* Move all task documentation into new "TASKS" section.
 
-  * Move all task documentation into new **TASKS** section.
+* Move TASKS & PROJECTS information into separate files.
 
-  * Move TASKS & PROJECTS information into separate files.
-
-%#----------------------------------------------------------------------------
-### Version 2.0.1 (2010-04-25)
-%#----------------------------------------------------------------------------
+=== Version 2.0.1 (2010-04-25)
 
 This release fixes some bugs and adds a simple tutorial to the help manual.
 
-Bug fixes:
+.Bug fixes
 
-  * Task files were not loaded in correct order.  As a result, certain Inochi
-    tasks would fail (depending on the sorting order of your filesystem) with
-    the following cryptic error:
+* Task files were not loaded in correct order.  As a result, certain Inochi
+  tasks would fail (depending on the sorting order of your filesystem) with
+  the following cryptic error:
++
+------------------------------------------------------------------------------
+inochi aborted!
+Don't know how to build task ''
+/usr/lib/ruby/gems/1.9.1/gems/rake-0.8.7/lib/rake.rb:1728:in `[]'
+(See full trace by running task with --trace)
+------------------------------------------------------------------------------
 
-        inochi aborted!
-        Don't know how to build task ''
-        /usr/lib/ruby/gems/1.9.1/gems/rake-0.8.7/lib/rake.rb:1728:in `[]'
-        (See full trace by running task with --trace)
+* `LICENSE` file template lacked a "TODO" marker.
 
-  * LICENSE file template lacked a "TODO" marker.
+* Forgot version number heading in announcement.
 
-  * Forgot version number heading in announcement.
+.Housekeeping
 
-Housekeeping:
+* Restored the simple WordCount tutorial from version 1.1.1.
 
-  * Restored the simple WordCount tutorial from version 1.1.1.
-    See **TUTORIAL** above.
-
-%#----------------------------------------------------------------------------
-### Version 2.0.0 (2010-04-24)
-%#----------------------------------------------------------------------------
+=== Version 2.0.0 (2010-04-24)
 
 This release makes Inochi a development-time dependency only, documents nearly
 everything in the help manual, renders the help manual as a UNIX manual page,
 simplifies the project infrastructure it provides, and removes needless cruft.
 
-Incompatible changes:
+.Incompatible changes
 
-  * Inochi is no longer a runtime dependency (gem or otherwise) for projects
-    that use it.  It also no longer runs tests, creates project namespaces, or
-    provides libraries for internationalization, combinatorics, command-line
-    parsing, utility logic, or Rakefiles.
+* Inochi is no longer a runtime dependency (gem or otherwise) for projects
+  that use it.  It also no longer runs tests, creates project namespaces, or
+  provides libraries for internationalization, combinatorics, command-line
+  parsing, utility logic, or Rakefiles.
++
+See <<PROJECTS>> to learn about the new Inochi infrastructure.
 
-    See **PROJECTS** to learn about the new Inochi infrastructure.
+* The help manual is now processed by <<Ronn>> instead of <<ERBook>>.  As a
+  result, you may only use plain <<Markdown>> and <<eRuby>> when writing it.
 
-  * The help manual is now processed by [Ronn] instead of [ERBook].  As a
-    result, you may only use plain [Markdown] and [eRuby] when writing it.
+* Announcement publishing tasks no longer read login information from the
+  `~/.config/inochi/logins.yaml` file and prompt you to enter that
+  information manually instead.  As a result, the forementioned file is no
+  longer recognized or used by Inochi so you may safely delete it.
 
-  * Announcement publishing tasks no longer read login information from the
-    `~/.config/inochi/logins.yaml` file and prompt you to enter that
-    information manually instead.  As a result, the forementioned file is no
-    longer recognized or used by Inochi so you may safely delete it.
+.New features
 
-New features:
+* The help manual is now available as a UNIX manual page (thanks to <<Ronn>>)
+  and is now divided into smaller files that can be read directly without
+  needing a special viewer, and are named according to open-source packaging
+  conventions (such as README, HACKING, and LICENSE) so that they draw the
+  attention of users unaccustomed to the organization of your project.
 
-  * The help manual is now available as a UNIX manual page (thanks to [Ronn])
-    and is now divided into smaller files that can be read directly without
-    needing a special viewer, and are named according to open-source packaging
-    conventions (such as README, HACKING, and LICENSE) so that they draw the
-    attention of users unaccustomed to the organization of your project.
+* A `require` class method is now added to the project's namespace.  This
+  method verifies that the library or gem being required meets the
+  dependency version constraints defined by the project.
 
-  * A `require` class method is now added to the project's namespace.  This
-    method verifies that the library or gem being required meets the
-    dependency version constraints defined by the project.
+* A `test/runner` script is now generated.  It provides a fast,
+  self-contained way to run your project's test suite.
 
-  * A `test/runner` script is now generated.  It provides a fast,
-    self-contained way to run your project's test suite.
+* Inochi is now a Rake application.  A `Rakefile` is not necessary.
 
-  * Inochi is now a Rake application.  A `Rakefile` is not necessary.
+.Housekeeping
 
-Housekeeping:
+* Many KISS and YAGNI fueled iterations later, this is it! :-)
 
-  * Many KISS and YAGNI fueled iterations later, this is it! :-)
+* Nearly every aspect of Inochi is now meticulously documented in the help
+  manual to the best of my ability.  If I missed something important, please
+  notify me or contribute the correction yourself!
 
-  * Nearly every aspect of Inochi is now meticulously documented in the help
-    manual to the best of my ability.  If I missed something important, please
-    notify me or contribute the correction yourself!
-
-%#----------------------------------------------------------------------------
-### Version 1.1.1 (2009-10-03)
-%#----------------------------------------------------------------------------
+=== Version 1.1.1 (2009-10-03)
 
 This release improves Ruby 1.9 support and upgrades gem dependencies.
 
-Bug fixes:
+.Bug fixes
 
-  * `require()` was unable to find project library in Ruby 1.9.2dev.
+* `require()` was unable to find project library in Ruby 1.9.2dev.
 
-  * Ruby 1.9 warning about "shadowing outer variable".
+* Ruby 1.9 warning about "shadowing outer variable".
 
-  * Ruby 1.9 error about "incompatible encoding regexp match".
+* Ruby 1.9 error about "incompatible encoding regexp match".
 
-Housekeeping:
+.Housekeeping
 
-  * The "spicycode-rcov" project was officially renamed to "relevance-rcov".
+* The "spicycode-rcov" project was officially renamed to "relevance-rcov".
 
-  * Upgrade to RubyForge 2.x library for publishing gems.
+* Upgrade to RubyForge 2.x library for publishing gems.
 
-%#----------------------------------------------------------------------------
-### Version 1.1.0 (2009-09-06)
-%#----------------------------------------------------------------------------
+=== Version 1.1.0 (2009-09-06)
 
 This release improves the user manual and scaffold generator output, injects
 more metadata into gems, adds support for Microsoft web browsers, and fixes
 some bugs.
 
-New features:
+.New features
 
-  * Add instructions for building gems without Inochi as a runtime dependency.
+* Add instructions for building gems without Inochi as a runtime dependency.
 
-  * Put release notes in "description" field of gemspec, as [suggested by Eric
-    Hodel](http://www.ruby-forum.com/topic/190220#830072), so that subscribers
-    of [the RubyForge gems feed](http://gems.rubyforge.org/index.rss) are
-    aware of the changes in a published gem.
+* Put release notes in "description" field of gemspec, as
+  http://www.ruby-forum.com/topic/190220#830072[suggested by Eric Hodel], so
+  that subscribers of http://gems.rubyforge.org/index.rss[the RubyForge gems
+  feed] are aware of the changes in a published gem.
 
-  * Set the "date" field in gemspec to project release date.
+* Set the "date" field in gemspec to project release date.
 
-  * Change file extension of generated user manuals from .xhtml to .html to
-    accomodate Microsoft web browsers' inability to process the
-    application/xhtml+xml mime type.
+* Change file extension of generated user manuals from .xhtml to .html to
+  accomodate Microsoft web browsers' inability to process the
+  application/xhtml+xml mime type.
 
-Bug fixes:
+.Bug fixes
 
-  * The sdoc library was necessary to run 'rake test'.
+* The sdoc library was necessary to run 'rake test'.
 
-  * Forgot to add `:develop` option to scaffold generator output.
+* Forgot to add `:develop` option to scaffold generator output.
 
-  * Make "rake lang:dump" unconditionally overwrite the dump file.
+* Make "rake lang:dump" unconditionally overwrite the dump file.
 
-  * Fix gem not being built and prevent Maruku errors for the dummy
-    "WordCount" project in the user manual.
+* Fix gem not being built and prevent Maruku errors for the dummy
+  "WordCount" project in the user manual.
 
-  * Use /usr/bin/env instead of /usr/bin/ruby to launch Ruby for better
-    portability.
+* Use /usr/bin/env instead of /usr/bin/ruby to launch Ruby for better
+  portability.
 
-Housekeeping:
+.Housekeeping
 
-  * Use simpler Copyright reminder at the top of every file.
+* Use simpler Copyright reminder at the top of every file.
 
-  * Open source is for fun, so [be
-    nice](http://loiclemeur.com/english/2009/03/never-criticize-your-competitors.html):
-    speak of "related works" instead of "competitors".
+* Open source is for fun, so speak of "related works", not "competitors".
 
-  * Rename "Tutorial" to "General walkthrough" in user manual and add a
-    "Specific topics" section for housing uncommon use cases.
+* Rename "Tutorial" to "General walkthrough" in user manual and add a
+  "Specific topics" section for housing uncommon use cases.
 
-  * Remove "logistics" section and redistribute its contents in more
-    suitable locations in the user manual.
+* Remove "logistics" section and redistribute its contents in more
+  suitable locations in the user manual.
 
-%#----------------------------------------------------------------------------
-### Version 1.0.0 (2009-05-03)
-%#----------------------------------------------------------------------------
+=== Version 1.0.0 (2009-05-03)
 
 This release allows your gems to not depend on Inochi, lets you choose which
 unit testing library to use, adds new utility libraries and rake tasks, and
 fixes some bugs.
 
-Incompatible changes:
+.Incompatible changes
 
-  * Your program is no longer halted by `Inochi.init()` and `Inochi.rake()` if
-    gem dependencies are not satified.  A warning is issued instead.
+* Your program is no longer halted by `Inochi.init()` and `Inochi.rake()` if
+  gem dependencies are not satified.  A warning is issued instead.
 
-  * The `project_summary` and `project_history` nodes, which are provided by
-    `Inochi.book()` to the user manual, have been renamed to `project` and
-    `history` respectively.
+* The `project_summary` and `project_history` nodes, which are provided by
+  `Inochi.book()` to the user manual, have been renamed to `project` and
+  `history` respectively.
 
-  * ERBook 7.1.0 is now used for generating the user manual.  This is a major
-    step up from the previous version, and so it has incompatible changes.
-    See its release notes for details.
+* ERBook 7.1.0 is now used for generating the user manual.  This is a major
+  step up from the previous version, and so it has incompatible changes.
+  See its release notes for details.
 
-  * [SDoc](http://github.com/voloko/sdoc/tree/master) is now used to generate
-    API documentation instead of [YARD](http://yard.rubyforge.org).  If you
-    link to particular classes or methods in the generated API documentation,
-    be sure to update your link addresses!
+* http://github.com/voloko/sdoc/tree/master[SDoc] is now used to generate
+  API documentation instead of http://yard.rubyforge.org[YARD].  If you
+  link to particular classes or methods in the generated API documentation,
+  be sure to update your link addresses!
 
-  * Minitest is no longer the default testing library.  You must specify which
-    testing library you want to use via the `:test_with` option of the
-    `Inochi.rake()` method.  See the "Test execution" section for details.
+* Minitest is no longer the default testing library.  You must specify which
+  testing library you want to use via the `:test_with` option of the
+  `Inochi.rake()` method.  See the "Test execution" section for details.
 
-  * The "pak" rake task, which is provided by `Inochi.rake()`, has been
-    renamed to "gem".
+* The "pak" rake task, which is provided by `Inochi.rake()`, has been
+  renamed to "gem".
 
-New features:
+.New features
 
-  * Add `:inochi_consumer` and `:inochi_producer` options to `Inochi.rake()`
-    which allows you to *avoid* having Inochi as a runtime and development
-    dependency, respectively, for your project's gem.
+* Add `:inochi_consumer` and `:inochi_producer` options to `Inochi.rake()`
+  which allows you to _avoid_ having Inochi as a runtime and development
+  dependency, respectively, for your project's gem.
++
+This is useful if you just want to use Inochi facilities for building a
+gem for a pure Ruby library that does not have any need for Inochi's
+runtime convenience facilities.
 
-    This is useful if you just want to use Inochi facilities for building a
-    gem for a pure Ruby library that does not have any need for Inochi's
-    runtime convenience facilities.
+* Add `:develop` option for `Inochi.init()` which lets you specify RubyGems
+  as development dependencies in the same way as the `:require` option.
 
-  * Add `:develop` option for `Inochi.init()` which lets you specify RubyGems
-    as development dependencies in the same way as the `:require` option.
+* Add "lint" rake task which reports
+  http://www.infoq.com/news/2008/11/static-analysis-tool-roundup[code quality
+  statistics].
 
-  * Add "lint" rake task which reports [code quality
-    statistics](http://www.infoq.com/news/2008/11/static-analysis-tool-roundup).
+* Add "test:cov" rake task which reports code coverage statistics.
 
-  * Add "test:cov" rake task which reports code coverage statistics.
+* Add "test:ruby" task which runs all tests with
+  http://www.infoq.com/news/2008/02/multiruby-testing[multiruby].
 
-  * Add "test:ruby" task which runs all tests with
-    [multiruby](http://www.infoq.com/news/2008/02/multiruby-testing).
+* Add `rake opts=` environment variable, which lets you specify command-line
+  arguments directly to the Ruby interpreter, for all test* rake tasks.
 
-  * Add 'rake opts=' environment variable, which lets you specify command-line
-    arguments directly to the Ruby interpreter, for all test* rake tasks.
+* Add `inochi/util/combo` combinatorics library for enumerations,
+  permutations, and combinations which are all useful in exhaustive
+  brute-force unit testing.
 
-  * Add inochi/util/combo combinatorics library for enumerations,
-    permutations, and combinations which are all useful in exhaustive
-    brute-force unit testing.
+* Add `inochi/util/tempdir` library which really should be in the Ruby
+  standard library.
 
-  * Add inochi/util/tempdir library which really should be in the Ruby
-    standard library.
+.Bug fixes
 
-Bug fixes:
+* The "enable email notification" checkbox was not activated properly when
+  posting announcement to ruby-talk mailing list via Ruby-Forum.
 
-  * The "enable email notification" checkbox was not activated properly when
-    posting announcement to ruby-talk mailing list via Ruby-Forum.
+* Mark gems needed by `Inochi.rake()` as _development_ dependencies.
++
+Users must now run `gem install Inochi --development` to install these
+dependencies.  This also solves the recursive dependency problem between
+Inochi and ERBook.
 
-  * Mark gems needed by `Inochi.rake()` as *development* dependencies.
+* Set executable in gem specification only if it exists.
 
-    Users must now run `gem install Inochi --development` to install these
-    dependencies.  This also solves the recursive dependency problem between
-    Inochi and ERBook.
+* Fix parsing of stack trace in Ruby 1.9.
 
-  * Set executable in gem specification only if it exists.
+.Housekeeping
 
-  * Fix parsing of stack trace in Ruby 1.9.
+* Write contributor names in CREDITS file instead of in the user manual.
 
-Housekeeping:
+* Use completely lowercase name for Rakefile.
 
-  * Write contributor names in CREDITS file instead of in the user manual.
+* Add copyright statement at the top of every source file.
 
-  * Use completely lowercase name for Rakefile.
-
-  * Add copyright statement at the top of every source file.
-
-%#----------------------------------------------------------------------------
-### Version 0.3.0 (2009-02-12)
-%#----------------------------------------------------------------------------
+=== Version 0.3.0 (2009-02-12)
 
 This release adds support for language translations, improves the user
 interface, and fixes a show-stopper bug for Windows users.
 
-New features:
+.New features
 
-  * Add support for language translations of phrases used in a project.
+* Add support for language translations of phrases used in a project.
 
-    * Add "lang:dump" Rake task for extracting language phrases from project.
+* Add "lang:dump" Rake task for extracting language phrases from project.
 
-    * Add "lang:conv" Rake task for translating dumped phrases into various
-      languages using the BabelFish translation service.
+* Add "lang:conv" Rake task for translating dumped phrases into various
+  languages using the BabelFish translation service.
 
-    * Add `--locale` option to a project's main executable for setting user's
-      preferred language in spite of the user's locale environment.
+* Add `--locale` option to a project's main executable for setting user's
+  preferred language in spite of the user's locale environment.
 
-  * Notify user when attempting to publish announcements in the "pub" Rake
-    tasks.
+* Notify user when attempting to publish announcements in the "pub" Rake
+  tasks.
 
-Bug fixes:
+.Bug fixes
 
-  * In Windows, `ENV['USERPROFILE']` gives the path to the user's home
-    directory and `ENV['HOME']` is not defined.
+* In Windows, `ENV['USERPROFILE']` gives the path to the user's home
+  directory and `ENV['HOME']` is not defined.
 
-  * The only real solution to the circular gem dependency problem is:
+* The only real solution to the circular gem dependency problem is:
++
+------------------------------------------------------------------------------
+gem install --force
+------------------------------------------------------------------------------
++
+You should update the "Setup" section in your projects' user manuals
+accordingly.
 
-        gem install --force
+.Housekeeping
 
-    You should update the "Setup" section in your projects' user manuals
-    accordingly.
+* Break the huge lib/inochi/inochi.rb library into smaller files.
 
-Housekeeping:
+* Instead of adding methods to singleton classes directly, define modules
+  and extend to them so that YARDoc documents the methods appropriately.
 
-  * Break the huge lib/inochi/inochi.rb library into smaller files.
+* List all project contributors globally in the "Credits" section.
 
-  * Instead of adding methods to singleton classes directly, define modules
-    and extend to them so that YARDoc documents the methods appropriately.
+* Remove "Contributor kudos" paragraph in release notes in favor of
+  crediting contributors inline with each item in the release notes.
 
-  * List all project contributors globally in the "Credits" section.
+* Mention that the project license is ISC for the reader's convenience.
 
-  * Remove "Contributor kudos" paragraph in release notes in favor of
-    crediting contributors inline with each item in the release notes.
-
-  * Mention that the project license is ISC for the reader's convenience.
-
-%#----------------------------------------------------------------------------
-### Version 0.2.0 (2009-01-25)
-%#----------------------------------------------------------------------------
+=== Version 0.2.0 (2009-01-25)
 
 This release adds support for unit testing, improves the portability of
-**Inochi** and configurability of your projects, adds new content to the user
+Inochi and configurability of your projects, adds new content to the user
 manual, and fixes some bugs.
 
-New features:
+.New features
 
-  * Added support for unit testing via the
-    [minitest](http://rubyforge.org/projects/bfts/) library.
+* Added support for unit testing via the
+  http://rubyforge.org/projects/bfts/[minitest] library.
 
-    * The scaffold generator now emits a default unit test for the main
-      project library.
+* The scaffold generator now emits a default unit test for the main
+  project library.
 
-  * Added optional ProgramName parameter to the scaffold generator.  This
-    allows you to specify reasonable program names when your project module
-    has a strange capitalization:
+* Added optional ProgramName parameter to the scaffold generator.  This
+  allows you to specify reasonable program names when your project module
+  has a strange capitalization:
++
+------------------------------------------------------------------------------
+$ inochi ERBook
+create er_book/LICENSE
 
-        $ inochi ERBook
-        create er_book/LICENSE
+$ inochi ERBook erbook
+create erbook/LICENSE
 
-        $ inochi ERBook erbook
-        create erbook/LICENSE
+$ inochi ERBook foobar
+create foobar/LICENSE
+------------------------------------------------------------------------------
 
-        $ inochi ERBook foobar
-        create foobar/LICENSE
+* Allow project authors to be specified via
+  `Inochi.init :YourProject, :authors => [['name', 'mail']]`
+  (thanks to Florian Gilcher)
 
-  * Allow project authors to be specified via
-    `Inochi.init :YourProject, :authors => [['name', 'mail']]`
-    (thanks to Florian Gilcher)
+.Bug fixes
 
-Bug fixes:
+* Run on both JRuby and normal Ruby in multiple versions and with different
+  executable names on Windows.  (thanks to Florian Gilcher)
 
-  * Run on both JRuby and normal Ruby in multiple versions and with different
-    executable names on Windows.  (thanks to Florian Gilcher)
+* Use `Gem::RubyGemsVersion` instead of a shell command to determine
+  rubygems version for generation of setup.erb.  (thanks to Florian Gilcher)
 
-  * Use `Gem::RubyGemsVersion` instead of a shell command to determine
-    rubygems version for generation of setup.erb.  (thanks to Florian Gilcher)
+* Add blank lines between all list items, not just multi-line ones, in the
+  plain-text version of the release announcement for improved readability.
 
-  * Add blank lines between all list items, not just multi-line ones, in the
-    plain-text version of the release announcement for improved readability.
+* Omit LaTeX-style heading numbers from release announcements.  They caused
+  confusion, especially in plain-text announcements, when trying to
+  determine which version of a project was released.
 
-  * Omit LaTeX-style heading numbers from release announcements.  They caused
-    confusion, especially in plain-text announcements, when trying to
-    determine which version of a project was released.
+.Housekeeping
 
-Housekeeping:
+* Added unit tests for utility methods provided by the `Inochi` module:
+  project name calculation and CamelCase to snake_case conversion.
 
-  * Added unit tests for utility methods provided by the **Inochi** module:
-    project name calculation and CamelCase to snake\_case conversion.
+=== Version 0.1.0 (2009-01-13)
 
-%#----------------------------------------------------------------------------
-### Version 0.1.0 (2009-01-13)
-%#----------------------------------------------------------------------------
+This release reattempts to fix the
+http://www.ruby-forum.com/topic/176173#771281[circular dependency problem]
+that occurred when installing either Inochi or ERBook.
 
-This release reattempts to fix the [circular dependency
-problem](http://www.ruby-forum.com/topic/176173#771281) that occurred when
-installing either Inochi or ERBook.
+.New features
 
-New features:
+* `Inochi.init()` now adds `#major()`, `#series()`, and `#requirement()`
+  instance methods to a project's `VERSION` constant.
 
-  * `Inochi.init()` now adds `#major()`, `#series()`, and `#requirement()`
-    instance methods to a project's `VERSION` constant.
+.Bug fixes
 
-Bug fixes:
+* Solved circular dependency problem by making inochi gem not dependent on
+  erbook gem. However, ERBook is still required during runtime and is
+  supplied on the `gem install` command for `Inochi`.
++
+The "Installing" section has been updated accordingly.
 
-  * Solved circular dependency problem by making inochi gem not dependent on
-    erbook gem. However, ERBook is still required during runtime and is
-    supplied on the `gem install` command for **Inochi**.
+* Add forgotten Rake dependency for `Inochi` gem.
 
-    The "Installing" section has been updated accordingly.
-
-  * Add forgotten Rake dependency for **Inochi** gem.
-
-%#----------------------------------------------------------------------------
-### Version 0.0.1 (2009-01-13)
-%#----------------------------------------------------------------------------
+=== Version 0.0.1 (2009-01-13)
 
 This release fixes some show-stopper bugs.
 
-Bug fixes:
+.Bug fixes
 
-  * The name of the project library was [being determined
-    incorrectly](http://www.ruby-forum.com/topic/176173#771351).
-    (thanks to Florian Gilcher)
+* The name of the project library was
+  http://www.ruby-forum.com/topic/176173#771351[being determined incorrectly].
+  (thanks to Florian Gilcher)
 
-  * There was a [circular dependency problem](
-      http://www.ruby-forum.com/topic/176173#771281
-    ) when installing the **Inochi** gem.  (thanks to Florian Gilcher)
+* There was a http://www.ruby-forum.com/topic/176173#771281[circular dependency
+  problem] when installing the `Inochi` gem.  (thanks to Florian Gilcher)
++
+The solution is to specify the `--force` option when installing the gem.
+The "Installing" section has been updated accordingly.
 
-    The solution is to specify the `--force` option when installing the gem.
-    The "Installing" section has been updated accordingly.
+* Generated project scaffolds now check against the major version of the
+  yInochi` gem, to avoid runtime version conflicts.
 
-  * Generated project scaffolds now check against the major version of the
-    **Inochi** gem, to avoid runtime version conflicts.
+.Housekeeping
 
-Housekeeping:
+* Only add project libraries to `$LOAD_PATH` if not already there.
 
-  * Only add project libraries to `$LOAD_PATH` if not already there.
-
-%#----------------------------------------------------------------------------
-### Version 0.0.0 (2009-01-13)
-%#----------------------------------------------------------------------------
+=== Version 0.0.0 (2009-01-13)
 
 This is the first release of Inochi.  Enjoy!

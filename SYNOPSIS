@@ -1,0 +1,38 @@
+== SYNOPSIS
+
+*inochi* ['OPTIONS'] ['TASK'] ['RAKE_OPTIONS']
+
+*inochi init* project='PROJECT' [package='PACKAGE'] [merger='MERGER']
+
+=== Command
+
+Runs the given 'TASK' while passing the given 'RAKE_OPTIONS' to rake(1).
+Otherwise, if 'TASK' is not given, displays a list of available tasks.
+
+=== Options
+
+*-h*, *--help*::
+  Display this manual and exit.
+
+*-v*, *--version*::
+  Print version number and exit.
+
+=== Examples
+
+See list of available tasks:
+
+------------------------------------------------------------------------------
+inochi
+------------------------------------------------------------------------------
+
+Set up a project named "Foo Bar Baz 123":
+
+------------------------------------------------------------------------------
+inochi init project="Foo Bar Baz 123"
+------------------------------------------------------------------------------
+
+Set up a project that is named "Foo Bar Baz 123" but packaged as "fbb123":
+
+------------------------------------------------------------------------------
+inochi init project="Foo Bar Baz 123" package="fbb123"
+------------------------------------------------------------------------------

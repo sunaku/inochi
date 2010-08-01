@@ -44,14 +44,14 @@ module Inochi
   #
   #   RUNTIME = {
   #     # this project needs exactly version 1.2.3 of the "an_example" gem
-  #     "an_example" => [ "1.2.3" ],
+  #     'an_example' => [ '1.2.3' ],
   #
   #     # this project needs at least version 1.2 (but not
   #     # version 1.2.4 or newer) of the "another_example" gem
-  #     "another_example" => [ ">= 1.2" , "< 1.2.4" ],
+  #     'another_example' => [ '>= 1.2' , '< 1.2.4' ],
   #
   #     # this project needs any version of the "yet_another_example" gem
-  #     "yet_another_example" => [],
+  #     'yet_another_example' => [],
   #   }
   #
   RUNTIME = {
@@ -70,11 +70,11 @@ module Inochi
   #
   #   DEVTIME = {
   #     # this project needs exactly version 1.2.3 of the "an_example" gem
-  #     "an_example" => [ "1.2.3" ],
+  #     'an_example' => [ '1.2.3' ],
   #
   #     # this project needs at least version 1.2 (but not
   #     # version 1.2.4 or newer) of the "another_example" gem
-  #     "another_example" => [ ">= 1.2" , "< 1.2.4" ],
+  #     'another_example' => [ '>= 1.2' , '< 1.2.4' ],
   #
   #     # this project needs any version of the "yet_another_example" gem
   #     "yet_another_example" => [],

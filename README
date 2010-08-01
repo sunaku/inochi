@@ -1,59 +1,31 @@
-![](logo/inochi.png)
+== DESCRIPTION
 
-Inochi is an infrastructure for Ruby projects that helps you test, document,
-package, publish, and announce your projects.  It encourages *great*
-documentation and reduces project administrivia.
+Inochi is a software project infrastructure for <<Ruby, the Ruby programming
+language>>.  It helps you test, document, package, publish, and announce your
+projects while encouraging excellent documentation and reducing administrivia.
 
-%#----------------------------------------------------------------------------
-### Features
-%#----------------------------------------------------------------------------
+=== Features
 
-* Provides a comprehensive help manual that is written in [eRuby] over
-  [Markdown] and is rendered into a Web page and a UNIX manual page.
+* Provides a comprehensive help manual that is written in <<eRuby>> over
+  <<AsciiDoc>> and is rendered into a Web page and a UNIX manual page.
 
-* Announces project releases on [RAA], [ruby-talk], and via RSS feed.
+* Announces project releases on <<RAA>>, <<ruby-talk>>, and via RSS feed.
 
 * Stores project information in a single Ruby source file.
 
-%#----------------------------------------------------------------------------
-### Resources
-%#----------------------------------------------------------------------------
+=== Resources
 
-* Issue tracker (report bugs, request features, get help):
-  <<%= bug_track_url %>>
+Project website::
+<%= @proj_home_url = Inochi::WEBSITE %>
 
-* Source code (browse online or obtain with <%= code_repo_scm %>):
-  <<%= code_repo_url %>>
+Announcements feed::
+<%= @ann_feed_url = File.join(@proj_home_url, 'ann.xml') %>
 
-* API documentation:
-  <<%= api_docs_url %>>
+API documentation::
+<%= @api_docs_url = File.join(@proj_home_url, 'api/') %>
 
-* Announcements feed:
-  <<%= ann_feed_url %>>
+Source code (browse online, download, or checkout)::
+<%= @code_repo_url = 'http://github.com/sunaku/inochi' %>
 
-* Official website:
-  <<%= proj_home_url %>>
-
-%#----------------------------------------------------------------------------
-### Setup
-%#----------------------------------------------------------------------------
-
-Prerequisites:
-
-  * [Ruby] 1.8.6 or newer.
-
-  * [RubyGems] 1.3.6 or newer.
-
-  * [Lynx] 2.8.6 or newer.
-
-Installing:
-
-    gem install inochi
-
-Upgrading:
-
-    gem update inochi
-
-Removing:
-
-    gem uninstall inochi
+Issue tracker (report bugs, request features, get help)::
+<%= @bug_track_url = File.join(@code_repo_url, 'issues') %>

@@ -1,38 +1,14 @@
-<%
-  proj_home_url = Inochi::WEBSITE
-  api_docs_url  = File.join(proj_home_url, 'api/')
-  ann_feed_url  = File.join(proj_home_url, 'ann.xml')
+ifdef::basebackend-html[]
+image::logo/inochi.png[Inochi logo]
+endif::basebackend-html[]
 
-  code_repo_scm = '[Git](http://git-scm.com)'
-  code_repo_url = 'http://github.com/sunaku/inochi'
-  bug_track_url = 'http://github.com/sunaku/inochi/issues'
-
-  ##
-  # Puts the given content inside <pre> tags in a Markdown-safe way.
-  #
-  def preformatted content
-    if content =~ /\S/
-      content.gsub(/^/, ' ' * 4)
-    else
-      "<pre>#{content}</pre>"
-    end
-  end
-%>
-
-%+ "README"
-
-%+ "USAGE"
-
-%+ "TASKS"
-
-%+ "PROJECTS"
-
-%+ "TUTORIAL"
-
-%+ "HACKING"
-
-%+ "HISTORY"
-
-%+ "CREDITS"
-
-%+ "BEYOND"
+%+ 'SYNOPSIS'
+%+ 'README'
+%+ 'INSTALL'
+%+ 'USAGE'
+%+ 'TASKS'
+%+ 'PROJECTS'
+%+ 'HACKING'
+%+ 'HISTORY'
+%+ 'CREDITS'
+%+ 'BEYOND'

@@ -1,6 +1,6 @@
 == SYNOPSIS
 
-*#{package_name}* [_OPTIONS_] _PARAM1_ _PARAM2_ _PARAM3_ ...
+*#{package_name}* ['OPTIONS'] 'PARAM1' 'PARAM2' 'PARAM3' ...
 
 === Command
 

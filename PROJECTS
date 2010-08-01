@@ -1,169 +1,160 @@
-%#----------------------------------------------------------------------------
-## PROJECTS
-%#----------------------------------------------------------------------------
+== [[PROJECTS]] PROJECTS
 
 A project instilled with Inochi is composed of a configuration file, a
 license, source code, documentation, and a Web presence; which are all
 explained below.
 
-%#----------------------------------------------------------------------------
-### Configuration file
-%#----------------------------------------------------------------------------
+=== [[inochi.conf]] Configuration file
 
-A project's configuration file is a [YAML] document named `inochi.config` that
-defines the following optional parameters for various inochi(1) sub-commands:
+A project's configuration file is a <<YAML>> document named `inochi.conf`
+that defines the following optional parameters used by some Inochi tasks:
 
-* :man_asciidoc_attributes:
+// NOTE: the extra space is needed at the start of these lines to prevent
+// AsciiDoc from interpreting these Ruby symbols as AsciiDoc directives
+
+ :man_asciidoc_attributes::
   Attributes to pass to AsciiDoc when rendering the HTML manual page.  See
-  "Backend Attributes" in the AsciiDoc manual for a list of all attributes:
-  <http://www.methods.co.nz/asciidoc/chunked/aph.html>.
+  http://www.methods.co.nz/asciidoc/chunked/aph.html["Backend Attributes" in
+  the AsciiDoc manual] for a list of all attributes.
 
-* :pub_web_target:
-  Location where `inochi pub:web` will upload files.  This value
+ :pub_web_target::
+  Location where the *inochi pub:web* command will upload files.  This value
   can use any local/remote/protocol syntax supported by rsync(1).
 
-* :pub_web_options:
-  Options for rsync(1), which uploads files for `inochi pub:web`.
+ :pub_web_options::
+  Options for rsync(1), which uploads files for the *inochi pub:web* command.
 
-* :pub_web_extras:
-  Additional files for `inochi pub:web` to upload.  The values listed
-  here can use any local/remote/protocol syntax supported by rsync(1).
+ :pub_web_extras::
+  Additional files for the *inochi pub:web* command to upload.  The values
+  listed here can use any local/remote/protocol syntax supported by rsync(1).
++
+Example:
++
+------------------------------------------------------------------------------
+:pub_web_extras:
+  - some/file
+  - some_user@some_host:some/path
+------------------------------------------------------------------------------
 
-  Example:
+ :gem_spec_logic::
+  Ruby code that will configure this project's RubyGem before it is built by
+  the *inochi gem* command.  This code has access to a local variable named
+  'gem' which holds a `Gem::Specification` object representing this project.
++
+Example:
++
+[source,ruby]
+------------------------------------------------------------------------------
+:gem_spec_logic: |
+  # show the Inochi-provided specification for this project's gem
+  puts gem.to_ruby
 
-      :pub_web_extras:
-        - some/file
-        - some_user@some_host:some/path
+  # add files that are outside this project directory to the gem
+  gem.files += ['some', 'files', 'in', 'this', 'directory']
 
-* :gem_spec_logic:
-  Arbitrary Ruby code that will configure this project's RubyGem before it
-  is built by `inochi gem`.  This code has access to a local variable named
-  `gem` which holds a Gem::Specification object representing this project.
+  # omit some added files in this project's directory from the gem
+  gem.files -= ['lib/top_secret.rb', 'bin/more_top_secret_stuff']
 
-  Example:
+  # and so on...  anything is possible!  use your imagination!
+------------------------------------------------------------------------------
 
-      :gem_spec_logic: |
-        # show the Inochi-provided specification for this project's gem
-        puts gem.to_ruby
-
-        # add files that are outside this project directory to the gem
-        gem.files += ['some', 'files', 'in', 'this', 'directory']
-
-        # omit some added files in this project's directory from the gem
-        gem.files -= ['lib/top_secret.rb', 'bin/more_top_secret_stuff']
-
-        # and so on...  anything is possible!  use your imagination!
-
-%#----------------------------------------------------------------------------
-### License file
-%#----------------------------------------------------------------------------
+=== License file
 
 A project's license defines the legal conditions under which the project is
-developed and distributed.  It is stored in a file named LICENSE at the root
+developed and distributed.  It is stored in a file named `LICENSE` at the root
 of the project directory.
 
-%#----------------------------------------------------------------------------
-### Ruby library
-%#----------------------------------------------------------------------------
+=== Ruby library
 
 A project's Ruby library is composed of the following files:
 
-* lib/<PACKAGE>.rb:
+lib/'PACKAGE'.rb::
   Defines the project's namespace (Ruby module or class) and registers
   sub-libraries to be automatically loaded on demand (Kernel#autoload).
 
-* lib/<PACKAGE>/inochi.rb:
+lib/'PACKAGE'/inochi.rb::
   Defines project information in Ruby constants within the project's namespace
   (Ruby module or class) and establishes version constraints for gems this
   project depends on if RubyGems is available in the user's environment.
   Unsatisfied constraints are simply printed to the standard error stream;
   they do not raise a `Gem::LoadError` exception.
 
-%#----------------------------------------------------------------------------
-### Test suite
-%#----------------------------------------------------------------------------
+=== Test suite
 
 A project's test suite is composed of the following files:
 
-* test/runner:
+test/runner::
   Executable Ruby script that hides the details of running the test suite.
 
-* test/helper.rb:
+test/helper.rb::
   Ruby source file that prepares the testing environment by loading a testing
   library and defining common knowledge and utility logic shared by the actual
   tests.
 
-* test/\*\*/\*_test.rb:
-  Part of the test suite.  Performs the actual testing.
+test/**/*_test.rb::
+  Ruby source files that perform the actual testing.
 
-%#----------------------------------------------------------------------------
-### Shell command
-%#----------------------------------------------------------------------------
+=== Shell command
 
-A project's shell command is an executable Ruby source file that serves as a
-gateway into the project's Ruby library from the command line:
+A project's shell command is an executable Ruby source file in the `bin/`
+directory named 'PACKAGE'.  It expects that the project's `lib/` directory is
+already present in Ruby's `$LOAD_PATH` (see <<HACKING>> below).  Thankfully,
+this expectation is automatically met when the project is installed via
+RubyGems.
 
-* bin/<PACKAGE>:
-  Expects the project's `lib/` directory to be on Ruby's $LOAD_PATH (see
-  **HACKING** below).  This requirement is automatically met when a user
-  installs the project using RubyGems.
+=== Help manual
 
-%#----------------------------------------------------------------------------
-### Help manual
-%#----------------------------------------------------------------------------
+A project's help manual is a monolithic <<eRuby>> template that is (1)
+processed by <<Ember>> with its shorthand notation, hierarchical
+unindentation, and missing `<%% end %>` inference features enabled, and (2)
+composed of the following source files:
 
-A project's help manual is a monolithic [eRuby] template that is (1) processed
-by [Ember] with its shorthand notation, hierarchical unindentation, and
-missing `<%% end %>` inference features enabled, and (2) composed of the
-following source files:
-
-* MANUAL:
+MANUAL::
   Primary source file of the help manual that (1) defines common knowledge and
   utility logic and (2) divides its content into the following files for
   easier editing and maintenance.
 
-* README:
-  Introduces the project, its Web presence, and gives setup instructions.
+SYNOPSIS::
+  Describes how the project's shell command can be invoked.
 
-* USAGE:
-  Explains how to use the project's shell command.
+README::
+  Introduces the project and its Web presence.
 
-* EXAMPLES:
-  Illustrates how to perform common tasks with the project's shell command and
-  Ruby library, respectively.
+INSTALL::
+  Instructions on installing, upgrading, and removing the project.
 
-* HACKING:
+USAGE::
+  Explains how to use the project in detail.
+
+HACKING::
   Instructs fellow software developers on running, testing, and hacking the
   project's source code.
 
-* HISTORY:
+HISTORY::
   Records notes about current and past releases of the project in terms of
   incompatible changes, new features, bug fixes, and housekeeping activities.
 
-* CREDITS:
+CREDITS::
   Attributes all developers and contributors whose efforts have made the
   project what it is today.
 
-* FURTHER:
+BEYOND::
   Refers to related commands, help manuals, and topics beyond this project.
 
-%#----------------------------------------------------------------------------
-### Web presence
-%#----------------------------------------------------------------------------
+=== Web presence
 
 A project's a Web presence is composed, at minimum, of the following:
 
-* Code repository:
+Project website::
+  Where the help manual, API documentation, and RSS feed can be accessed
+  (hopefully) permanently.
+
+Code repository::
   Where fellow software developers can obtain the latest source code.
 
-* Issue tracker:
-  Where users and contributors can submit patches, request features, and get
-  help.
-
-* Official website:
-  Where the help manual, API documentation, and announcements RSS feed can be
-  accessed (hopefully) permanently.
+Issue tracker::
+  Where users can contribute patches, request features, and get help.
 
 You may choose to omit some or all of these components by simply not
-mentioning them in the **Resources** section of the help manual's README
+mentioning them in the "Resources" section of the help manual's `README`
 source file.

@@ -3,16 +3,8 @@
 require 'inochi'
 
 if ARGV.delete('-h') or ARGV.delete('--help')
-  # try to display UNIX version of help manual
-  man_path = File.join(Inochi::INSTDIR, 'man')
-  unless system 'man', '-M', man_path, '-a', 'inochi'
-    # try to display HTML version of help manual
-    man_html = man_path + '.html'
-    unless %w[$BROWSER open start].any? {|b| system "#{b} #{man_html}" }
-      # no luck; direct user to project website
-      puts "See #{Inochi::WEBSITE}"
-    end
-  end
+  system 'man', '-M', File.join(Inochi::INSTDIR, 'man'), 'inochi' or
+  warn "Could not display the help manual.\nSee #{Inochi::WEBSITE} instead."
   exit
 elsif ARGV.delete('-v') or ARGV.delete('--version')
   puts Inochi::VERSION
