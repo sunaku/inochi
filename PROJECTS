@@ -2,15 +2,16 @@
 ## PROJECTS
 %#----------------------------------------------------------------------------
 
-A project instilled with Inochi is composed of an options file, a license,
-source code, documentation, and a Web presence; which are all explained below.
+A project instilled with Inochi is composed of a configuration file, a
+license, source code, documentation, and a Web presence; which are all
+explained below.
 
 %#----------------------------------------------------------------------------
-### Options file
+### Configuration file
 %#----------------------------------------------------------------------------
 
-A project's options file is a [YAML] document named `inochi.opts` that defines
-the following optional parameters for the various inochi(1) sub-commands:
+A project's configuration file is a [YAML] document named `inochi.config` that
+defines the following optional parameters for various inochi(1) sub-commands:
 
 * :pub_web_target:
   Location where `inochi pub:web` will upload files.  This value

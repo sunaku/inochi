@@ -43,8 +43,8 @@ task :gem do
   end
 
   # allow user to configure the gem before it is built
-  if logic = @project_options[:gem_spec_logic] and not logic.empty?
-    eval logic, binding, "#{PROJECT_OPTIONS_FILE} in :gem_spec_logic"
+  if logic = @project_config[:gem_spec_logic] and not logic.empty?
+    eval logic, binding, "#{PROJECT_CONFIG_FILE} in :gem_spec_logic"
   end
 
   # emit gemspec

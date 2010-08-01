@@ -17,10 +17,10 @@ end
 
 desc 'Publish help manual, API docs, and RSS feed to project website.'
 task 'pub:web' => %w[ man api ann:feed ] do |t|
-  if target = @project_options[:pub_web_target]
-    options = @project_options[:pub_web_options]
+  if target = @project_config[:pub_web_target]
+    options = @project_config[:pub_web_options]
     sources = [@man_html_dst, @api_dir, @ann_feed_dst,
-      @project_options[:pub_web_extras]].compact
+      @project_config[:pub_web_extras]].compact
 
     sh ['rsync', options, sources, target].join(' ')
   end

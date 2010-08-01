@@ -65,7 +65,7 @@ module Inochi
         create_from_rbs binding, command_file, 'command'
         chmod 0755, command_file
 
-        create_from_rbs binding, PROJECT_OPTIONS_FILE
+        create_from_rbs binding, PROJECT_CONFIG_FILE
 
         create_from_rbs binding, "lib/#{package_name}.rb", 'library'
         create_from_rbs binding, "lib/#{package_name}/inochi.rb"
@@ -88,7 +88,7 @@ module Inochi
       end
     end
 
-    PROJECT_OPTIONS_FILE = 'inochi.opts'
+    PROJECT_CONFIG_FILE = 'inochi.conf'
 
     def has_project_config?
       File.exist? PROJECT_CONFIG_FILE
