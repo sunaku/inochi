@@ -1,5 +1,32 @@
 == HISTORY
 
+=== Version 5.0.0 (2010-08-07)
+
+This release switches from <<Ronn>> to <<AsciiDoc>> for writing the help
+manual, reduces the file size of generated gem packages, and fixes some bugs.
+
+.Incompatible changes
+
+* Use <<AsciiDoc>> instead of <<Ronn>> to render the help manual.
+
+* Rename the `inochi.opts` file to `inochi.conf`.
+
+* Do not include HTML manual in gem package.  This reduces the gem file size
+  and makes the project website the only official place to obtain the HTML
+  manual.
+
+.Bug fixes
+
+* Always load project info before non-init tasks.
+
+* Another Ruby 1.9.2-rc2 fix for Nokogiri usage.
+
+Housekeeping
+
+* Use single quotes for string values in `inochi.rb` template.
+
+* fetch_nodes_between(): report errors and refactor.
+
 === Version 4.0.1 (2010-07-28)
 
 This release fixes a bug in gem version dependency establishment.
