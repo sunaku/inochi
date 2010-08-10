@@ -1,5 +1,16 @@
 == HISTORY
 
+=== Version 5.0.1 (2010-08-09)
+
+.Bug fixes
+
+* Project description and author names were not parsed correctly from the help
+  manual when building gem packages.
+
+.Housekeeping
+
+* Redistribute load-order indices in internal Rake task filenames.
+
 === Version 5.0.0 (2010-08-07)
 
 This release switches from <<Ronn>> to <<AsciiDoc>> for writing the help
@@ -7,15 +18,23 @@ manual, reduces the file size of generated gem packages, and fixes some bugs.
 
 .Incompatible changes
 
+* Rename the `inochi.opts` file to `inochi.conf`
+
 * Use <<AsciiDoc>> instead of <<Ronn>> to render the help manual.
 
-* Rename the `inochi.opts` file to `inochi.conf`.
+** Move "SETUP" and "SYNOPSIS" sections into their own files.
+
+** Rename `SETUP` file to `INSTALL` per Linux convention.
+
+** Add `:man_asciidoc_attributes` option to inochi.conf
 
 * Do not include HTML manual in gem package.  This reduces the gem file size
   and makes the project website the only official place to obtain the HTML
   manual.
 
 .Bug fixes
+
+* Add workaround for `lynx -dump` ignoring <base href="..."/>
 
 * Always load project info before non-init tasks.
 

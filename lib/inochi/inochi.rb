@@ -18,12 +18,12 @@ module Inochi
   ##
   # Number of this release of this project.
   #
-  VERSION = '5.0.0'
+  VERSION = '5.0.1'
 
   ##
   # Date of this release of this project.
   #
-  RELDATE = '2010-08-07'
+  RELDATE = '2010-08-09'
 
   ##
   # Description of this release of this project.
@@ -57,7 +57,7 @@ module Inochi
   RUNTIME = {
     'ember'       => [ '>= 0.3.0' , '< 1' ], # for eRuby templates
     'highline'    => [ '>= 1.5'   , '< 2' ], # for echoless password entry
-    'mechanize'   => [ '~> 1'     , '< 2' ], # for publishing announcements
+    'mechanize'   => [ '>= 1'     , '< 2' ], # for publishing announcements
     'nokogiri'    => [ '>= 1.4'   , '< 2' ], # for parsing HTML and XML
     'rake'        => [ '>= 0.8.4' , '< 1' ], # for Inochi::Engine
     'yard'        => [ '>= 0.5.8' , '< 1' ], # for making API documentation
