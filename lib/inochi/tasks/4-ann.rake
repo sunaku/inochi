@@ -17,8 +17,9 @@ task :@ann_nfo_html_nodes do
   unless @ann_nfo_html_nodes
     begin
       head, body = fetch_nodes_between(
-        'h2#_description + div', 'h1,h2,h3,h4,h5,h6'
+        'h2#_description + div.sectionbody > :first-child', 'h1,h2,h3,h4,h5,h6'
       )
+      body.unshift head
     rescue => error
       error.message.insert 0,
         "The manual lacks a <h2> DESCRIPTION heading.\n"
