@@ -3,6 +3,7 @@
 
 @man_html_dst = 'man.html'
 @man_roff_dst = "man/man1/#{@project_package_name}.1"
+@man_docbook_dst = @man_roff_dst + '.xml'
 
 desc 'Build the help manual.'
 task :man => [@man_html_dst, @man_roff_dst]
@@ -37,26 +38,37 @@ CLEAN.include @man_asciidoc_dst
 
 #-----------------------------------------------------------------------------
 
-build_asciidoc_args = lambda do
-  [('-v' if Rake.application.options.trace), @man_asciidoc_dst].compact
+build_asciidoc_args = proc do |*atts|
+  atts.concat Array(@project_config[:man_asciidoc_attributes])
+  args = atts.map {|a| ['-a', a] }.flatten
+
+  args.push '-v' if Rake.application.options.trace
+  args.push @man_asciidoc_dst
+
+  args
 end
 
 file @man_html_dst => @man_asciidoc_dst do
-  atts = %W[data-uri toc stylesheet=#{__FILE__.ext 'css'}] +
-    Array(@project_config[:man_asciidoc_attributes])
-
-  opts = atts.map {|a| ['-a', a] }.flatten
-  args = opts + build_asciidoc_args.call
-
+  args = build_asciidoc_args.call(
+    'data-uri', 'toc', 'stylesheet=' + __FILE__.ext('css')
+  )
   sh 'asciidoc', '-o', @man_html_dst, *args
 end
 
 CLOBBER.include @man_html_dst
 
-file @man_roff_dst => @man_asciidoc_dst do
+file @man_docbook_dst => @man_asciidoc_dst do
   args = build_asciidoc_args.call
-  mkdir_p dir = File.dirname(@man_roff_dst)
-  sh 'a2x', '-f', 'manpage', '-D', dir, *args
+  mkdir_p File.dirname(@man_docbook_dst)
+  sh 'asciidoc', '-o', @man_docbook_dst, '-d', 'manpage', '-b', 'docbook', *args
+end
+
+CLOBBER.include @man_docbook_dst
+
+file @man_roff_dst => @man_docbook_dst do
+  sh 'xsltproc', '-o', @man_roff_dst, '--nonet',
+    'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
+    @man_docbook_dst
 end
 
 CLOBBER.include @man_roff_dst

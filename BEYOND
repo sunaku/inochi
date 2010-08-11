@@ -1,6 +1,6 @@
 == SEE ALSO
 
-rake(1), rsync(1), <<AsciiDoc,asciidoc(1)>>, <<AsciiDoc,a2x(1)>>, <<Ember>>
+rake(1), rsync(1), <<AsciiDoc,asciidoc(1)>>, xsltproc(1), <<Ember>>
 
 [sect2]
 === References
