@@ -42,7 +42,7 @@ build_asciidoc_args = lambda do
 end
 
 file @man_html_dst => @man_asciidoc_dst do
-  atts = %W[data-uri toc stylesheet=#{__FILE__}.css] +
+  atts = %W[data-uri toc stylesheet=#{__FILE__.ext 'css'}] +
     Array(@project_config[:man_asciidoc_attributes])
 
   opts = atts.map {|a| ['-a', a] }.flatten
