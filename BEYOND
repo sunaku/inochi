@@ -6,21 +6,20 @@ rake(1), rsync(1), <<AsciiDoc,asciidoc(1)>>, xsltproc(1), <<Ember>>
 === References
 
 [horizontal]
-
-[[AsciiDoc]] AsciiDoc:: http://www.methods.co.nz/asciidoc/
-[[Ember]] Ember:: <%= Ember::WEBSITE %>
-[[ERBook]] ERBook:: http://snk.tuxfamily.org/lib/erbook/
-[[eRuby]] eRuby:: http://en.wikipedia.org/wiki/ERuby
-[[Inochi]] Inochi:: <%= Inochi::WEBSITE %>
-[[kdiff3]] kdiff3:: http://kdiff3.sourceforge.net
-[[Lynx]] Lynx:: http://lynx.isc.org
-[[Markdown]] Markdown:: http://daringfireball.net/projects/markdown
-[[meld]] meld:: http://meld.sourceforge.net
-[[RAA]] RAA:: http://raa.ruby-lang.org
-[[Ronn]] Ronn:: http://github.com/rtomayko/ronn
-[[RubyGems]] RubyGems:: http://rubygems.org
-[[Ruby]] Ruby:: http://ruby-lang.org
-[[ruby-talk]] ruby-talk:: http://www.ruby-lang.org/en/community/mailing-lists/
-[[tkdiff]] tkdiff:: http://tkdiff.sourceforge.net
-[[YAML]] YAML:: http://www.yaml.org/YAML_for_ruby.html
-[[YARD]] YARD:: http://yardoc.org/more
+[[[AsciiDoc]]]:: http://www.methods.co.nz/asciidoc/
+[[[Ember]]]:: <%= Ember::WEBSITE %>
+[[[ERBook]]]:: http://snk.tuxfamily.org/lib/erbook/
+[[[eRuby]]]:: http://en.wikipedia.org/wiki/ERuby
+[[[Inochi]]]:: <%= Inochi::WEBSITE %>
+[[[kdiff3]]]:: http://kdiff3.sourceforge.net
+[[[Lynx]]]:: http://lynx.isc.org
+[[[Markdown]]]:: http://daringfireball.net/projects/markdown
+[[[meld]]]:: http://meld.sourceforge.net
+[[[RAA]]]:: http://raa.ruby-lang.org
+[[[Ronn]]]:: http://github.com/rtomayko/ronn
+[[[RubyGems]]]:: http://rubygems.org
+[[[Ruby]]]:: http://ruby-lang.org
+[[[ruby-talk]]]:: http://www.ruby-lang.org/en/community/mailing-lists/
+[[[tkdiff]]]:: http://tkdiff.sourceforge.net
+[[[YAML]]]:: http://www.yaml.org/YAML_for_ruby.html
+[[[YARD]]]:: http://yardoc.org/more

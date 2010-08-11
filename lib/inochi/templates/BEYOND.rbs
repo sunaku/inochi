@@ -8,11 +8,8 @@ some_command(1), another_command(5), yet_another_command(7)
 === References
 
 [horizontal]
-
-// NOTE: keep these sorted alphabetically
-
-[[Inochi]] Inochi:: <%= Inochi::WEBSITE %>
-[[RubyGems]] RubyGems:: http://rubygems.org
-[[Ruby]] Ruby:: http://ruby-lang.org
+[[[Inochi]]]:: <%= Inochi::WEBSITE %>
+[[[RubyGems]]]:: http://rubygems.org
+[[[Ruby]]]:: http://ruby-lang.org
 
 // TODO: list additional links here
