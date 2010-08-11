@@ -213,9 +213,9 @@ def convert_html_to_text html
   begin
     File.write tmp_file, html.to_s.
     #
-    # add space between subsections and list items to improve readability
+    # add space between list items to improve readability
     #
-    gsub(/(?=<div class="title">|<li>)/, '<p>&nbsp;</p>')
+    gsub(/(?=<li>)/, '<p>&nbsp;</p>')
 
     `lynx -dump #{tmp_file} -width 70`
   ensure
