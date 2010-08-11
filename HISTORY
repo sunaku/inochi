@@ -1,6 +1,29 @@
 == HISTORY
 
+=== Version 5.0.2 (2010-08-10)
+
+This release emits hyperlink URLs in the generated UNIX manpage, beautifies
+the plain-text release announcement, and fixes incorrect AsciiDoc usage.
+
+.Bug fixes
+
+* Emit hyperlink URLs when rendering the help manual into UNIX manpage format
+  by using xsltproc(1) instead of a2x(1).  Thanks to Rainer Müller on the
+  <<AsciiDoc>> mailing list for
+  http://groups.google.com/group/asciidoc/msg/949fae9deb9f86b8[helping me
+  find the solution] to this problem.
+
+* Do not add space before paragraph titles in plain-text announcement.
+
+* Use proper AsciiDoc bibliography syntax in the `BEYOND` file.
+
+.Housekeeping
+
+* Only list related UNIX manpages in the "SEE ALSO" section.
+
 === Version 5.0.1 (2010-08-09)
+
+This release restores missing metadata in generated gem packages.
 
 .Bug fixes
 
