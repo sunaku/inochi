@@ -17,7 +17,7 @@ task :@ann_nfo_html_nodes do
   unless @ann_nfo_html_nodes
     begin
       head, body = fetch_nodes_between(
-        'h2#_description + div.sectionbody > :first-child', 'h1,h2,h3,h4,h5,h6'
+        'h2#_description + div *', 'h1,h2,h3,h4,h5,h6,.sect1,.sect2'
       )
       body.unshift head
     rescue => error
@@ -42,7 +42,7 @@ task :@ann_rel_html_body_nodes do
   unless @ann_rel_html_body_nodes
     begin
       head, body = fetch_nodes_between(
-        'h2#_history + div > h3', 'h1,h2,h3'
+        'h2#_history + div h3', 'h1,h2,h3,.sect1,.sect2'
       )
     rescue => error
       error.message.insert 0,
@@ -60,7 +60,7 @@ task :@project_authors_html_nodes do
   unless @project_authors_html_nodes
     begin
       head, body = fetch_nodes_between(
-        'h2#_authors + div.sectionbody > :first-child', 'h1,h2,h3,h4,h5,h6'
+        'h2#_authors + div *', 'h1,h2,h3,h4,h5,h6,.sect1,.sect2'
       )
       body.unshift head
     rescue => error
