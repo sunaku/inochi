@@ -15,6 +15,7 @@ rsync(1), <<AsciiDoc,asciidoc(1)>>, xsltproc(1), <<Lynx,lynx(1)>>
 [[[Lynx]]]:: http://lynx.isc.org
 [[[Markdown]]]:: http://daringfireball.net/projects/markdown
 [[[meld]]]:: http://meld.sourceforge.net
+[[[Pygments]]]:: http://pygments.org
 [[[RAA]]]:: http://raa.ruby-lang.org
 [[[Ronn]]]:: http://github.com/rtomayko/ronn
 [[[RubyGems]]]:: http://rubygems.org

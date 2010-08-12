@@ -57,6 +57,7 @@ end
 
 file @man_html_dst => @man_asciidoc_dst do
   args = build_asciidoc_args.call(
+    'pygments', # for better syntax coloring than GNU Source Highlight
     'data-uri', 'icons', # NOTE: iconsdir is defined above in eRuby template
     'toc', 'stylesheet=' + __FILE__.ext('css')
   )
