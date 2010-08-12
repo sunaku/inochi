@@ -14,11 +14,18 @@ task :man => [@man_html_dst, @man_roff_dst]
 file @man_asciidoc_dst => @man_asciidoc_src do
 
   input = [
+    # use the default icons that were installed along with AsciiDoc
+    # see http://groups.google.com/group/asciidoc/msg/adb7cf741147ce38
+    ':iconsdir: {asciidoc-dir}/{iconsdir}',
+
     ":revdate: #{@project_module::RELDATE}",
     ":revnumber: #{@project_module::VERSION}",
+
     "= #{@project_package_name}(1)",
+
     '== NAME',
     "#{@project_package_name} - #{@project_module::TAGLINE}",
+
     "%+ #{@man_asciidoc_src.first.inspect}",
   ].join("\n\n")
 
@@ -50,7 +57,8 @@ end
 
 file @man_html_dst => @man_asciidoc_dst do
   args = build_asciidoc_args.call(
-    'data-uri', 'toc', 'stylesheet=' + __FILE__.ext('css')
+    'data-uri', 'icons', # NOTE: iconsdir is defined above in eRuby template
+    'toc', 'stylesheet=' + __FILE__.ext('css')
   )
   sh 'asciidoc', '-o', @man_html_dst, *args
 end
