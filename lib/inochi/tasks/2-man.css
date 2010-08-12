@@ -1,49 +1,59 @@
-div.sectionbody, body {
-  font-family: sans-serif;
+@media all {
+  div.sectionbody, body {
+    font-family: sans-serif;
+  }
+
+  div.sectionbody {
+    line-height: 1.5em;
+  }
+
+  a:visited {
+    color: #800080;
+  }
 }
 
-div.sectionbody {
-  line-height: 1.5em;
+@media screen {
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 15em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0 !important;
+    overflow: auto;
+  }
+
+  #toc a {
+    color: #083194 !important;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 1.25em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+  }
 }
 
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a:visited {
-  color: #800080;
-}
-
-body {
-  max-width: 50em; /* approximately 80 characters wide */
-  margin-left: 15em;
-}
-
-#toc {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 13em;
-  padding: 0.5em;
-  padding-bottom: 1.5em;
-  margin: 0 !important;
-  overflow: auto;
-}
-
-#toc a {
-  color: #083194 !important;
-}
-
-#toc .toclevel1 {
-  margin-top: 1.25em;
-}
-
-#toc .toclevel2 {
-  margin-top: 0.25em;
-  display: list-item;
+@media print {
+  #toc {
+    display: none;
+  }
 }
