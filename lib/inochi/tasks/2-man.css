@@ -19,7 +19,7 @@ a:visited {
 }
 
 body {
-  max-width: 48em; /* approximately 80 characters wide */
+  max-width: 50em; /* approximately 80 characters wide */
   margin-left: 15em;
 }
 
