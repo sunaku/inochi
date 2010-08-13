@@ -1,8 +1,7 @@
 == DESCRIPTION
 
-Inochi is a software project infrastructure for <<Ruby, the Ruby programming
-language>>.  It helps you test, document, package, publish, and announce your
-projects while encouraging excellent documentation and reducing administrivia.
+Inochi is an infrastructure that helps you create, test, document, package,
+publish, and announce your <<Ruby>> projects.
 
 === Features
 
