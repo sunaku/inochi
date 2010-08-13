@@ -16,11 +16,15 @@ end
 #-----------------------------------------------------------------------------
 
 desc 'Publish help manual, API docs, and RSS feed to project website.'
-task 'pub:web' => %w[ man api ann:feed ] do |t|
+task 'pub:web' do
   if target = @project_config[:pub_web_target]
     options = @project_config[:pub_web_options]
+
     sources = [@man_html_dst, @api_dir, @ann_feed_dst,
       @project_config[:pub_web_extras]].compact
+
+    # build the sources if necessary
+    sources.each {|s| Rake::Task[s].invoke }
 
     sh ['rsync', options, sources, target].join(' ')
   end
