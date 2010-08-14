@@ -1,5 +1,31 @@
 == HISTORY
 
+=== Version 5.1.0 (2010-08-14)
+
+This release uses <<Pygments>> for syntax highlighting, adds icons to
+admonitions, speeds up the *pub:web* task, and further refines the HTML
+version of your project's help manual.
+
+.New features
+
+* Use admonition icons that are installed with AsciiDoc.
+
+* Use Pygments for syntax coloring in AsciiDoc 8.5.4.
+
+.Bug fixes
+
+* Only build what will be uploaded in *pub:web* task.
+
+* Do not display table of contents in print preview mode.
+
+* Increase body max-width to 50em to show 80 characters.
+
+* Update DOM selectors for AsciiDoc 8.5.4 in *ann* tasks.
+
+.Housekeeping
+
+* Get straight to the point when stating project purpose.
+
 === Version 5.0.2 (2010-08-10)
 
 This release emits hyperlink URLs in the generated UNIX manpage, beautifies
