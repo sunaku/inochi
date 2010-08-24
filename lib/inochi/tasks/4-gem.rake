@@ -47,7 +47,9 @@ task :gem do
   end
 
   # emit gemspec
-  File.write @project_gem_file + 'spec', gem.to_ruby
+  File.write @project_gem_file + 'spec', gem.to_ruby.
+    sub('Gem::Specification.new', 'gemspec = \&').
+    sub(/\Z/, "\nsystem 'inochi', *gemspec.files\ngemspec")
 
   # build gem
   Gem::Builder.new(gem).build
