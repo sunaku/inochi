@@ -24,6 +24,7 @@
   body {
     max-width: 50em; /* approximately 80 characters wide */
     margin-left: 15em;
+    font-size: 95%;
   }
 
   #toc {
