@@ -61,6 +61,7 @@ old=$1; new=$2; out=$3;
 # meld "$new" "$out"                            # use meld
 # tkdiff "$old" "$new" -o "$out"                # use tkdiff
 # kdiff3 --merge "$old" "$new" --output "$out"  # use kdiff3
+# diffuse "$old" "$out" "$new"                  # use diffuse
 ------------------------------------------------------------------------------
 
 2. Uncomment the line corresponding to the tool you wish to use.
