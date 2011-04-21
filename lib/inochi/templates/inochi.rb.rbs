@@ -42,7 +42,7 @@ module #{library_name}
   #
   # @example
   #
-  #   RUNTIME = {
+  #   GEMDEPS = {
   #     # this project needs exactly version 1.2.3 of the "an_example" gem
   #     'an_example' => [ '1.2.3' ],
   #
@@ -54,6 +54,6 @@ module #{library_name}
   #     'yet_another_example' => [],
   #   }
   #
-  RUNTIME = {}
+  GEMDEPS = {}
 
 end
