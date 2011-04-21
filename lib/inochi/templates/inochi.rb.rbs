@@ -77,17 +77,4 @@ module #{library_name}
     'inochi' => [ '>= #{Inochi::VERSION}', '< #{Inochi::VERSION.to_i.next}' ],
   }
 
-  # establish gem version dependencies
-  if respond_to? :gem, true
-    [RUNTIME, DEVTIME].each do |deps|
-      deps.each do |gem_name, gem_version|
-        begin
-          gem gem_name, *Array(gem_version)
-        rescue LoadError => error
-          warn "\#{self.inspect}: \#{error}"
-        end
-      end
-    end
-  end
-
 end
