@@ -33,10 +33,6 @@ task :gem do
     @man_roff_dst
   ]
 
-  @project_module::DEVTIME.each do |gem_name, gem_version|
-    gem.add_development_dependency gem_name, *Array(gem_version)
-  end
-
   @project_module::RUNTIME.each do |gem_name, gem_version|
     gem.add_dependency gem_name, *Array(gem_version)
   end

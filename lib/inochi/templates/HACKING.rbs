@@ -2,10 +2,10 @@
 
 === Prerequisites
 
-Install Ruby libraries necessary for development:
+Install Ruby libraries necessary for development using <<Bundler>>:
 
 ------------------------------------------------------------------------------
-gem install #{package_name} --development
+bundle install
 ------------------------------------------------------------------------------
 
 // TODO: list additional tools and libraries needed to develop your project

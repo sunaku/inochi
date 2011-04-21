@@ -66,6 +66,7 @@ module Inochi
         chmod 0755, command_file
 
         create_from_rbs binding, PROJECT_CONFIG_FILE
+        create_from_rbs binding, 'Gemfile'
 
         create_from_rbs binding, "lib/#{package_name}.rb", 'library'
         create_from_rbs binding, "lib/#{package_name}/inochi.rb"
