@@ -42,7 +42,7 @@ module Inochi
   #
   # @example
   #
-  #   RUNTIME = {
+  #   GEMDEPS = {
   #     # this project needs exactly version 1.2.3 of the "an_example" gem
   #     'an_example' => [ '1.2.3' ],
   #
@@ -54,7 +54,7 @@ module Inochi
   #     'yet_another_example' => [],
   #   }
   #
-  RUNTIME = {
+  GEMDEPS = {
     'ember'       => [ '>= 0.3.0' , '< 1' ], # for eRuby templates
     'highline'    => [ '>= 1.5'   , '< 2' ], # for echoless password entry
     'mechanize'   => [ '>= 1'     , '< 2' ], # for publishing announcements
@@ -62,39 +62,5 @@ module Inochi
     'rake'        => [ '>= 0.8.4' , '< 1' ], # for Inochi::Engine
     'yard'        => [ '>= 0.5.8' , '< 1' ], # for making API documentation
   }
-
-  ##
-  # RubyGems required by this project during development.
-  #
-  # @example
-  #
-  #   DEVTIME = {
-  #     # this project needs exactly version 1.2.3 of the "an_example" gem
-  #     'an_example' => [ '1.2.3' ],
-  #
-  #     # this project needs at least version 1.2 (but not
-  #     # version 1.2.4 or newer) of the "another_example" gem
-  #     'another_example' => [ '>= 1.2' , '< 1.2.4' ],
-  #
-  #     # this project needs any version of the "yet_another_example" gem
-  #     "yet_another_example" => [],
-  #   }
-  #
-  DEVTIME = {
-    'detest' => [ '>= 3.1.0', '< 4' ], # for unit testing
-  }
-
-  # establish gem version dependencies
-  if respond_to? :gem, true
-    [RUNTIME, DEVTIME].each do |deps|
-      deps.each do |gem_name, gem_version|
-        begin
-          gem gem_name, *Array(gem_version)
-        rescue LoadError => error
-          warn "#{self.inspect}: #{error}"
-        end
-      end
-    end
-  end
 
 end
