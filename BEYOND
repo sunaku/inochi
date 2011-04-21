@@ -7,6 +7,7 @@ rsync(1), <<AsciiDoc,asciidoc(1)>>, xsltproc(1), <<Lynx,lynx(1)>>
 
 [horizontal]
 [[[AsciiDoc]]]:: http://www.methods.co.nz/asciidoc/
+[[[Bundler]]]:: http://gembundler.com
 [[[Ember]]]:: <%= Ember::WEBSITE %>
 [[[ERBook]]]:: http://snk.tuxfamily.org/lib/erbook/
 [[[eRuby]]]:: http://en.wikipedia.org/wiki/ERuby
