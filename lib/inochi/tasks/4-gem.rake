@@ -1,5 +1,14 @@
-desc 'Build release package for RubyGems.'
-task :gem do
+@gem_spec_dst = @project_package_name + '.gemspec'
+@gem_spec_src = FileList[
+  '{bin,lib,ext}/**/*',
+  'LICENSE',
+  @man_roff_dst
+]
+
+desc 'Build RubyGems package specification.'
+task 'gem:spec' => @gem_spec_dst
+
+file @gem_spec_dst => @gem_spec_src do
   Rake::Task[:@ann_nfo_text].invoke
   Rake::Task[:@project_authors_text].invoke
 
@@ -24,13 +33,7 @@ task :gem do
   gem.homepage    = @project_module::WEBSITE
   gem.authors     = @project_authors_text.split(/\s*,\s*/)
   gem.executables = FileList['bin/*'].pathmap('%f')
-
-  Rake::Task[:man].invoke
-  gem.files = FileList[
-    '{bin,lib,ext}/**/*',
-    'LICENSE',
-    @man_roff_dst
-  ]
+  gem.files       = @gem_spec_src
 
   @project_module::GEMDEPS.each do |gem_name, gem_version|
     gem.add_dependency gem_name, *Array(gem_version)
@@ -42,12 +45,20 @@ task :gem do
   end
 
   # emit gemspec
-  File.write @project_gem_file + 'spec', gem.to_ruby.
+  File.write @gem_spec_dst, gem.to_ruby.
     sub('Gem::Specification.new', 'gemspec = \&').
     sub(/\Z/, "\nsystem 'inochi', *gemspec.files\ngemspec")
 
-  # build gem
-  Gem::Builder.new(gem).build
+  @gem_spec = gem
 end
 
-CLOBBER.include '*.gem', '*.gemspec'
+CLOBBER.include @gem_spec_dst
+
+desc 'Build release package for RubyGems.'
+task :gem => @project_gem_file
+
+file @project_gem_file => @gem_spec_dst do
+  Gem::Builder.new(@gem_spec).build
+end
+
+CLOBBER.include @project_gem_file
