@@ -2,11 +2,11 @@
 
 gemspec = Gem::Specification.new do |s|
   s.name = %q{inochi}
-  s.version = "5.1.0"
+  s.version = "6.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Suraj N. Kurapati"]
-  s.date = %q{2010-08-14}
+  s.date = %q{2011-04-21}
   s.default_executable = %q{inochi}
   s.description = %q{Inochi is an infrastructure that helps you create, test, document, package, publish, and announce your [Ruby] projects.}
   s.executables = ["inochi"]
