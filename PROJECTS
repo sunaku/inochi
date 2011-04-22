@@ -86,7 +86,7 @@ A project's test suite is composed of the following files:
 test/runner::
   Executable Ruby script that hides the details of running the test suite.
 
-test/helper.rb::
+test/test_helper.rb:
   Ruby source file that prepares the testing environment by loading a testing
   library and defining common knowledge and utility logic shared by the actual
   tests.
