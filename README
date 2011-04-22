@@ -8,7 +8,8 @@ publish, and announce your <<Ruby>> projects.
 * Provides a comprehensive help manual that is written in <<eRuby>> over
   <<AsciiDoc>> and is rendered into a Web page and a UNIX manual page.
 
-* Announces project releases on <<RAA>>, <<ruby-talk>>, and via RSS feed.
+* Produces beautiful plain-text release announcements that are ready to be
+  published on news outlets such as the <<ruby-talk>> mailing list.
 
 * Stores project information in a single Ruby source file.
 
