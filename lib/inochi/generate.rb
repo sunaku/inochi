@@ -28,9 +28,8 @@ module Inochi
           notify :update, path
           cur, old, new = path, "#{path}.old", "#{path}.new"
 
-          FileUtils.cp cur, old
+          FileUtils.cp cur, old, :preserve => true
           File.write new, content
-          FileUtils.chmod 0400, [old, new]
 
           yield old, new, cur if block_given?
         end
