@@ -1,17 +1,18 @@
 == DESCRIPTION
 
-Inochi is an infrastructure that helps you create, test, document, package,
-publish, and announce your <<Ruby>> projects.
+Inochi is an infrastructure that gives life to open-source <<Ruby>> projects
+and helps you document, test, package, publish, announce, and maintain them.
 
 === Features
 
-* Provides a comprehensive help manual that is written in <<eRuby>> over
-  <<AsciiDoc>> and is rendered into a Web page and a UNIX manual page.
+* Produces a comprehensive help manual that is written in <<eRuby>> over
+  <<AsciiDoc>> and is rendered into a Web page (with RSS feed) as well as a
+  UNIX manual page.
 
 * Produces beautiful plain-text release announcements that are ready to be
   published on news outlets such as the <<ruby-talk>> mailing list.
 
-* Stores project information in a single Ruby source file.
+* Stores project information in constants in a single Ruby source file.
 
 === Resources
 
