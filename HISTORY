@@ -1,5 +1,47 @@
 == HISTORY
 
+=== Version 6.0.2 (2011-04-21)
+
+This release adopts some common Rails testing and development conventions,
+drops runtime gem version dependency establishment in favor of <<Bundler>>,
+produces a gemspec file for greater interoperability, and improves merging.
+
+.Incompatible changes
+
+* Remove `pub:ann` tasks; users can manually announce where/if they want to.
+
+* Remove runtime gem version dependency establishment from `lib/*/inochi.rb`.
+
+* Replace `DEVTIME` constant in `lib/*/inochi.rb` with <<Bundler>>'s Gemfile.
+
+* Rename `RUNTIME` constant to `GEMDEPS` in `lib/*/inochi.rb`.
+
+* Rename `test/helper.rb` to `test/test_helper.rb` per Rails convention.
+
+.New features
+
+* Add `gem:spec` task to generate a gemspec file for your project.
+
+* Allow gem package to be built via `gem build *.gemspec` as
+  http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/[Yehuda Katz
+  suggests].
+
+.Bug fixes
+
+* Make old and new files read-only before merging.
+
+.Housekeeping
+
+* Omit CREDITS file from gem because help manual contains it.
+
+* Add diffuse tool to the example merge2 script in help manual.
+
+* Reduce font size to accomodate small screens in help manual.
+
+* Revise project & manual version mismatch error.
+
+* Revise project introduction in help manual.
+
 === Version 5.1.0 (2010-08-14)
 
 This release uses <<Pygments>> for syntax highlighting, adds icons to
