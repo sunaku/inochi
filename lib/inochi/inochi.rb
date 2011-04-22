@@ -18,7 +18,7 @@ module Inochi
   ##
   # Number of this release of this project.
   #
-  VERSION = '6.0.0'
+  VERSION = '6.0.1'
 
   ##
   # Date of this release of this project.

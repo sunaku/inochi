@@ -1,5 +1,23 @@
 == HISTORY
 
+=== Version 6.0.1 (2011-04-21)
+
+Incompatible changes:
+
+* Remove `pub:ann` tasks; users can manually announce where/if they want to.
+
+Bug fixes:
+
+* Inochi still generated the old `test/helper.rb` file.
+
+* Do not make old and new files read-only before merging.
+
+Housekeeping:
+
+* Revise project & manual version mismatch error.
+
+* Revise project introduction in help manual.
+
 === Version 6.0.0 (2011-04-21)
 
 This release adopts some common Rails testing and development conventions,
