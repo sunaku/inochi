@@ -19,8 +19,8 @@ file @gem_spec_dst => @gem_spec_src do
   version_from_project = "Version #{@project_module::VERSION} (#{@project_module::RELDATE})"
 
   unless version_from_notes == version_from_project
-    raise "Project version #{version_from_project.inspect} does not match "\
-      "the #{version_from_notes.inspect} version listed in the release notes."
+    raise 'Project version %s does not match %s in release notes.' %
+          [version_from_project.inspect, version_from_notes.inspect]
   end
 
   # build gemspec
