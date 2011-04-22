@@ -29,7 +29,6 @@ task :gem do
   gem.files = FileList[
     '{bin,lib,ext}/**/*',
     'LICENSE',
-    'CREDITS',
     @man_roff_dst
   ]
 
