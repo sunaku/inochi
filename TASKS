@@ -147,19 +147,6 @@ ann.txt::
 ann.xml::
   RSS feed version of the release announcement.
 
-=== inochi pub:ann:ruby-talk
-
-<%=
-  desc_by_task['pub:ann:ruby-talk'].
-  sub(/^\S+/, '\&s the').
-  sub('ruby-talk', 'the <<\&>>')
-%>
-
-It is recommended that you build, review, and edit the `ann.txt` file _by
-hand_ before running this command because (1) the body of that file is
-published directly as the announcement message and (2) HTML to plain text
-conversion is not perfect.
-
 === inochi pub:web
 
 <%=
