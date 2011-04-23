@@ -14,10 +14,6 @@ task :man => [@man_html_dst, @man_roff_dst]
 file @man_asciidoc_dst => @man_asciidoc_src do
 
   input = [
-    # use the default icons that were installed along with AsciiDoc
-    # see http://groups.google.com/group/asciidoc/msg/adb7cf741147ce38
-    ':iconsdir: {asciidoc-dir}/{iconsdir}',
-
     ":revdate: #{@project_module::RELDATE}",
     ":revnumber: #{@project_module::VERSION}",
 
@@ -58,7 +54,7 @@ end
 file @man_html_dst => @man_asciidoc_dst do
   args = build_asciidoc_args.call(
     'pygments', # for better syntax coloring than GNU Source Highlight
-    'data-uri', 'icons', # NOTE: iconsdir is defined above in eRuby template
+    'data-uri', # to ensure the output is a monolithic HTML document
     'toc', 'stylesheet=' + __FILE__.ext('css')
   )
   sh 'asciidoc', '-o', @man_html_dst, *args
