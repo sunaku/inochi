@@ -1,8 +1,4 @@
 @media all {
-  div.sectionbody, body {
-    font-family: sans-serif;
-  }
-
   div.sectionbody {
     line-height: 1.5em;
   }
@@ -13,17 +9,21 @@
 }
 
 @media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 15em; /* make room for TOC on the left */
+  }
+
+  body, div.sectionbody {
+    font-family: sans-serif;
+  }
+
   a {
     text-decoration: none;
   }
 
   a:hover {
     text-decoration: underline;
-  }
-
-  body {
-    max-width: 50em; /* approximately 80 characters wide */
-    margin-left: 15em;
   }
 
   #toc {
@@ -53,6 +53,14 @@
 }
 
 @media print {
+  body {
+    font-family: serif;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: sans-serif;
+  }
+
   #toc {
     display: none;
   }
