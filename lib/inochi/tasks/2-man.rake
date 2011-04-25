@@ -55,6 +55,7 @@ file @man_html_dst => @man_asciidoc_dst do
   args = build_asciidoc_args.call(
     'pygments', # for better syntax coloring than GNU Source Highlight
     'data-uri', # to ensure the output is a monolithic HTML document
+    'icons', 'iconsdir={asciidoc-confdir}/{iconsdir}',
     'toc', 'stylesheet=' + __FILE__.ext('css')
   )
   sh 'asciidoc', '-o', @man_html_dst, *args
