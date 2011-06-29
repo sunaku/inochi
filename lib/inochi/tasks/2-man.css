@@ -26,29 +26,12 @@
     text-decoration: underline;
   }
 
-  #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 13em;
-    padding: 0.5em;
-    padding-bottom: 1.5em;
-    margin: 0 !important;
-    overflow: auto;
-  }
-
   #toc a {
     color: #083194 !important;
   }
 
   #toc .toclevel1 {
     margin-top: 1.25em;
-  }
-
-  #toc .toclevel2 {
-    margin-top: 0.25em;
-    display: list-item;
   }
 }
 

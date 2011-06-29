@@ -41,7 +41,7 @@ CLEAN.include @man_asciidoc_dst
 
 #-----------------------------------------------------------------------------
 
-build_asciidoc_args = proc do |*atts|
+build_asciidoc_attributes = proc do |*atts|
   atts.concat Array(@project_config[:man_asciidoc_attributes])
   args = atts.map {|a| ['-a', a] }.flatten
 
@@ -52,19 +52,19 @@ build_asciidoc_args = proc do |*atts|
 end
 
 file @man_html_dst => @man_asciidoc_dst do
-  args = build_asciidoc_args.call(
+  args = build_asciidoc_attributes.call(
     'pygments', # for better syntax coloring than GNU Source Highlight
     'data-uri', # to ensure the output is a monolithic HTML document
     'icons', 'iconsdir={asciidoc-confdir}/{iconsdir}',
-    'toc', 'stylesheet=' + __FILE__.ext('css')
+    'toc2', 'stylesheet=' + __FILE__.ext('css')
   )
-  sh 'asciidoc', '-o', @man_html_dst, *args
+  sh 'asciidoc', '-o', @man_html_dst, '-b', 'html5', *args
 end
 
 CLOBBER.include @man_html_dst
 
 file @man_docbook_dst => @man_asciidoc_dst do
-  args = build_asciidoc_args.call
+  args = build_asciidoc_attributes.call
   mkdir_p File.dirname(@man_docbook_dst)
   sh 'asciidoc', '-o', @man_docbook_dst, '-d', 'manpage', '-b', 'docbook', *args
 end
