@@ -19,20 +19,20 @@ gemspec = Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rake>, ["< 0.9", ">= 0.8.4"])
       s.add_runtime_dependency(%q<ember>, ["< 1", ">= 0.3.0"])
       s.add_runtime_dependency(%q<nokogiri>, ["< 2", ">= 1.4"])
-      s.add_runtime_dependency(%q<rake>, ["< 1", ">= 0.8.4"])
       s.add_runtime_dependency(%q<yard>, ["< 1", ">= 0.5.8"])
     else
+      s.add_dependency(%q<rake>, ["< 0.9", ">= 0.8.4"])
       s.add_dependency(%q<ember>, ["< 1", ">= 0.3.0"])
       s.add_dependency(%q<nokogiri>, ["< 2", ">= 1.4"])
-      s.add_dependency(%q<rake>, ["< 1", ">= 0.8.4"])
       s.add_dependency(%q<yard>, ["< 1", ">= 0.5.8"])
     end
   else
+    s.add_dependency(%q<rake>, ["< 0.9", ">= 0.8.4"])
     s.add_dependency(%q<ember>, ["< 1", ">= 0.3.0"])
     s.add_dependency(%q<nokogiri>, ["< 2", ">= 1.4"])
-    s.add_dependency(%q<rake>, ["< 1", ">= 0.8.4"])
     s.add_dependency(%q<yard>, ["< 1", ">= 0.5.8"])
   end
 end

@@ -55,10 +55,10 @@ module Inochi
   #   }
   #
   GEMDEPS = {
-    'ember'       => [ '>= 0.3.0' , '< 1' ], # for eRuby templates
-    'nokogiri'    => [ '>= 1.4'   , '< 2' ], # for parsing HTML and XML
-    'rake'        => [ '>= 0.8.4' , '< 1' ], # for Inochi::Engine
-    'yard'        => [ '>= 0.5.8' , '< 1' ], # for making API documentation
+    'rake'        => [ '>= 0.8.4' , '< 0.9' ], # for Inochi::Engine
+    'ember'       => [ '>= 0.3.0' , '< 1'   ], # for eRuby templates
+    'nokogiri'    => [ '>= 1.4'   , '< 2'   ], # for parsing HTML and XML
+    'yard'        => [ '>= 0.5.8' , '< 1'   ], # for making API documentation
   }
 
 end
