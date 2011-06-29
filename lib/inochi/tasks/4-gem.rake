@@ -58,7 +58,7 @@ desc 'Build release package for RubyGems.'
 task :gem => @project_gem_file
 
 file @project_gem_file => @gem_spec_dst do
-  Gem::Builder.new(@gem_spec).build
+  sh 'gem', 'build', @gem_spec_dst
 end
 
 CLOBBER.include @project_gem_file
