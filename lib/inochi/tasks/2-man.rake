@@ -14,9 +14,18 @@ task :man => [@man_html_dst, @man_roff_dst]
 file @man_asciidoc_dst => @man_asciidoc_src do
 
   input = [
+    ':pygments:', # for better syntax coloring than GNU Source Highlight
+    ':data-uri:', # to ensure the output is a monolithic HTML document
+    ':icons:', ':iconsdir: {asciidoc-confdir}/{iconsdir}',
+    ':toc2:', ':stylesheet: ' + __FILE__.ext('css'),
+
+    Array(@project_config[:man_asciidoc_attributes]).map do |attribute|
+      name, value = attribute.split('=')
+      ":#{name}: #{value}"
+    end,
+
     ":revdate: #{@project_module::RELDATE}",
     ":revnumber: #{@project_module::VERSION}",
-    ':iconsdir: {asciidoc-confdir}/{iconsdir}',
 
     "= #{@project_package_name}(1)",
 
@@ -24,7 +33,8 @@ file @man_asciidoc_dst => @man_asciidoc_src do
     "#{@project_package_name} - #{@project_module::TAGLINE}",
 
     "%+ #{@man_asciidoc_src.first.inspect}",
-  ].join("\n\n")
+  ].
+  flatten.join("\n\n")
 
   options = {
     :shorthand => true,
@@ -42,29 +52,21 @@ CLEAN.include @man_asciidoc_dst
 
 #-----------------------------------------------------------------------------
 
-build_asciidoc_attributes = proc do |*atts|
-  atts.concat Array(@project_config[:man_asciidoc_attributes])
-  args = atts.map {|a| ['-a', a] }.flatten
-
-  args.push '-v' if Rake.application.options.trace
-  args.push @man_asciidoc_dst
-
+build_asciidoc_args = lambda do
+  args = [@man_asciidoc_dst]
+  args.unshift '-v' if Rake.application.options.trace
   args
 end
 
 file @man_html_dst => @man_asciidoc_dst do
-  args = build_asciidoc_attributes.call(
-    'pygments', # for better syntax coloring than GNU Source Highlight
-    'data-uri', # to ensure the output is a monolithic HTML document
-    'icons', 'toc2', 'stylesheet=' + __FILE__.ext('css')
-  )
+  args = build_asciidoc_args.call
   sh 'asciidoc', '-o', @man_html_dst, '-b', 'html5', *args
 end
 
 CLOBBER.include @man_html_dst
 
 file @man_docbook_dst => @man_asciidoc_dst do
-  args = build_asciidoc_attributes.call
+  args = build_asciidoc_args.call
   mkdir_p File.dirname(@man_docbook_dst)
   sh 'asciidoc', '-o', @man_docbook_dst, '-d', 'manpage', '-b', 'docbook', *args
 end
