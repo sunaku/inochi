@@ -47,4 +47,16 @@
   #toc {
     display: none;
   }
+
+  /* blend cross-reference hyperlinks as normal text */
+  a[href^="#"] {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* show URL of destination for external hyperlinks */
+  a[href]:not([href^="#"]):after {
+    content: " " attr(href);
+    font-family: monospace;
+  }
 }
