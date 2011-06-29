@@ -16,8 +16,8 @@ packaging, announcing, and publishing new releases.  See its help manual and
 list of tasks to get started:
 
 ------------------------------------------------------------------------------
-inochi --help     # display help manual
-inochi --tasks    # list available tasks
+bundle exec inochi --help     # display help manual
+bundle exec inochi --tasks    # list available tasks
 ------------------------------------------------------------------------------
 
 === $LOAD_PATH setup
@@ -28,44 +28,15 @@ use any libraries therein or run any executables in the `bin/` directory.
 This can be achieved by passing an option to Ruby:
 
 ------------------------------------------------------------------------------
-ruby -Ilib bin/inochi
-irb -Ilib -r inochi
+bundle exec ruby -Ilib bin/inochi
+bundle exec irb -Ilib -r inochi
 ------------------------------------------------------------------------------
 
 Or by setting the `$RUBYLIB` environment variable:
 
 ------------------------------------------------------------------------------
-export RUBYLIB=lib   # bash, ksh, zsh
-setenv RUBYLIB lib   # csh
-set -x RUBYLIB lib   # fish
-
-ruby bin/inochi
-irb -r inochi
-------------------------------------------------------------------------------
-
-Or by running Ruby through the
-http://github.com/chneukirchen/rup/blob/master/ruby-wrapper[ruby-wrapper]
-tool.
-
-=== RubyGems setup
-
-If you use Ruby 1.8 or older, then ensure that RubyGems is activated before
-you use any libraries in the `lib/` directory or run any executables in the
-`bin/` directory.
-
-This can be achieved by passing an option to Ruby:
-
-------------------------------------------------------------------------------
-ruby -rubygems bin/inochi
-irb -rubygems -r inochi
-------------------------------------------------------------------------------
-
-Or by setting the `$RUBYOPT` environment variable:
-
-------------------------------------------------------------------------------
-export RUBYOPT=-rubygems   # bash, ksh, zsh
-setenv RUBYOPT -rubygems   # csh
-set -x RUBYOPT -rubygems   # fish
+env RUBYLIB=lib bundle exec ruby bin/inochi
+env RUBYLIB=lib bundle exec irb -r inochi
 ------------------------------------------------------------------------------
 
 === Running tests
