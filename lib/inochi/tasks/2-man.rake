@@ -16,6 +16,7 @@ file @man_asciidoc_dst => @man_asciidoc_src do
   input = [
     ":revdate: #{@project_module::RELDATE}",
     ":revnumber: #{@project_module::VERSION}",
+    ':iconsdir: {asciidoc-confdir}/{iconsdir}',
 
     "= #{@project_package_name}(1)",
 
@@ -55,8 +56,7 @@ file @man_html_dst => @man_asciidoc_dst do
   args = build_asciidoc_attributes.call(
     'pygments', # for better syntax coloring than GNU Source Highlight
     'data-uri', # to ensure the output is a monolithic HTML document
-    'icons', 'iconsdir={asciidoc-confdir}/{iconsdir}',
-    'toc2', 'stylesheet=' + __FILE__.ext('css')
+    'icons', 'toc2', 'stylesheet=' + __FILE__.ext('css')
   )
   sh 'asciidoc', '-o', @man_html_dst, '-b', 'html5', *args
 end
