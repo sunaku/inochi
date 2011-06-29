@@ -1,5 +1,38 @@
 == HISTORY
 
+=== Version 6.1.0 (2011-06-29)
+
+.Prerequisite changes
+
+* AsciiDoc 8.6.5 is now required.
+
+.New features
+
+* Use AsciiDoc's HTML5 backend to build HTML manual.
+
+* Use sans headings and serif content in print style.
+
+* Show target URL beside external hyperlinks in print style.
+
+* Show cross-reference hyperlinks as normal text in print style.
+
+.Bug fixes
+
+* Admonition icons were not emitted in HTML manual.
+
+* Require Rake 0.8.x because 0.9 is incompatible.
+
+* Fix undefined method `write' for #<Syck::Emitter.
+
+* Use `bundle exec` to run Ruby and IRB in HACKING.
+
+.Housekeeping
+
+* Emit AsciiDoc attributes in document itself, not on the command line.
+  http://groups.google.com/group/asciidoc/msg/b4f47a8e1f960018
+
+* Revert "Reduce font size to accomodate small screens in help manual".
+
 === Version 6.0.2 (2011-04-21)
 
 This release adopts some common Rails testing and development conventions,
